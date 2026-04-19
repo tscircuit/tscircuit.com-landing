@@ -325,6 +325,15 @@
   }
   .foot h5{margin:0 0 10px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:500}
   .foot ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+  .foot a{
+    color:inherit;
+    text-decoration:none;
+  }
+  .foot a:hover{
+    color:var(--ink);
+    text-decoration:underline;
+    text-underline-offset:2px;
+  }
 
   /* Utility grid */
   .row{display:grid;gap:20px}
@@ -720,13 +729,45 @@
     <!-- Footer -->
     <div class="foot">
       <div>
-        <div class="logo" style="margin-bottom:10px"><span class="sq"></span>tscircuit</div>
+        <a class="logo" href="https://tscircuit.com" style="margin-bottom:10px"><span class="sq"></span>tscircuit</a>
         <p style="margin:0;max-width:280px">Hardware as code. Built in the open.</p>
       </div>
-      <div><h5>Product</h5><ul><li>Playground</li><li>Registry</li><li>CLI</li><li>MCP</li></ul></div>
-      <div><h5>Docs</h5><ul><li>Quickstart</li><li>API</li><li>Examples</li><li>Changelog</li></ul></div>
-      <div><h5>Community</h5><ul><li>GitHub</li><li>Discord</li><li>YouTube</li><li>Blog</li></ul></div>
-      <div><h5>Company</h5><ul><li>Careers ◦ 9</li><li>Press</li><li>Contact</li></ul></div>
+      <div>
+        <h5>Product</h5>
+        <ul>
+          <li><a href="https://registry.tscircuit.com/playground">Playground</a></li>
+          <li><a href="https://registry.tscircuit.com/">Registry</a></li>
+          <li><a href="https://docs.tscircuit.com/category/command-line-interface">CLI</a></li>
+          <li><a href="https://registry.tscircuit.com/changelog">Changelog</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Docs</h5>
+        <ul>
+          <li><a href="https://docs.tscircuit.com/category/intro">Quickstart</a></li>
+          <li><a href="https://docs.tscircuit.com/">API</a></li>
+          <li><a href="https://docs.tscircuit.com/category/tutorials">Examples</a></li>
+          <li><a href="https://blog.tscircuit.com/">Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Community</h5>
+        <ul>
+          <li><a href="https://github.com/tscircuit/tscircuit">GitHub</a></li>
+          <li><a href="https://discord.com/invite/V7FGE5ZCbA">Discord</a></li>
+          <li><a href="https://www.youtube.com/@seveibar">YouTube</a></li>
+          <li><a href="https://x.com/tscircuit">Twitter</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Company</h5>
+        <ul>
+          <li><a href="https://tscircuit.com/about">About</a></li>
+          <li><a href="https://registry.tscircuit.com/legal/terms-of-service.html">Terms</a></li>
+          <li><a href="https://registry.tscircuit.com/legal/privacy-policy.html">Privacy</a></li>
+          <li><a href="mailto:contact@tscircuit.com">Contact</a></li>
+        </ul>
+      </div>
     </div>
 <script>
   const defaultHeroCode = `export default () => (
