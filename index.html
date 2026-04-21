@@ -275,6 +275,21 @@
             display: block;
         }
 
+        .btn .star-icon {
+            width: 14px;
+            height: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 auto;
+        }
+
+        .btn .star-icon svg {
+            width: 14px;
+            height: 14px;
+            display: block;
+        }
+
         .hand {
             font-family: 'Caveat', cursive;
             font-weight: 600
@@ -941,7 +956,7 @@
             padding-left: 18px;
         }
 
-        .faq-answer li + li {
+        .faq-answer li+li {
             margin-top: 8px;
         }
 
@@ -1123,11 +1138,11 @@
                 font-size: 11px;
             }
 
-            .nav-actions > a.btn[href*="/login"] {
+            .nav-actions>a.btn[href*="/login"] {
                 display: none;
             }
 
-            .nav-actions > a.btn.ghost {
+            .nav-actions>a.btn.ghost {
                 display: none;
             }
 
@@ -1150,7 +1165,7 @@
                 align-items: flex-start;
             }
 
-            .trust-strip > span {
+            .trust-strip>span {
                 width: 100%;
                 white-space: normal !important;
                 line-height: 1.4;
@@ -1270,10 +1285,17 @@
             <div class="grow"></div>
             <div class="nav-actions">
                 <a class="btn ghost" href="https://github.com/tscircuit/tscircuit">
-                    <span id="github-stars-nav">★ 2.1k on GitHub</span>
+                    <span class="star-icon" aria-hidden="true">
+                        <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                            <path d="M8 1.7 9.9 5.6l4.3.6-3.1 3 0.7 4.3L8 11.4 4.2 13.5l0.7-4.3-3.1-3 4.3-.6L8 1.7z">
+                            </path>
+                        </svg>
+                    </span>
+                    <span id="github-stars-nav">2.1k on GitHub</span>
                 </a>
                 <a class="btn" href="https://tscircuit.com/login">Sign in</a>
-                <a class="btn primary" href="https://cal.com/seveibar/tscircuit-demo?overlayCalendar=true">Book a demo →</a>
+                <a class="btn primary" href="https://cal.com/seveibar/tscircuit-demo?overlayCalendar=true">Book a demo
+                    →</a>
                 <details class="nav-menu">
                     <summary class="btn ghost nav-menu-toggle">Menu</summary>
                     <div class="nav-menu-panel">
@@ -1302,10 +1324,11 @@
                         JLCPCB in a single command.
                     </p>
                     <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
-                        <button type="button" class="btn accent" id="hero-install-copy"
+                        <button type="button" class="btn accent install-copy-btn" id="hero-install-copy"
                             data-copy-text="npm install -g tscircuit" aria-label="Copy npm install -g tscircuit"
                             title="Copy npm install -g tscircuit"><span>npm install -g tscircuit</span><span
-                                id="hero-install-copy-icon" class="icon" aria-hidden="true"></span></button>
+                                id="hero-install-copy-icon" class="icon install-copy-icon"
+                                aria-hidden="true"></span></button>
                         <a class="btn" href="https://docs.tscircuit.com/">Read the docs →</a>
                         <a class="mono muted" id="hero-browser-shortcut" href="https://tscircuit.com/playground"
                             target="_blank" rel="noreferrer" aria-keyshortcuts="Meta+K Control+K"
@@ -1313,7 +1336,8 @@
                     </div>
                     <div
                         style="display:flex;gap:28px;margin-top:32px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)">
-                        <div><b id="github-stars-stat" style="color:var(--ink);font-size:18px;font-family:'Geist'">2.1k</b><br>Repo stars</div>
+                        <div><b id="github-stars-stat"
+                                style="color:var(--ink);font-size:18px;font-family:'Geist'">2.1k</b><br>Repo stars</div>
                         <div><b style="color:var(--ink);font-size:18px;font-family:'Geist'">289</b><br>Public repos
                         </div>
                         <div><b style="color:var(--ink);font-size:18px;font-family:'Geist'">209</b><br>GH followers
@@ -1409,8 +1433,7 @@
                                 Props,
                                 children, hooks — but for resistors.</p>
                         </div>
-                        <div class="code"
-                            style="height:180px;padding:12px 14px;font-size:10px;line-height:1.4">
+                        <div class="code" style="height:180px;padding:12px 14px;font-size:10px;line-height:1.4">
                             <pre style="margin:0"><span class="kw">export default</span> () =&gt; (
   &lt;<span class="tg">board</span> <span class="at">width</span>=<span class="st">"18mm"</span> <span class="at">height</span>=<span class="st">"12mm"</span>&gt;
     &lt;<span class="tg">resistor</span>
@@ -1435,7 +1458,7 @@
                         <div class="mono muted" style="font-size:10px;letter-spacing:.12em">02 · AUTOROUTE</div>
                         <h3 style="margin:8px 0 6px;font-size:18px">Real-time autorouting</h3>
                         <p style="margin:0;color:var(--ink-2);font-size:13px">Sub-second routing on 4-layer boards.
-                            Runs locally with LLM-compatible tweaking. 
+                            Runs locally with LLM-compatible tweaking.
                         </p>
                         <div class="media" style="height:180px;margin-top:14px">
                             <video autoplay muted loop playsinline preload="metadata" aria-label="Autorouting demo">
@@ -1467,7 +1490,8 @@
                     <div class="feature-card">
                         <div class="mono muted" style="font-size:10px;letter-spacing:.12em">05 · REVIEW</div>
                         <h3 style="margin:8px 0 6px;font-size:18px">Visual Diffs Inside GitHub</h3>
-                        <p style="margin:0;color:var(--ink-2);font-size:13px">All the capabilities of version control tool works natively with tscircuit. Approvals, comments, rollback.</p>
+                        <p style="margin:0;color:var(--ink-2);font-size:13px">All the capabilities of version control
+                            tool works natively with tscircuit. Approvals, comments, rollback.</p>
                         <div class="media" style="height:180px;margin-top:14px">
                             <img src="assets/review.png" alt="PR-native schematic review screenshot">
                         </div>
@@ -1584,38 +1608,56 @@
                     <details class="faq-item">
                         <summary>Can I use tscircuit commercially?</summary>
                         <div class="faq-answer">
-                            <p>You can use tscircuit for commercial purposes. tscircuit is under the same permissive MIT license as Node.js, React, and thousands of other popular projects you are likely already using!</p>
+                            <p>You can use tscircuit for commercial purposes. tscircuit is under the same permissive MIT
+                                license as Node.js, React, and thousands of other popular projects you are likely
+                                already using!</p>
                         </div>
                     </details>
                     <details class="faq-item">
                         <summary>Can I import designs from other software?</summary>
                         <div class="faq-answer">
-                            <p>tscircuit has some support for importing designs from other software, but it's not yet fully featured. You should file an issue on our GitHub if you'd like to see a specific format supported.</p>
+                            <p>tscircuit has some support for importing designs from other software, but it's not yet
+                                fully featured. You should file an issue on our GitHub if you'd like to see a specific
+                                format supported.</p>
                         </div>
                     </details>
                     <details class="faq-item">
                         <summary>Can I use tscircuit locally?</summary>
                         <div class="faq-answer">
-                            <p>Yes, you can use tscircuit locally using the tscircuit CLI, but we recommend starting with the web-based application for simplicity.</p>
+                            <p>Yes, you can use tscircuit locally using the tscircuit CLI, but we recommend starting
+                                with the web-based application for simplicity.</p>
                         </div>
                     </details>
                     <details class="faq-item">
                         <summary>Can tscircuit make schematics? Is it extra effort?</summary>
                         <div class="faq-answer">
-                            <p>tscircuit always renders both a schematic and PCB. Unlike traditional EDA where the schematic capture and PCB layout are separate processes, tscircuit combines them by allowing a user to specify constraints and automations. This means that you can design a schematic and then immediately see a PCB layout or vice versa.</p>
+                            <p>tscircuit always renders both a schematic and PCB. Unlike traditional EDA where the
+                                schematic capture and PCB layout are separate processes, tscircuit combines them by
+                                allowing a user to specify constraints and automations. This means that you can design a
+                                schematic and then immediately see a PCB layout or vice versa.</p>
                         </div>
                     </details>
                     <details class="faq-item">
                         <summary>What exactly is tscircuit?</summary>
                         <div class="faq-answer">
-                            <p><strong>tscircuit is a React/TypeScript framework</strong> for designing electronic circuits programmatically.</p>
-                            <p>Instead of using traditional graphical interfaces, you write code to define components, their connections, and layout constraints. This "electronics design as code" approach unlocks powerful capabilities like reusable packages, continuous automation, parameterization, and integration with modern software development workflows like version control with Git.</p>
-                            <p>While the core of tscircuit is the framework, the term "tscircuit" often refers to the broader <strong>ecosystem</strong> built around it. This includes:</p>
+                            <p><strong>tscircuit is a React/TypeScript framework</strong> for designing electronic
+                                circuits programmatically.</p>
+                            <p>Instead of using traditional graphical interfaces, you write code to define components,
+                                their connections, and layout constraints. This "electronics design as code" approach
+                                unlocks powerful capabilities like reusable packages, continuous automation,
+                                parameterization, and integration with modern software development workflows like
+                                version control with Git.</p>
+                            <p>While the core of tscircuit is the framework, the term "tscircuit" often refers to the
+                                broader <strong>ecosystem</strong> built around it. This includes:</p>
                             <ul>
                                 <li>The online development platform and registry (tscircuit.com)</li>
-                                <li>The <a href="https://docs.tscircuit.com/intro/quickstart-cli" target="_blank" rel="noopener noreferrer">command-line interface (CLI)</a> for local development</li>
+                                <li>The <a href="https://docs.tscircuit.com/intro/quickstart-cli" target="_blank"
+                                        rel="noopener noreferrer">command-line interface (CLI)</a> for local development
+                                </li>
                             </ul>
-                            <p>tscircuit is a modern, web-first approach to hardware development. To learn more about the core concepts and architecture, visit the <a href="https://docs.tscircuit.com" target="_blank" rel="noopener noreferrer">official documentation</a>.</p>
+                            <p>tscircuit is a modern, web-first approach to hardware development. To learn more about
+                                the core concepts and architecture, visit the <a href="https://docs.tscircuit.com"
+                                    target="_blank" rel="noopener noreferrer">official documentation</a>.</p>
                         </div>
                     </details>
                     <details class="faq-item">
@@ -1623,22 +1665,36 @@
                         <div class="faq-answer">
                             <p>Yes, you can use tscircuit programmatically with these packages:</p>
                             <ul>
-                                <li><a href="https://github.com/tscircuit/core" target="_blank" rel="noopener noreferrer">@tscircuit/core</a> - Execute tscircuit React code directly in Node, Bun, or a browser to create Circuit JSON</li>
-                                <li><a href="https://github.com/tscircuit/eval" target="_blank" rel="noopener noreferrer">@tscircuit/eval</a> - Dynamically run tscircuit code with automatic import handling and transpilation support built in</li>
-                                <li><a href="https://github.com/tscircuit/runframe" target="_blank" rel="noopener noreferrer">@tscircuit/runframe</a> - React components for viewing and running circuits in the browser</li>
+                                <li><a href="https://github.com/tscircuit/core" target="_blank"
+                                        rel="noopener noreferrer">@tscircuit/core</a> - Execute tscircuit React code
+                                    directly in Node, Bun, or a browser to create Circuit JSON</li>
+                                <li><a href="https://github.com/tscircuit/eval" target="_blank"
+                                        rel="noopener noreferrer">@tscircuit/eval</a> - Dynamically run tscircuit code
+                                    with automatic import handling and transpilation support built in</li>
+                                <li><a href="https://github.com/tscircuit/runframe" target="_blank"
+                                        rel="noopener noreferrer">@tscircuit/runframe</a> - React components for viewing
+                                    and running circuits in the browser</li>
                             </ul>
                         </div>
                     </details>
                     <details class="faq-item">
                         <summary>How do I display tscircuit circuits on my website?</summary>
                         <div class="faq-answer">
-                            <p>tscircuit code builds into <a href="https://github.com/tscircuit/circuit-json" target="_blank" rel="noopener noreferrer">Circuit JSON</a>, you can then use the <code>CircuitJsonViewer</code> component inside <a href="https://github.com/tscircuit/runframe" target="_blank" rel="noopener noreferrer">@tscircuit/runframe</a> to display the Circuit JSON on your website as a schematic, PCB, or 3D view.</p>
+                            <p>tscircuit code builds into <a href="https://github.com/tscircuit/circuit-json"
+                                    target="_blank" rel="noopener noreferrer">Circuit JSON</a>, you can then use the
+                                <code>CircuitJsonViewer</code> component inside <a
+                                    href="https://github.com/tscircuit/runframe" target="_blank"
+                                    rel="noopener noreferrer">@tscircuit/runframe</a> to display the Circuit JSON on
+                                your website as a schematic, PCB, or 3D view.</p>
                         </div>
                     </details>
                     <details class="faq-item">
                         <summary>What is Circuit JSON?</summary>
                         <div class="faq-answer">
-                            <p><a href="https://github.com/tscircuit/circuit-json" target="_blank" rel="noopener noreferrer">Circuit JSON</a> is a JSON format for representing electronic circuits. It is a sort of assembly language for electronic circuits. All tscircuit designs are compiled to Circuit JSON as the intermediary format.</p>
+                            <p><a href="https://github.com/tscircuit/circuit-json" target="_blank"
+                                    rel="noopener noreferrer">Circuit JSON</a> is a JSON format for representing
+                                electronic circuits. It is a sort of assembly language for electronic circuits. All
+                                tscircuit designs are compiled to Circuit JSON as the intermediary format.</p>
                         </div>
                     </details>
                 </div>
@@ -1646,8 +1702,7 @@
         </section>
 
         <!-- Closing CTA -->
-        <section class="section" aria-labelledby="closing-cta-title"
-            style="background:#F2EEE4">
+        <section class="section" aria-labelledby="closing-cta-title" style="background:#F2EEE4">
             <div class="closing-cta-panel">
                 <div class="closing-cta-row">
                     <div>
@@ -1727,7 +1782,8 @@
                 </ul>
             </div>
         </div>
-        <div class="shell" style="margin-top:24px;font-family:'JetBrains Mono', monospace;font-size:11px;color:var(--muted);text-align:center">
+        <div class="shell"
+            style="margin-top:24px;font-family:'JetBrains Mono', monospace;font-size:11px;color:var(--muted);text-align:center">
             © 2026 tscircuit Inc.
         </div>
     </footer>
@@ -1908,7 +1964,7 @@ export default () => {
 
         const updateGitHubStarLabels = (label) => {
             if (githubStarsNav) {
-                githubStarsNav.textContent = `★ ${label} on GitHub`
+                githubStarsNav.textContent = `${label} on GitHub`
             }
 
             if (githubStarsStat) {
