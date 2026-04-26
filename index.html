@@ -628,8 +628,7 @@
             display: block;
             width: 100%;
             height: 100%;
-            object-fit: contain;
-            padding: 18px;
+            object-fit: cover;
         }
 
         .render-stage .tag {
@@ -663,6 +662,28 @@
         .render-panel {
             position: relative;
             height: 100%;
+        }
+
+        .render-panel::before,
+        .render-panel::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .render-panel::before {
+            top: 0;
+            height: 58px;
+            background: linear-gradient(180deg, rgba(16, 17, 18, .86), transparent);
+        }
+
+        .render-panel::after {
+            bottom: 0;
+            height: 72px;
+            background: linear-gradient(0deg, rgba(16, 17, 18, .72), transparent);
         }
 
         .render-panel[hidden] {
@@ -1083,7 +1104,7 @@
         }
 
         .render-image-pcb {
-            background: #000;
+            background: transparent;
         }
 
         .render-image-schematic {
@@ -1570,7 +1591,7 @@
             </div>
         </section>
 
-        <!-- Trust strip -->
+        <!-- Trust strip
         <section class="trust-strip-section" aria-label="Hardware teams building with tscircuit">
             <div class="shell trust-strip">
                 <span class="mono muted trust-strip-label">Hardware teams building with
@@ -1596,6 +1617,7 @@
                 </div>
             </div>
         </section>
+        -->
 
         <!-- Feature grid -->
         <section class="section" aria-labelledby="features-title">
@@ -1974,31 +1996,47 @@
         </div>
     </footer>
     <script>
-        const defaultHeroCode = `import { RedLed } from "@tsci/seveibar.red-led"
-import { PushButton } from "@tsci/seveibar.push-button"
-import { SmdUsbC } from "@tsci/seveibar.smd-usb-c"
+        const defaultHeroCode = `import { CodecSection } from "./components/CodecSection/CodecSection";
+import { DebugHeader } from "./components/DebugHeader/DebugHeader";
+import { Display } from "./components/Display/Display";
+import { LedBar } from "./components/LedBar/LedBar";
+import { McuSection } from "./components/McuSection/McuSection";
+import { PowerSection } from "./components/PowerSection/PowerSection";
+import { UsbSection } from "./components/UsbSection/UsbSection";
+import { BOARD_HEIGHT_MM, BOARD_WIDTH_MM, LAYOUT } from "./utils/constants";
 
-export default () => {
-  return (
-    <board width="12mm" height="30mm" schAutoLayoutEnabled>
-      <SmdUsbC name="USBC" pcbY={-10} />
-      <RedLed name="LED" pcbY={12} />
-      <PushButton name="SW1" pcbY={0} />
-      <resistor name="R1" footprint="0603" resistance="1k" pcbY={7} />
+export default function UsbAudioVuMeter() {
+\treturn (
+\t\t<board
+\t\t\twidth={\`\${BOARD_WIDTH_MM}mm\`}
+\t\t\theight={\`\${BOARD_HEIGHT_MM}mm\`}
+\t\t\tlayers={2}
+\t\t>
+\t\t\t<UsbSection />
+\t\t\t<PowerSection />
+\t\t\t<CodecSection />
+\t\t\t<McuSection />
+\t\t\t<LedBar />
+\t\t\t<Display />
+\t\t\t<DebugHeader />
 
-      {/* USBC Power Connections */}
-      <trace from="USBC.GND1" to="net.GND" />
-      <trace from="USBC.GND2" to="net.GND" />
-      <trace from="USBC.VBUS1" to="net.VBUS" />
-      <trace from="USBC.VBUS2" to="net.VBUS" />
-      
-      <trace from="LED.neg" to="net.GND" />
-      <trace from=".R1 > .neg" to="LED.pos" />
-      
-      <trace from="SW1.pin2" to="R1.pos" />
-      <trace from="SW1.pin3" to="net.VBUS" />
-    </board>
-  )
+\t\t\t<copperpour layer="top" connectsTo="net.GND" clearance="0.2mm" />
+\t\t\t<copperpour layer="bottom" connectsTo="net.GND" clearance="0.2mm" />
+
+\t\t\t<silkscreentext
+\t\t\t\tpcbX={LAYOUT.boardText.title.x}
+\t\t\t\tpcbY={LAYOUT.boardText.title.y}
+\t\t\t\ttext="USB AUDIO VU METER - PCM2900 + STM32F303"
+\t\t\t\tfontSize="1.1mm"
+\t\t\t/>
+\t\t\t<silkscreentext
+\t\t\t\tpcbX={LAYOUT.boardText.usbNote.x}
+\t\t\t\tpcbY={LAYOUT.boardText.usbNote.y}
+\t\t\t\ttext="USB diff pair short/matched; keep GND plane solid"
+\t\t\t\tfontSize="0.8mm"
+\t\t\t/>
+\t\t</board>
+\t);
 }`
 
         const editorInput = document.getElementById("hero-code-input")
@@ -2018,9 +2056,14 @@ export default () => {
         const playgroundUrl = "https://tscircuit.com/playground"
         const githubRepoStarsApi = "https://api.github.com/repos/tscircuit/tscircuit"
         const githubStarsFallbackCount = 2100
+        const heroModuleFsMapUrl = "assets/hero-stm32f746g-disco-fs-map.json"
+        const heroModuleMainComponentPath = "src/board.tsx"
         const installCopyResetTimeouts = new WeakMap()
+        let heroModuleFsMapPromise = null
         let githubStarsAnimationToken = 0
         let currentGitHubStarCount = 1
+        let renderRequestToken = 0
+        let hasUserEditedHeroCode = false
         const installCopyIcons = {
             idle: `
                     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
@@ -2043,13 +2086,18 @@ export default () => {
         const renderViewConfig = {
             pcb: {
                 alt: "Live PCB render from svg.tscircuit.com",
+                format: "png",
+                staticSrc: "assets/hero-stm32f746g-disco-pcb.png",
             },
             schematic: {
                 alt: "Live schematic render from svg.tscircuit.com",
+                format: "png",
+                staticSrc: "assets/hero-stm32f746g-disco-schematic.png",
             },
             "3d": {
                 alt: "Live 3D render from svg.tscircuit.com",
                 format: "png",
+                staticSrc: "assets/hero-stm32f746g-disco-3d.png",
             },
         }
         const renderPanels = Object.fromEntries(
@@ -2261,7 +2309,47 @@ export default () => {
             return activePanel
         }
 
-        const updatePreview = () => {
+        const loadHeroModuleFsMap = () => {
+            if (!heroModuleFsMapPromise) {
+                heroModuleFsMapPromise = fetch(heroModuleFsMapUrl, { cache: "force-cache" })
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error(`Unable to load ${heroModuleFsMapUrl}`)
+                        }
+
+                        return response.json()
+                    })
+            }
+
+            return heroModuleFsMapPromise
+        }
+
+        const encodeBase64 = (buffer) => {
+            const bytes = new Uint8Array(buffer)
+            let binary = ""
+
+            for (let index = 0; index < bytes.length; index += 0x8000) {
+                binary += String.fromCharCode(...bytes.subarray(index, index + 0x8000))
+            }
+
+            return btoa(binary)
+        }
+
+        const encodeFsMap = async (fsMap) => {
+            const serializedFsMap = JSON.stringify(fsMap)
+
+            if (!("CompressionStream" in window)) {
+                return serializedFsMap
+            }
+
+            const compressedStream = new Blob([serializedFsMap])
+                .stream()
+                .pipeThrough(new CompressionStream("gzip"))
+            return encodeBase64(await new Response(compressedStream).arrayBuffer())
+        }
+
+        const updatePreview = async () => {
+            const requestToken = ++renderRequestToken
             setRenderStatus("syncing", false)
             const viewConfig = renderViewConfig[currentView]
 
@@ -2276,19 +2364,37 @@ export default () => {
                 return
             }
 
-            const params = new URLSearchParams({
-                svg_type: currentView,
-                fs_map: JSON.stringify({
-                    "index.tsx": editorInput.value,
-                }),
-                main_component_path: "index.tsx",
-            })
-
-            if (viewConfig.format) {
-                params.set("format", viewConfig.format)
+            if (!hasUserEditedHeroCode) {
+                activePanel.image.src = viewConfig.staticSrc
+                setRenderStatus("ready", false)
+                return
             }
 
-            activePanel.image.src = `https://svg.tscircuit.com/?${params.toString()}`
+            try {
+                const moduleFsMap = await loadHeroModuleFsMap()
+                const fsMap = {
+                    ...moduleFsMap,
+                    [heroModuleMainComponentPath]: editorInput.value,
+                }
+                const params = new URLSearchParams({
+                    svg_type: currentView,
+                    format: viewConfig.format,
+                    png_width: "1200",
+                    png_height: "900",
+                    fs_map: await encodeFsMap(fsMap),
+                    main_component_path: heroModuleMainComponentPath,
+                })
+
+                if (requestToken !== renderRequestToken) {
+                    return
+                }
+
+                activePanel.image.src = `https://svg.tscircuit.com/?${params.toString()}`
+            } catch (error) {
+                if (requestToken === renderRequestToken) {
+                    setRenderStatus("render error", true)
+                }
+            }
         }
 
         const focusRenderTabByOffset = (tab, offset) => {
@@ -2369,6 +2475,7 @@ export default () => {
         updatePreview()
 
         editorInput.addEventListener("input", () => {
+            hasUserEditedHeroCode = true
             syncEditor()
             debouncedPreviewUpdate()
         })
@@ -2458,7 +2565,7 @@ export default () => {
         Object.entries(renderPanels).forEach(([view, panelConfig]) => {
             panelConfig.image.addEventListener("load", () => {
                 if (currentView !== view) return
-                setRenderStatus("live", false)
+                setRenderStatus(hasUserEditedHeroCode ? "live" : "ready", false)
             })
             panelConfig.image.addEventListener("error", () => {
                 if (currentView !== view) return
