@@ -659,13 +659,21 @@
             border-color: rgba(244, 179, 179, .25);
         }
 
+        .render-stage .status.syncing {
+            color: #FFE08A;
+            border-color: rgba(255, 224, 138, .36);
+            background: rgba(70, 52, 12, .82);
+        }
+
         .render-panel {
             position: relative;
             height: 100%;
         }
 
-        .render-panel::before,
-        .render-panel::after {
+        #preview-panel-pcb::before,
+        #preview-panel-pcb::after,
+        #preview-panel-3d::before,
+        #preview-panel-3d::after {
             content: "";
             position: absolute;
             left: 0;
@@ -674,15 +682,17 @@
             pointer-events: none;
         }
 
-        .render-panel::before {
+        #preview-panel-pcb::before,
+        #preview-panel-3d::before {
             top: 0;
-            height: 58px;
+            height: 16px;
             background: linear-gradient(180deg, rgba(16, 17, 18, .86), transparent);
         }
 
-        .render-panel::after {
+        #preview-panel-pcb::after,
+        #preview-panel-3d::after {
             bottom: 0;
-            height: 72px;
+            height: 18px;
             background: linear-gradient(0deg, rgba(16, 17, 18, .72), transparent);
         }
 
@@ -1109,6 +1119,10 @@
 
         .render-image-schematic {
             background: #f7f2ee;
+        }
+
+        #hero-render-image-3d {
+            transform: scale(1.25);
         }
 
         .trust-strip-section {
@@ -2064,6 +2078,8 @@ export default function UsbAudioVuMeter() {
         let currentGitHubStarCount = 1
         let renderRequestToken = 0
         let hasUserEditedHeroCode = false
+        let renderStatusSyncingIntervalId = null
+        let renderStatusSyncingDotCount = 1
         const installCopyIcons = {
             idle: `
                     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
@@ -2163,9 +2179,33 @@ export default function UsbAudioVuMeter() {
             editorGutterTrack.style.transform = `translateY(${-editorInput.scrollTop}px)`
         }
 
+        const stopRenderStatusSyncingAnimation = () => {
+            if (renderStatusSyncingIntervalId) {
+                window.clearInterval(renderStatusSyncingIntervalId)
+                renderStatusSyncingIntervalId = null
+            }
+        }
+
         const setRenderStatus = (label, isError) => {
-            renderStatus.textContent = label
+            const isSyncing = label === "syncing"
+            stopRenderStatusSyncingAnimation()
+
+            if (isSyncing) {
+                renderStatusSyncingDotCount = 1
+                renderStatus.textContent = `${label}.`
+                renderStatusSyncingIntervalId = window.setInterval(() => {
+                    renderStatusSyncingDotCount =
+                        renderStatusSyncingDotCount >= 3
+                            ? 1
+                            : renderStatusSyncingDotCount + 1
+                    renderStatus.textContent = `${label}${".".repeat(renderStatusSyncingDotCount)}`
+                }, 420)
+            } else {
+                renderStatus.textContent = label
+            }
+
             renderStatus.classList.toggle("error", Boolean(isError))
+            renderStatus.classList.toggle("syncing", isSyncing)
         }
 
         const syncRenderTabs = () => {
