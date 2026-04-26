@@ -1565,17 +1565,17 @@
                     <div class="render-stage render-stage-full">
                         <span id="hero-render-status" class="status" role="status" aria-live="polite">syncing</span>
                         <div class="render-tabs" role="tablist" aria-label="Preview view">
-                            <button type="button" class="render-tab" id="preview-tab-pcb" data-view="pcb" role="tab"
-                                aria-selected="false" aria-controls="preview-panel-pcb" tabindex="-1">PCB</button>
+                            <button type="button" class="render-tab active" id="preview-tab-pcb" data-view="pcb" role="tab"
+                                aria-selected="true" aria-controls="preview-panel-pcb" tabindex="0">PCB</button>
                             <button type="button" class="render-tab" id="preview-tab-schematic" data-view="schematic"
                                 role="tab" aria-selected="false" aria-controls="preview-panel-schematic"
                                 tabindex="-1">SCH</button>
-                            <button type="button" class="render-tab active" id="preview-tab-3d" data-view="3d"
-                                role="tab" aria-selected="true" aria-controls="preview-panel-3d"
-                                tabindex="0">3D</button>
+                            <button type="button" class="render-tab" id="preview-tab-3d" data-view="3d"
+                                role="tab" aria-selected="false" aria-controls="preview-panel-3d"
+                                tabindex="-1">3D</button>
                         </div>
                         <div id="preview-panel-pcb" class="render-panel" role="tabpanel"
-                            aria-labelledby="preview-tab-pcb" hidden>
+                            aria-labelledby="preview-tab-pcb">
                             <img class="render-image-pcb" id="hero-render-image-pcb" alt="Live PCB render from svg.tscircuit.com">
                         </div>
                         <div id="preview-panel-schematic" class="render-panel" role="tabpanel"
@@ -1583,7 +1583,7 @@
                             <img class="render-image-schematic" id="hero-render-image-schematic" alt="Live schematic render from svg.tscircuit.com">
                         </div>
                         <div id="preview-panel-3d" class="render-panel" role="tabpanel"
-                            aria-labelledby="preview-tab-3d">
+                            aria-labelledby="preview-tab-3d" hidden>
                             <img id="hero-render-image-3d" alt="Live 3D render from svg.tscircuit.com">
                         </div>
                     </div>
@@ -2113,7 +2113,7 @@ export default function UsbAudioVuMeter() {
         const renderViewOrder = renderTabs
             .map((tab) => tab.dataset.view)
             .filter((view) => Boolean(view && renderViewConfig[view]))
-        let currentView = "3d"
+        let currentView = "pcb"
 
         const escapeHtml = (value) =>
             value
