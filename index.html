@@ -1598,16 +1598,19 @@
                         <div id="preview-panel-pcb" class="render-panel" role="tabpanel"
                             aria-labelledby="preview-tab-pcb">
                             <img class="render-image-pcb" id="hero-render-image-pcb"
+                                src="assets/hero-stm32f746g-disco-pcb.png"
                                 alt="Live PCB render from svg.tscircuit.com">
                         </div>
                         <div id="preview-panel-schematic" class="render-panel" role="tabpanel"
                             aria-labelledby="preview-tab-schematic" hidden>
                             <img class="render-image-schematic" id="hero-render-image-schematic"
+                                src="assets/hero-stm32f746g-disco-schematic.png"
                                 alt="Live schematic render from svg.tscircuit.com">
                         </div>
                         <div id="preview-panel-3d" class="render-panel" role="tabpanel" aria-labelledby="preview-tab-3d"
                             hidden>
-                            <img id="hero-render-image-3d" alt="Live 3D render from svg.tscircuit.com">
+                            <img id="hero-render-image-3d" src="assets/hero-stm32f746g-disco-3d.png"
+                                alt="Live 3D render from svg.tscircuit.com">
                         </div>
                     </div>
                 </div>
@@ -2090,7 +2093,8 @@ export default function UsbAudioVuMeter() {
         const playgroundUrl = "/playground"
         const githubRepoStarsApi = "https://api.github.com/repos/tscircuit/tscircuit"
         const githubStarsFallbackCount = 2100
-        const heroModuleFsMapUrl = "assets/hero-stm32f746g-disco-fs-map.json"
+        const resolveAssetUrl = (assetPath) => new URL(assetPath, document.baseURI).href
+        const heroModuleFsMapUrl = resolveAssetUrl("assets/hero-stm32f746g-disco-fs-map.json")
         const heroModuleMainComponentPath = "src/board.tsx"
         const sessionStoreKey = "session_store"
         const installCopyResetTimeouts = new WeakMap()
@@ -2124,17 +2128,17 @@ export default function UsbAudioVuMeter() {
             pcb: {
                 alt: "Live PCB render from svg.tscircuit.com",
                 format: "png",
-                staticSrc: "assets/hero-stm32f746g-disco-pcb.png",
+                staticSrc: resolveAssetUrl("assets/hero-stm32f746g-disco-pcb.png"),
             },
             schematic: {
                 alt: "Live schematic render from svg.tscircuit.com",
                 format: "png",
-                staticSrc: "assets/hero-stm32f746g-disco-schematic.png",
+                staticSrc: resolveAssetUrl("assets/hero-stm32f746g-disco-schematic.png"),
             },
             "3d": {
                 alt: "Live 3D render from svg.tscircuit.com",
                 format: "png",
-                staticSrc: "assets/hero-stm32f746g-disco-3d.png",
+                staticSrc: resolveAssetUrl("assets/hero-stm32f746g-disco-3d.png"),
             },
         }
         const renderPanels = Object.fromEntries(
