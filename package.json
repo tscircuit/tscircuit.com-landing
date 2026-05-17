@@ -1,8 +1,12 @@
 {
   "scripts": {
+    "build": "vite build",
+    "format": "biome format --write .",
+    "formatcheck": "biome format .",
     "start": "vite"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.4.15",
     "vite": "^6.3.5"
   }
 }
