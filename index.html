@@ -1889,6 +1889,18 @@
             border-color: var(--accent);
         }
 
+        .feature-section {
+            padding-top: 88px;
+        }
+
+        .feature-intro {
+            margin-bottom: 48px;
+        }
+
+        .feature-intro .sub {
+            margin-bottom: 0;
+        }
+
         @media (max-width: 1280px) {
             .feature-intro {
                 max-width: 100%;
@@ -1933,9 +1945,14 @@
         }
 
         @media (max-width: 980px) {
+            .feature-section {
+                padding-top: 64px;
+            }
+
             .feature-intro {
                 max-width: calc(100% - 24px);
                 margin-left: 24px;
+                margin-bottom: 40px;
             }
 
             .landing-header {
@@ -2010,9 +2027,14 @@
         }
 
         @media (max-width: 620px) {
+            .feature-section {
+                padding-top: 56px;
+            }
+
             .feature-intro {
                 max-width: calc(100% - 10px);
                 margin-left: 10px;
+                margin-bottom: 32px;
             }
 
             .landing-nav,
@@ -2248,7 +2270,7 @@
         -->
 
         <!-- Feature grid -->
-        <section class="section" aria-labelledby="features-title">
+        <section class="section feature-section" aria-labelledby="features-title">
             <div class="feature-shell">
                 <div class="feature-intro">
                     <h2 id="features-title">A fully-featured, ground-up reimagining of an electronic design tool built
