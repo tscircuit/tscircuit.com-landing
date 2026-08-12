@@ -45,8 +45,6 @@
             --line: #dfe3e8;
             --line-2: #e7eaf0;
             --accent: #25272d;
-            --brand-blue: #4b8bf4;
-            --brand-blue-hover: #3478e8;
             --hi: #f3e4a7;
             --gold: #d7b56d;
             --panel: #f4f6f8;
@@ -1560,7 +1558,7 @@
             align-items: center;
             justify-content: center;
             color: #ffffff;
-            background: var(--brand-blue);
+            background: #4b8bf4;
             padding: 5px 7px;
             border-radius: 5px;
             font-family: 'Geist', system-ui, sans-serif;
@@ -1715,15 +1713,14 @@
 
         .landing-button-dark {
             color: #ffffff;
-            background: var(--brand-blue);
-            border: 1px solid var(--brand-blue);
-            box-shadow: 0 2px 5px rgba(75, 139, 244, .28);
+            background: var(--accent);
+            border: 1px solid #34363d;
+            box-shadow: 0 2px 5px rgba(15, 18, 25, .19);
         }
 
         .landing-button-dark:hover {
-            background: var(--brand-blue-hover);
-            border-color: var(--brand-blue-hover);
-            box-shadow: 0 4px 12px rgba(75, 139, 244, .32);
+            background: #111317;
+            box-shadow: 0 4px 12px rgba(15, 18, 25, .2);
             transform: translateY(-1px);
         }
 
@@ -2055,14 +2052,8 @@
         .btn.primary,
         .btn.accent {
             color: #ffffff;
-            background: var(--brand-blue);
-            border-color: var(--brand-blue);
-        }
-
-        .btn.primary:hover,
-        .btn.accent:hover {
-            background: var(--brand-blue-hover);
-            border-color: var(--brand-blue-hover);
+            background: var(--accent);
+            border-color: var(--accent);
         }
 
         @media (max-width: 1280px) {
