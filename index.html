@@ -45,6 +45,8 @@
             --line: #dfe3e8;
             --line-2: #e7eaf0;
             --accent: #25272d;
+            --brand-blue: #4b8bf4;
+            --brand-blue-hover: #3478e8;
             --hi: #f3e4a7;
             --gold: #d7b56d;
             --panel: #f4f6f8;
@@ -1558,7 +1560,7 @@
             align-items: center;
             justify-content: center;
             color: #ffffff;
-            background: #4b8bf4;
+            background: var(--brand-blue);
             padding: 5px 7px;
             border-radius: 5px;
             font-family: 'Geist', system-ui, sans-serif;
@@ -1713,14 +1715,15 @@
 
         .landing-button-dark {
             color: #ffffff;
-            background: var(--accent);
-            border: 1px solid #34363d;
-            box-shadow: 0 2px 5px rgba(15, 18, 25, .19);
+            background: var(--brand-blue);
+            border: 1px solid var(--brand-blue);
+            box-shadow: 0 2px 5px rgba(75, 139, 244, .28);
         }
 
         .landing-button-dark:hover {
-            background: #111317;
-            box-shadow: 0 4px 12px rgba(15, 18, 25, .2);
+            background: var(--brand-blue-hover);
+            border-color: var(--brand-blue-hover);
+            box-shadow: 0 4px 12px rgba(75, 139, 244, .32);
             transform: translateY(-1px);
         }
 
@@ -1808,16 +1811,107 @@
             filter: blur(12px);
         }
 
-        .landing-hero-board {
+        .landing-board-showcase {
             position: absolute;
             width: 880px;
             max-width: none;
-            height: auto;
             right: -14px;
             top: 10px;
+            pointer-events: auto;
+        }
+
+        .landing-board-trigger {
             display: block;
+            width: 100%;
+            padding: 0;
+            border: 0;
+            border-radius: 24px;
+            background: transparent;
+            cursor: pointer;
+            list-style: none;
+        }
+
+        .landing-board-trigger::-webkit-details-marker {
+            display: none;
+        }
+
+        .landing-board-trigger:focus-visible {
+            outline: none;
+        }
+
+        .landing-board-trigger:focus-visible .landing-hero-board {
+            filter: contrast(1.045) saturate(1.035) drop-shadow(0 0 8px rgba(75, 139, 244, .55)) drop-shadow(0 38px 29px rgba(41, 49, 62, .15));
+        }
+
+        .landing-hero-board {
+            display: block;
+            width: 100%;
+            height: auto;
             opacity: .99;
             filter: contrast(1.045) saturate(1.035) drop-shadow(0 16px 10px rgba(41, 49, 62, .07)) drop-shadow(0 38px 29px rgba(41, 49, 62, .15));
+            transform-origin: center;
+            transition: transform 220ms ease, filter 220ms ease;
+        }
+
+        .landing-board-trigger:hover .landing-hero-board,
+        .landing-board-showcase[open] .landing-hero-board {
+            transform: scale(1.05);
+        }
+
+        .landing-board-showcase[open] .landing-hero-board {
+            filter: contrast(1.045) saturate(1.035) drop-shadow(0 20px 14px rgba(41, 49, 62, .13)) drop-shadow(0 44px 34px rgba(41, 49, 62, .24));
+        }
+
+        .landing-board-popover {
+            position: absolute;
+            z-index: 2;
+            top: 392px;
+            right: 92px;
+            width: 238px;
+            padding: 14px;
+            border: 1px solid rgba(75, 139, 244, .25);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, .96);
+            box-shadow: 0 18px 45px rgba(35, 51, 80, .2);
+            backdrop-filter: blur(12px);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .landing-board-popover strong {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--ink);
+            font-size: 13px;
+        }
+
+        .landing-board-links {
+            display: grid;
+            gap: 4px;
+        }
+
+        .landing-board-links a {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 30px;
+            padding: 6px 8px;
+            border-radius: 7px;
+            color: #2d68c4;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .landing-board-links a:hover,
+        .landing-board-links a:focus-visible {
+            background: rgba(75, 139, 244, .1);
+            outline: none;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .landing-hero-board {
+                transition: none;
+            }
         }
 
         .landing-proof-panel {
@@ -1885,8 +1979,14 @@
         .btn.primary,
         .btn.accent {
             color: #ffffff;
-            background: var(--accent);
-            border-color: var(--accent);
+            background: var(--brand-blue);
+            border-color: var(--brand-blue);
+        }
+
+        .btn.primary:hover,
+        .btn.accent:hover {
+            background: var(--brand-blue-hover);
+            border-color: var(--brand-blue-hover);
         }
 
         @media (max-width: 1280px) {
@@ -1920,7 +2020,7 @@
                 font-size: clamp(46px, 4.25vw, 54px);
             }
 
-            .landing-hero-board {
+            .landing-board-showcase {
                 width: 800px;
                 right: -12px;
                 top: 24px;
@@ -1986,12 +2086,17 @@
                 font-size: 17px;
             }
 
-            .landing-hero-board {
+            .landing-board-showcase {
                 width: min(760px, 92vw);
                 right: auto;
                 left: 50%;
                 top: 326px;
                 transform: translateX(-50%);
+            }
+
+            .landing-board-popover {
+                top: 335px;
+                right: 70px;
             }
 
             .landing-board-halo {
@@ -2076,9 +2181,15 @@
                 font-size: 14px;
             }
 
-            .landing-hero-board {
+            .landing-board-showcase {
                 width: min(650px, 118vw);
                 top: 336px;
+            }
+
+            .landing-board-popover {
+                top: 175px;
+                right: max(88px, calc((118vw - 100vw) / 2 + 16px));
+                width: min(238px, calc(100vw - 48px));
             }
 
             .landing-board-halo {
@@ -2205,9 +2316,26 @@
 
                 <div class="landing-hero-art" aria-label="Four real circuit boards generated from tscircuit projects">
                     <span class="landing-board-halo" aria-hidden="true"></span>
-                    <img class="landing-hero-board" src="assets/hero-board-four-real-3d.png"
-                        alt="3D renders of the tscircuit RP2040, Game Boy, nRF52810, and Attiny85 Arcade Keychain circuit boards"
-                        width="1600" height="1500" fetchpriority="high">
+                    <details class="landing-board-showcase">
+                        <summary class="landing-board-trigger" aria-label="Show links to the featured circuit boards">
+                            <img class="landing-hero-board" src="assets/hero-board-four-real-3d.png"
+                                alt="3D renders of the tscircuit RP2040, Game Boy, nRF52810, and Attiny85 Arcade Keychain circuit boards"
+                                width="1600" height="1500" fetchpriority="high">
+                        </summary>
+                        <nav class="landing-board-popover" aria-label="Featured circuit boards">
+                            <strong>Explore the featured boards</strong>
+                            <div class="landing-board-links">
+                                <a href="https://tscircuit.com/search?q=RP2040">RP2040 <span
+                                        aria-hidden="true">↗</span></a>
+                                <a href="https://tscircuit.com/abse/gameboy">Game Boy <span
+                                        aria-hidden="true">↗</span></a>
+                                <a href="https://tscircuit.com/search?q=nRF52810">nRF52810 <span
+                                        aria-hidden="true">↗</span></a>
+                                <a href="https://tscircuit.com/rushabhcodes/Attiny85-Arcade-Keychain#3d">Attiny85 Arcade
+                                    Keychain <span aria-hidden="true">↗</span></a>
+                            </div>
+                        </nav>
+                    </details>
                 </div>
             </div>
 
