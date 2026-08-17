@@ -2837,6 +2837,7 @@ export default function UsbAudioVuMeter() {
         const heroBrowserShortcut = document.getElementById("hero-browser-shortcut")
         const githubStarsNav = document.getElementById("github-stars-nav")
         const compareMenu = document.querySelector(".landing-compare-menu")
+        const compareMenuHoverQuery = window.matchMedia("(hover: hover) and (pointer: fine)")
         const authButtons = [
             document.getElementById("nav-auth-button"),
             document.getElementById("nav-auth-button-mobile"),
@@ -2852,6 +2853,7 @@ export default function UsbAudioVuMeter() {
         let heroModuleFsMapPromise = null
         let githubStarsAnimationToken = 0
         let currentGitHubStarCount = 1
+        let compareMenuCloseTimeoutId = null
         let renderRequestToken = 0
         let hasUserEditedHeroCode = false
         let renderStatusSyncingIntervalId = null
@@ -3413,14 +3415,33 @@ export default function UsbAudioVuMeter() {
         })
         window.addEventListener("focus", syncAuthButtons)
         window.addEventListener("pageshow", syncAuthButtons)
+        compareMenu?.addEventListener("pointerenter", () => {
+            if (!compareMenuHoverQuery.matches) return
+
+            window.clearTimeout(compareMenuCloseTimeoutId)
+            compareMenu.setAttribute("open", "")
+        })
+        compareMenu?.addEventListener("pointerleave", () => {
+            if (!compareMenuHoverQuery.matches) return
+
+            window.clearTimeout(compareMenuCloseTimeoutId)
+            compareMenuCloseTimeoutId = window.setTimeout(() => {
+                compareMenu.removeAttribute("open")
+            }, 140)
+        })
+        compareMenu?.addEventListener("focusin", () => {
+            window.clearTimeout(compareMenuCloseTimeoutId)
+        })
         document.addEventListener("click", (event) => {
             if (!compareMenu?.open || compareMenu.contains(event.target)) return
+            window.clearTimeout(compareMenuCloseTimeoutId)
             compareMenu.removeAttribute("open")
         })
         compareMenu?.addEventListener("keydown", (event) => {
             if (event.key !== "Escape") return
 
             event.preventDefault()
+            window.clearTimeout(compareMenuCloseTimeoutId)
             compareMenu.removeAttribute("open")
             compareMenu.querySelector("summary")?.focus()
         })
