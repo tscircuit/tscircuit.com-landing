@@ -1757,6 +1757,120 @@
             transition: opacity 160ms ease;
         }
 
+        .landing-compare-menu {
+            position: relative;
+        }
+
+        .landing-compare-menu summary {
+            min-height: 34px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--ink);
+            list-style: none;
+            cursor: pointer;
+            transition: opacity 160ms ease;
+        }
+
+        .landing-compare-menu summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .landing-compare-menu summary:hover {
+            opacity: .58;
+        }
+
+        .landing-compare-menu summary:focus-visible {
+            outline: 2px solid #4b8bf4;
+            outline-offset: 4px;
+            border-radius: 3px;
+        }
+
+        .landing-compare-chevron {
+            width: 12px;
+            height: 12px;
+            display: block;
+            transition: transform 160ms ease;
+        }
+
+        .landing-compare-menu[open] .landing-compare-chevron {
+            transform: rotate(180deg);
+        }
+
+        .landing-compare-panel {
+            position: absolute;
+            top: calc(100% + 10px);
+            left: -14px;
+            z-index: 30;
+            width: 320px;
+            padding: 9px;
+            border: 1px solid var(--line-2);
+            border-radius: 10px;
+            background: #ffffff;
+            box-shadow: 0 16px 40px rgba(20, 24, 32, .13);
+        }
+
+        .landing-compare-label {
+            display: block;
+            padding: 5px 9px 8px;
+            color: var(--muted);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+        .landing-compare-option {
+            min-height: 0 !important;
+            display: grid !important;
+            grid-template-columns: 34px minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 11px !important;
+            padding: 10px !important;
+            border-radius: 7px;
+            opacity: 1 !important;
+        }
+
+        .landing-compare-option:hover {
+            background: #f3f4f6;
+        }
+
+        .landing-compare-mark {
+            width: 34px;
+            height: 34px;
+            display: grid;
+            border: 1px solid var(--line-2);
+            border-radius: 8px;
+            background: #fffdf7;
+            place-items: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .landing-compare-copy {
+            min-width: 0;
+            display: grid;
+            gap: 3px;
+        }
+
+        .landing-compare-copy strong {
+            font-size: 13px;
+            line-height: 1.2;
+        }
+
+        .landing-compare-copy small {
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 400;
+            line-height: 1.35;
+        }
+
+        .landing-compare-option-arrow {
+            color: var(--muted);
+            font-size: 16px;
+        }
+
         .landing-nav-links a:hover,
         .landing-signin:hover,
         .landing-icon-action:hover,
@@ -2390,6 +2504,34 @@
                 <a href="/playground">Playground</a>
                 <a href="https://docs.tscircuit.com/">Docs</a>
                 <a href="/join">Discord</a>
+                <details class="landing-compare-menu">
+                    <summary>
+                        Compare
+                        <svg class="landing-compare-chevron" viewBox="0 0 12 12" fill="none"
+                            stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                            <path d="m3 4.5 3 3 3-3"></path>
+                        </svg>
+                    </summary>
+                    <div class="landing-compare-panel">
+                        <span class="landing-compare-label">Compare tscircuit</span>
+                        <a class="landing-compare-option" href="/compare/fluxai">
+                            <span class="landing-compare-mark" aria-hidden="true">F</span>
+                            <span class="landing-compare-copy">
+                                <strong>Flux.ai</strong>
+                                <small>Visual ECAD vs programmable circuit design</small>
+                            </span>
+                            <span class="landing-compare-option-arrow" aria-hidden="true">→</span>
+                        </a>
+                        <a class="landing-compare-option" href="/compare/kicad">
+                            <span class="landing-compare-mark" aria-hidden="true">K</span>
+                            <span class="landing-compare-copy">
+                                <strong>KiCad</strong>
+                                <small>Interactive desktop EDA vs electronics as code</small>
+                            </span>
+                            <span class="landing-compare-option-arrow" aria-hidden="true">→</span>
+                        </a>
+                    </div>
+                </details>
             </div>
             <div class="landing-nav-actions">
                 <a class="landing-icon-action" href="https://tscircuit.com/search" aria-label="Search" title="Search">
@@ -2420,6 +2562,8 @@
                         <a href="https://tscircuit.com/search">Search</a>
                         <a href="https://docs.tscircuit.com/">Docs</a>
                         <a href="https://discord.com/invite/V7FGE5ZCbA">Discord</a>
+                        <a href="/compare/fluxai">Compare with Flux.ai</a>
+                        <a href="/compare/kicad">Compare with KiCad</a>
                         <a href="https://github.com/tscircuit/tscircuit">GitHub</a>
                         <a href="/login" id="nav-auth-button-mobile" data-login-href="/login">Sign in</a>
                     </div>
@@ -2961,6 +3105,8 @@ export default function UsbAudioVuMeter() {
         const installCopyButtons = [...document.querySelectorAll(".install-copy-btn")]
         const heroBrowserShortcut = document.getElementById("hero-browser-shortcut")
         const githubStarsNav = document.getElementById("github-stars-nav")
+        const compareMenu = document.querySelector(".landing-compare-menu")
+        const compareMenuHoverQuery = window.matchMedia("(hover: hover) and (pointer: fine)")
         const authButtons = [
             document.getElementById("nav-auth-button"),
             document.getElementById("nav-auth-button-mobile"),
@@ -2976,6 +3122,7 @@ export default function UsbAudioVuMeter() {
         let heroModuleFsMapPromise = null
         let githubStarsAnimationToken = 0
         let currentGitHubStarCount = 1
+        let compareMenuCloseTimeoutId = null
         let renderRequestToken = 0
         let hasUserEditedHeroCode = false
         let renderStatusSyncingIntervalId = null
@@ -3537,6 +3684,36 @@ export default function UsbAudioVuMeter() {
         })
         window.addEventListener("focus", syncAuthButtons)
         window.addEventListener("pageshow", syncAuthButtons)
+        compareMenu?.addEventListener("pointerenter", () => {
+            if (!compareMenuHoverQuery.matches) return
+
+            window.clearTimeout(compareMenuCloseTimeoutId)
+            compareMenu.setAttribute("open", "")
+        })
+        compareMenu?.addEventListener("pointerleave", () => {
+            if (!compareMenuHoverQuery.matches) return
+
+            window.clearTimeout(compareMenuCloseTimeoutId)
+            compareMenuCloseTimeoutId = window.setTimeout(() => {
+                compareMenu.removeAttribute("open")
+            }, 140)
+        })
+        compareMenu?.addEventListener("focusin", () => {
+            window.clearTimeout(compareMenuCloseTimeoutId)
+        })
+        document.addEventListener("click", (event) => {
+            if (!compareMenu?.open || compareMenu.contains(event.target)) return
+            window.clearTimeout(compareMenuCloseTimeoutId)
+            compareMenu.removeAttribute("open")
+        })
+        compareMenu?.addEventListener("keydown", (event) => {
+            if (event.key !== "Escape") return
+
+            event.preventDefault()
+            window.clearTimeout(compareMenuCloseTimeoutId)
+            compareMenu.removeAttribute("open")
+            compareMenu.querySelector("summary")?.focus()
+        })
         Object.entries(renderPanels).forEach(([view, panelConfig]) => {
             panelConfig.image?.addEventListener("load", () => {
                 if (currentView !== view) return
