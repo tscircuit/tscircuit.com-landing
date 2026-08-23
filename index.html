@@ -1968,16 +1968,183 @@
             filter: blur(12px);
         }
 
-        .landing-hero-board {
+        .landing-board-showcase {
             position: absolute;
             width: 880px;
             max-width: none;
-            height: auto;
+            aspect-ratio: 1600 / 1500;
             right: -14px;
             top: 10px;
+            pointer-events: auto;
+        }
+
+        .landing-hero-board {
             display: block;
+            width: 100%;
+            height: auto;
             opacity: .99;
             filter: contrast(1.045) saturate(1.035) drop-shadow(0 16px 10px rgba(41, 49, 62, .07)) drop-shadow(0 38px 29px rgba(41, 49, 62, .15));
+            pointer-events: none;
+        }
+
+        .landing-board-item {
+            position: absolute;
+            z-index: 1;
+            left: var(--board-left);
+            top: var(--board-top);
+            width: var(--board-width);
+            height: var(--board-height);
+        }
+
+        .landing-board-item[data-active="true"] {
+            z-index: 10;
+        }
+
+        .landing-board-trigger {
+            position: relative;
+            display: block;
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            cursor: pointer;
+            clip-path: var(--board-shape);
+            pointer-events: auto;
+            transform-origin: center;
+            transition: transform 220ms ease;
+        }
+
+        .landing-board-trigger:focus-visible {
+            outline: none;
+        }
+
+        .landing-board-sprite {
+            position: absolute;
+            width: var(--sprite-width);
+            max-width: none;
+            height: auto;
+            left: var(--sprite-left);
+            top: var(--sprite-top);
+            opacity: 0;
+            filter: contrast(1.045) saturate(1.035) drop-shadow(0 16px 10px rgba(41, 49, 62, .07)) drop-shadow(0 38px 29px rgba(41, 49, 62, .15));
+            pointer-events: none;
+            transition: opacity 120ms ease, filter 220ms ease;
+        }
+
+        .landing-board-trigger:hover,
+        .landing-board-trigger:focus-visible,
+        .landing-board-item[data-active="true"] .landing-board-trigger {
+            transform: scale(1.05);
+        }
+
+        .landing-board-trigger:hover .landing-board-sprite,
+        .landing-board-trigger:focus-visible .landing-board-sprite,
+        .landing-board-item[data-active="true"] .landing-board-sprite {
+            opacity: .99;
+        }
+
+        .landing-board-trigger:focus-visible .landing-board-sprite {
+            filter: contrast(1.045) saturate(1.035) drop-shadow(0 0 8px rgba(75, 139, 244, .65)) drop-shadow(0 38px 29px rgba(41, 49, 62, .15));
+        }
+
+        .landing-board-item[data-active="true"] .landing-board-sprite {
+            filter: contrast(1.045) saturate(1.035) drop-shadow(0 20px 14px rgba(41, 49, 62, .13)) drop-shadow(0 44px 34px rgba(41, 49, 62, .24));
+        }
+
+        .landing-board-popover {
+            position: absolute;
+            z-index: 2;
+            top: var(--popover-top);
+            left: var(--popover-left);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            min-width: 196px;
+            min-height: 42px;
+            padding: 10px 12px;
+            border: 1px solid rgba(75, 139, 244, .25);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, .96);
+            box-shadow: 0 18px 45px rgba(35, 51, 80, .2);
+            backdrop-filter: blur(12px);
+            color: #2d68c4;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            white-space: nowrap;
+            pointer-events: auto;
+        }
+
+        .landing-board-popover:hover,
+        .landing-board-popover:focus-visible {
+            background: rgba(75, 139, 244, .1);
+            outline: none;
+        }
+
+        .landing-board-popover[hidden] {
+            display: none;
+        }
+
+        .landing-board-rp2040 {
+            --board-left: 18%;
+            --board-top: 17.5%;
+            --board-width: 47%;
+            --board-height: 50%;
+            --board-shape: polygon(33% 0, 100% 67%, 67% 100%, 0 34%);
+            --sprite-width: 212.77%;
+            --sprite-left: -38.3%;
+            --sprite-top: -35%;
+            --popover-left: 50%;
+            --popover-top: 60%;
+        }
+
+        .landing-board-gameboy {
+            --board-left: 54%;
+            --board-top: 2%;
+            --board-width: 44%;
+            --board-height: 47%;
+            --board-shape: polygon(47% 0, 100% 55%, 55% 100%, 0 47%);
+            --sprite-width: 227.27%;
+            --sprite-left: -122.73%;
+            --sprite-top: -4.26%;
+            --popover-left: -17%;
+            --popover-top: 68%;
+        }
+
+        .landing-board-attiny85 {
+            --board-left: 9%;
+            --board-top: 57%;
+            --board-width: 30%;
+            --board-height: 18%;
+            --board-shape: polygon(5% 39%, 15% 18%, 35% 29%, 50% 22%, 82% 18%, 93% 39%, 78% 92%, 17% 92%);
+            --sprite-width: 333.33%;
+            --sprite-left: -30%;
+            --sprite-top: -316.67%;
+            --popover-left: 50%;
+            --popover-top: 10%;
+        }
+
+        .landing-board-nrf52810 {
+            --board-left: 54%;
+            --board-top: 52%;
+            --board-width: 38%;
+            --board-height: 18%;
+            --board-shape: polygon(44% 22%, 92% 100%, 0 100%);
+            --sprite-width: 263.16%;
+            --sprite-left: -142.11%;
+            --sprite-top: -288.89%;
+            --popover-left: -12%;
+            --popover-top: 10%;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .landing-board-trigger,
+            .landing-board-sprite {
+                transition: none;
+            }
         }
 
         .landing-proof-panel {
@@ -2075,7 +2242,7 @@
                 font-size: clamp(46px, 4.25vw, 54px);
             }
 
-            .landing-hero-board {
+            .landing-board-showcase {
                 width: 800px;
                 right: -12px;
                 top: 24px;
@@ -2169,7 +2336,7 @@
                 font-size: 17px;
             }
 
-            .landing-hero-board {
+            .landing-board-showcase {
                 width: min(760px, 92vw);
                 right: auto;
                 left: 50%;
@@ -2318,7 +2485,7 @@
                 font-size: 14px;
             }
 
-            .landing-hero-board {
+            .landing-board-showcase {
                 width: min(650px, 118vw);
                 top: 336px;
             }
@@ -2447,9 +2614,60 @@
 
                 <div class="landing-hero-art" aria-label="Four real circuit boards generated from tscircuit projects">
                     <span class="landing-board-halo" aria-hidden="true"></span>
-                    <img class="landing-hero-board" src="assets/hero-board-four-real-3d.png"
-                        alt="3D renders of the tscircuit RP2040, Game Boy, nRF52810, and Attiny85 Arcade Keychain circuit boards"
-                        width="1600" height="1500" fetchpriority="high">
+                    <div class="landing-board-showcase">
+                        <img class="landing-hero-board" src="assets/hero-board-four-real-3d.png"
+                            alt="3D renders of the tscircuit RP2040, Game Boy, nRF52810, and Attiny85 Arcade Keychain circuit boards"
+                            width="1600" height="1500" fetchpriority="high">
+
+                        <div class="landing-board-item landing-board-rp2040" data-active="false">
+                            <button class="landing-board-trigger" type="button" aria-label="Explore the RP2040 board"
+                                aria-expanded="false" aria-controls="landing-board-link-rp2040">
+                                <img class="landing-board-sprite" src="assets/hero-board-four-real-3d.png" alt=""
+                                    aria-hidden="true" width="1600" height="1500">
+                            </button>
+                            <a class="landing-board-popover" id="landing-board-link-rp2040"
+                                href="https://tscircuit.com/search?q=RP2040" hidden>
+                                View RP2040 <span aria-hidden="true">↗</span>
+                            </a>
+                        </div>
+
+                        <div class="landing-board-item landing-board-gameboy" data-active="false">
+                            <button class="landing-board-trigger" type="button" aria-label="Explore the Game Boy board"
+                                aria-expanded="false" aria-controls="landing-board-link-gameboy">
+                                <img class="landing-board-sprite" src="assets/hero-board-four-real-3d.png" alt=""
+                                    aria-hidden="true" width="1600" height="1500">
+                            </button>
+                            <a class="landing-board-popover" id="landing-board-link-gameboy"
+                                href="https://tscircuit.com/abse/gameboy" hidden>
+                                View Game Boy <span aria-hidden="true">↗</span>
+                            </a>
+                        </div>
+
+                        <div class="landing-board-item landing-board-attiny85" data-active="false">
+                            <button class="landing-board-trigger" type="button"
+                                aria-label="Explore the Attiny85 Arcade Keychain board" aria-expanded="false"
+                                aria-controls="landing-board-link-attiny85">
+                                <img class="landing-board-sprite" src="assets/hero-board-four-real-3d.png" alt=""
+                                    aria-hidden="true" width="1600" height="1500">
+                            </button>
+                            <a class="landing-board-popover" id="landing-board-link-attiny85"
+                                href="https://tscircuit.com/rushabhcodes/Attiny85-Arcade-Keychain#3d" hidden>
+                                View Attiny85 Keychain <span aria-hidden="true">↗</span>
+                            </a>
+                        </div>
+
+                        <div class="landing-board-item landing-board-nrf52810" data-active="false">
+                            <button class="landing-board-trigger" type="button" aria-label="Explore the nRF52810 board"
+                                aria-expanded="false" aria-controls="landing-board-link-nrf52810">
+                                <img class="landing-board-sprite" src="assets/hero-board-four-real-3d.png" alt=""
+                                    aria-hidden="true" width="1600" height="1500">
+                            </button>
+                            <a class="landing-board-popover" id="landing-board-link-nrf52810"
+                                href="https://tscircuit.com/search?q=nRF52810" hidden>
+                                View nRF52810 <span aria-hidden="true">↗</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -3582,6 +3800,40 @@ export default function UsbAudioVuMeter() {
             duration: 1800,
         })
         loadGitHubStarCount()
+    </script>
+    <script>
+        (() => {
+            const boardItems = [...document.querySelectorAll(".landing-board-item")]
+
+            const setActiveBoard = (activeItem) => {
+                boardItems.forEach((item) => {
+                    const isActive = item === activeItem
+                    const trigger = item.querySelector(".landing-board-trigger")
+                    const popover = item.querySelector(".landing-board-popover")
+
+                    item.dataset.active = `${isActive}`
+                    trigger?.setAttribute("aria-expanded", `${isActive}`)
+                    if (popover) popover.hidden = !isActive
+                })
+            }
+
+            boardItems.forEach((item) => {
+                const trigger = item.querySelector(".landing-board-trigger")
+
+                trigger?.addEventListener("click", (event) => {
+                    event.stopPropagation()
+                    setActiveBoard(item.dataset.active === "true" ? null : item)
+                })
+            })
+
+            document.addEventListener("click", (event) => {
+                if (event.target instanceof Element && event.target.closest(".landing-board-item")) return
+                setActiveBoard(null)
+            })
+            document.addEventListener("keydown", (event) => {
+                if (event.key === "Escape") setActiveBoard(null)
+            })
+        })()
     </script>
 </body>
 
