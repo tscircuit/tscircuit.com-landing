@@ -470,6 +470,102 @@
             opacity: .85;
         }
 
+        .featured-boards-section {
+            padding-bottom: 64px;
+        }
+
+        .featured-boards-header {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 18px;
+        }
+
+        .featured-boards-header h2 {
+            margin-bottom: 0;
+        }
+
+        .featured-boards-link {
+            flex: 0 0 auto;
+            color: var(--ink-2);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            text-underline-offset: 3px;
+        }
+
+        .featured-boards-grid {
+            display: grid;
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .featured-board-card {
+            min-width: 0;
+            overflow: hidden;
+            border: 1.5px solid var(--ink);
+            border-radius: 4px;
+            background: rgba(255, 255, 255, .28);
+            color: var(--ink);
+            text-decoration: none;
+            transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+        }
+
+        .featured-board-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent);
+            box-shadow: 0 8px 20px rgba(192, 69, 69, .14);
+        }
+
+        .featured-board-card:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 3px;
+        }
+
+        .featured-board-thumb {
+            aspect-ratio: 4 / 3;
+            border-bottom: 1px solid var(--line-2);
+            background: #fff;
+        }
+
+        .featured-board-thumb img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .featured-board-meta {
+            display: grid;
+            gap: 3px;
+            padding: 10px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .featured-board-owner {
+            overflow: hidden;
+            color: var(--muted);
+            font-size: 9px;
+            letter-spacing: .06em;
+            text-overflow: ellipsis;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .featured-board-name {
+            min-height: 2.5em;
+            overflow-wrap: anywhere;
+            font-family: 'Geist', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 1.25;
+        }
+
+        .featured-board-version {
+            color: var(--muted);
+            font-size: 9px;
+        }
+
         /* Code block */
         .code {
             background: #0E0E0E;
@@ -1405,6 +1501,10 @@
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
 
+            .featured-boards-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
             .foot-shell {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
@@ -1589,6 +1689,26 @@
 
             .gallery-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .featured-boards-header {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .featured-boards-grid {
+                display: flex;
+                width: calc(100% + 20px);
+                padding-right: 20px;
+                overflow-x: auto;
+                scroll-snap-type: x proximity;
+                scrollbar-width: thin;
+            }
+
+            .featured-board-card {
+                flex: 0 0 190px;
+                scroll-snap-align: start;
             }
 
             .feature-card {
@@ -2504,9 +2624,8 @@
                         <p class="feature-intro-eyebrow">AI-native electronics design</p>
                         <h2 id="features-title">A fully-featured, ground-up reimagining of an electronic design tool
                             built for AI</h2>
-                        <p class="sub">Built for hardware startups who move at software speed.<br
-                                class="feature-desktop-break"> Every feature composable,
-                            inspectable, diffable in a PR.</p>
+                        <p class="sub">Usable with any AI agent. tscircuit doesn't require any special installation-
+                            just tell your agent to "use tscircuit" and it gains the ability to create circuit boards</p>
                         <div class="feature-intro-actions">
                             <a class="feature-intro-action feature-intro-action-primary"
                                 href="https://docs.tscircuit.com/guides/circuit-generation/generating-circuit-boards-with-ai">
@@ -2532,6 +2651,94 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Featured boards -->
+                <section class="featured-boards-section" aria-labelledby="featured-boards-title">
+                    <div class="featured-boards-header">
+                        <div>
+                            <div class="eyebrow">From the community</div>
+                            <h2 id="featured-boards-title">Featured boards</h2>
+                        </div>
+                        <a class="featured-boards-link" href="/trending">Explore more boards →</a>
+                    </div>
+                    <div class="featured-boards-grid">
+                        <a class="featured-board-card" href="/seveibar/nrf-smart-watch?version=0.1.1"
+                            target="_blank" rel="noreferrer">
+                            <div class="featured-board-thumb">
+                                <img src="assets/featured-boards/nrf-smart-watch-v0.1.1.png"
+                                    alt="3D preview of the nRF smart watch board" loading="lazy">
+                            </div>
+                            <div class="featured-board-meta">
+                                <span class="featured-board-owner">seveibar</span>
+                                <span class="featured-board-name">nrf-smart-watch</span>
+                                <span class="featured-board-version">v0.1.1</span>
+                            </div>
+                        </a>
+                        <a class="featured-board-card"
+                            href="/ShiboSoftwareDev/mspm0g3507-usb-c-dev-board?version=1.4.1" target="_blank"
+                            rel="noreferrer">
+                            <div class="featured-board-thumb">
+                                <img src="assets/featured-boards/mspm0g3507-usb-c-dev-board-v1.4.1.png"
+                                    alt="3D preview of the MSPM0G3507 USB-C development board" loading="lazy">
+                            </div>
+                            <div class="featured-board-meta">
+                                <span class="featured-board-owner">ShiboSoftwareDev</span>
+                                <span class="featured-board-name">mspm0g3507-usb-c-dev-board</span>
+                                <span class="featured-board-version">v1.4.1</span>
+                            </div>
+                        </a>
+                        <a class="featured-board-card" href="/abse/wifi-smart-switch?version=1.0.29"
+                            target="_blank" rel="noreferrer">
+                            <div class="featured-board-thumb">
+                                <img src="assets/featured-boards/wifi-smart-switch-v1.0.29.png"
+                                    alt="3D preview of the Wi-Fi smart switch board" loading="lazy">
+                            </div>
+                            <div class="featured-board-meta">
+                                <span class="featured-board-owner">abse</span>
+                                <span class="featured-board-name">wifi-smart-switch</span>
+                                <span class="featured-board-version">v1.0.29</span>
+                            </div>
+                        </a>
+                        <a class="featured-board-card" href="/abse/gameboy?version=1.0.15" target="_blank"
+                            rel="noreferrer">
+                            <div class="featured-board-thumb">
+                                <img src="assets/featured-boards/gameboy-v1.0.15.png"
+                                    alt="3D preview of the Game Boy board" loading="lazy">
+                            </div>
+                            <div class="featured-board-meta">
+                                <span class="featured-board-owner">abse</span>
+                                <span class="featured-board-name">gameboy</span>
+                                <span class="featured-board-version">v1.0.15</span>
+                            </div>
+                        </a>
+                        <a class="featured-board-card"
+                            href="/imrishabh18/rp2040-motor-controller?version=1.0.14" target="_blank"
+                            rel="noreferrer">
+                            <div class="featured-board-thumb">
+                                <img src="assets/featured-boards/rp2040-motor-controller-v1.0.14.png"
+                                    alt="3D preview of the RP2040 motor controller board" loading="lazy">
+                            </div>
+                            <div class="featured-board-meta">
+                                <span class="featured-board-owner">imrishabh18</span>
+                                <span class="featured-board-name">rp2040-motor-controller</span>
+                                <span class="featured-board-version">v1.0.14</span>
+                            </div>
+                        </a>
+                        <a class="featured-board-card"
+                            href="/seveibar/spi-display-webcam-interceptor?version=1.0.12" target="_blank"
+                            rel="noreferrer">
+                            <div class="featured-board-thumb">
+                                <img src="assets/featured-boards/spi-display-webcam-interceptor-v1.0.12.png"
+                                    alt="3D preview of the SPI display webcam interceptor board" loading="lazy">
+                            </div>
+                            <div class="featured-board-meta">
+                                <span class="featured-board-owner">seveibar</span>
+                                <span class="featured-board-name">spi-display-webcam-interceptor</span>
+                                <span class="featured-board-version">v1.0.12</span>
+                            </div>
+                        </a>
+                    </div>
+                </section>
 
                 <div class="row feature-grid">
                     <!-- feature card template -->
