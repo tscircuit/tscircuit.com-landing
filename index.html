@@ -1925,6 +1925,15 @@
             box-shadow: 0 16px 40px rgba(20, 24, 32, .13);
         }
 
+        .landing-nav-links .landing-community-panel::before {
+            content: "";
+            position: absolute;
+            top: -11px;
+            left: 0;
+            width: 100%;
+            height: 11px;
+        }
+
         .landing-community-panel a {
             padding: 9px 10px;
             border-radius: 7px;
@@ -3242,6 +3251,28 @@ export default function UsbAudioVuMeter() {
 \t\t</board>
 \t);
 }`
+
+        const communityMenu = document.querySelector(".landing-nav-links .landing-community")
+        const supportsHover = window.matchMedia("(hover: hover) and (pointer: fine)")
+        communityMenu.addEventListener("pointerenter", () => {
+            if (supportsHover.matches) communityMenu.open = true
+        })
+        communityMenu.addEventListener("pointerleave", () => {
+            if (supportsHover.matches && !communityMenu.matches(":focus-within")) {
+                communityMenu.open = false
+            }
+        })
+        communityMenu.addEventListener("focusout", (event) => {
+            if (!communityMenu.contains(event.relatedTarget) && !communityMenu.matches(":hover")) {
+                communityMenu.open = false
+            }
+        })
+        communityMenu.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") {
+                communityMenu.open = false
+                communityMenu.querySelector("summary").focus()
+            }
+        })
 
         const editorInput = document.getElementById("hero-code-input")
         const editorShell = document.querySelector(".editor-shell")
