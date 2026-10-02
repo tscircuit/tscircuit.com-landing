@@ -1830,57 +1830,76 @@
             transform: translateX(18px);
             display: flex;
             align-items: center;
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: 'Geist', system-ui, sans-serif;
         }
 
         .landing-brand {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            color: #ffffff;
-            background: #4b8bf4;
-            padding: 5px 7px;
-            border-radius: 5px;
-            font-family: 'Geist', system-ui, sans-serif;
-            font-size: 16px;
+            gap: 10px;
+            flex-shrink: 0;
+            color: var(--ink);
+            border-radius: 8px;
+            font-size: 21px;
             line-height: 1;
-            font-weight: 500;
-            letter-spacing: .01em;
+            font-weight: 600;
+            letter-spacing: -.8px;
             text-decoration: none;
             white-space: nowrap;
         }
 
         .landing-brand:hover {
-            color: #ffffff;
+            color: var(--ink);
             text-decoration: none;
+        }
+
+        .landing-brand img {
+            width: 32px;
+            height: 32px;
+            display: block;
+            border-radius: 8px;
+        }
+
+        .landing-header :is(a, summary):focus-visible {
+            outline: 2px solid #3b82f6;
+            outline-offset: 3px;
         }
 
         .landing-nav-links {
             display: flex;
             align-items: center;
-            gap: 30px;
-            margin-left: 46px;
+            gap: 8px;
+            margin-left: 32px;
             font-size: 14px;
             line-height: 1;
-            font-weight: 540;
-            letter-spacing: -.25px;
+            font-weight: 500;
+            letter-spacing: -.2px;
         }
 
         .landing-nav-links a,
         .landing-signin {
-            min-height: 34px;
+            min-height: 40px;
+            padding: 0 10px;
+            border-radius: 8px;
             display: inline-flex;
             align-items: center;
             gap: 9px;
-            color: var(--ink);
+            color: #343940;
             text-decoration: none;
-            transition: opacity 160ms ease;
+            transition: background 160ms ease, color 160ms ease;
         }
 
         .landing-nav-links a:hover,
         .landing-signin:hover,
         .landing-icon-action:hover,
         .landing-github:hover,
+        .landing-community > summary:hover,
+        .landing-community[open] > summary,
+        .landing-nav-menu[open] > summary {
+            color: var(--ink);
+            background: #f4f5f7;
+        }
+
         .landing-button-plain:hover {
             opacity: .58;
         }
@@ -1890,12 +1909,16 @@
         }
 
         .landing-community > summary {
-            min-height: 34px;
+            min-height: 40px;
+            padding: 0 10px;
+            border-radius: 8px;
+            color: #343940;
             display: flex;
             align-items: center;
             gap: 7px;
             list-style: none;
             cursor: pointer;
+            transition: background 160ms ease, color 160ms ease;
         }
 
         .landing-community > summary::-webkit-details-marker {
@@ -1903,26 +1926,31 @@
         }
 
         .landing-community > summary::after {
-            content: "▾";
-            font-size: 10px;
+            content: "";
+            width: 6px;
+            height: 6px;
+            margin-left: 2px;
+            border-right: 1.5px solid currentColor;
+            border-bottom: 1.5px solid currentColor;
+            transform: translateY(-2px) rotate(45deg);
         }
 
         .landing-community[open] > summary::after {
-            transform: rotate(180deg);
+            transform: translateY(1px) rotate(225deg);
         }
 
         .landing-community-panel {
             position: absolute;
             top: calc(100% + 10px);
             left: 0;
-            min-width: 180px;
+            min-width: 200px;
             display: grid;
             gap: 2px;
             padding: 8px;
             border: 1px solid var(--line-2);
-            border-radius: 10px;
+            border-radius: 12px;
             background: #ffffff;
-            box-shadow: 0 16px 40px rgba(20, 24, 32, .13);
+            box-shadow: 0 4px 12px rgba(20, 24, 32, .04), 0 16px 40px rgba(20, 24, 32, .08);
         }
 
         .landing-nav-links .landing-community-panel::before {
@@ -1935,29 +1963,32 @@
         }
 
         .landing-community-panel a {
-            padding: 9px 10px;
-            border-radius: 7px;
+            min-height: 40px;
+            padding: 0 12px;
+            border-radius: 8px;
             color: var(--ink);
-            font-size: 13px;
+            font-size: 14px;
             text-decoration: none;
         }
 
         .landing-community-panel a:hover {
-            background: #f3f4f6;
-            opacity: 1;
+            background: #f4f5f7;
         }
 
         .landing-nav-menu-panel .landing-community > summary {
-            padding: 9px 10px;
-            font-size: 13px;
+            padding: 0 12px;
+            justify-content: space-between;
+            font-size: 14px;
         }
 
         .landing-nav-menu-panel .landing-community-panel {
             position: static;
             min-width: 0;
-            margin-left: 10px;
-            padding: 0;
+            margin: 4px 0 4px 18px;
+            padding: 0 0 0 8px;
             border: 0;
+            border-left: 1px solid var(--line);
+            border-radius: 0;
             box-shadow: none;
         }
 
@@ -1965,38 +1996,39 @@
             margin-left: auto;
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 10px;
             font-size: 14px;
-            font-weight: 550;
+            font-weight: 500;
+            white-space: nowrap;
         }
 
         .landing-icon-action,
         .landing-github {
-            min-height: 34px;
+            min-height: 40px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             color: var(--ink);
-            border: 1px solid var(--line-2);
+            border: 1px solid var(--line);
             border-radius: 8px;
             text-decoration: none;
-            transition: opacity 160ms ease;
+            transition: background 160ms ease;
         }
 
         .landing-icon-action {
-            width: 34px;
+            width: 40px;
         }
 
         .landing-icon-action svg,
         .landing-github svg {
-            width: 15px;
-            height: 15px;
+            width: 16px;
+            height: 16px;
             display: block;
         }
 
         .landing-github {
             gap: 7px;
-            padding: 0 10px;
+            padding: 0 12px;
             font-size: 12px;
             white-space: nowrap;
         }
@@ -2019,26 +2051,31 @@
             position: absolute;
             top: calc(100% + 10px);
             right: 0;
-            min-width: 180px;
+            min-width: 220px;
+            max-height: calc(100dvh - 88px);
+            overflow-y: auto;
             display: grid;
             gap: 2px;
             padding: 8px;
             border: 1px solid var(--line-2);
-            border-radius: 10px;
+            border-radius: 12px;
             background: #ffffff;
-            box-shadow: 0 16px 40px rgba(20, 24, 32, .13);
+            box-shadow: 0 4px 12px rgba(20, 24, 32, .04), 0 16px 40px rgba(20, 24, 32, .08);
         }
 
         .landing-nav-menu-panel a {
-            padding: 9px 10px;
-            border-radius: 7px;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            border-radius: 8px;
             color: var(--ink);
-            font-size: 13px;
+            font-size: 14px;
             text-decoration: none;
         }
 
         .landing-nav-menu-panel a:hover {
-            background: #f3f4f6;
+            background: #f4f5f7;
         }
 
         .landing-arrow {
@@ -2089,6 +2126,27 @@
 
         .landing-nav-start {
             min-width: 116px;
+        }
+
+        .landing-header .landing-button {
+            min-height: 40px;
+            padding: 0 14px;
+            font-family: inherit;
+            font-weight: 500;
+            letter-spacing: -.2px;
+        }
+
+        .landing-header .landing-button-dark {
+            box-shadow: 0 1px 2px rgba(15, 18, 25, .12);
+        }
+
+        .landing-header .landing-button-dark:hover {
+            box-shadow: 0 1px 2px rgba(15, 18, 25, .12);
+            transform: none;
+        }
+
+        .landing-nav-menu > summary {
+            border: 1px solid var(--line);
         }
 
         .landing-hero-shell {
@@ -2260,14 +2318,12 @@
             }
 
             .landing-nav-links {
-                gap: 22px;
-                margin-left: 40px;
-                font-size: 13px;
+                gap: 2px;
+                margin-left: 20px;
             }
 
             .landing-nav-actions {
-                gap: 12px;
-                font-size: 13px;
+                gap: 8px;
             }
 
             .landing-hero-copy {
@@ -2460,23 +2516,34 @@
                 border-radius: 6px;
             }
 
-            .landing-nav,
             .landing-hero-shell {
                 width: calc(100% - 16px);
             }
 
-            .landing-nav-start {
-                padding: 0 13px;
+            .landing-nav {
+                width: calc(100% - 24px);
             }
 
             .landing-brand {
-                font-size: 14px;
-                padding: 5px 7px;
+                gap: 8px;
+                font-size: 18px;
+                letter-spacing: -.6px;
+            }
+
+            .landing-brand img {
+                width: 28px;
+                height: 28px;
+                border-radius: 7px;
+            }
+
+            .landing-header .landing-button {
+                padding: 0 10px;
+                font-size: 13px;
             }
 
             .landing-nav-menu-panel {
                 position: fixed;
-                top: 62px;
+                top: 70px;
                 left: 12px;
                 right: 12px;
                 min-width: 0;
@@ -2582,7 +2649,10 @@
 <body>
     <header class="landing-header">
         <nav class="landing-nav" aria-label="Primary navigation">
-            <a class="landing-brand" href="/" aria-label="tscircuit home">tscircuit</a>
+            <a class="landing-brand" href="/" aria-label="tscircuit home">
+                <img src="/tscircuit-logo.png" alt="" width="32" height="32" />
+                <span>tscircuit</span>
+            </a>
             <div class="landing-nav-links">
                 <a href="/playground">Playground</a>
                 <a href="https://docs.tscircuit.com/">Docs</a>
