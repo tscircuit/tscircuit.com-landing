@@ -374,102 +374,6 @@
             object-fit: contain;
         }
 
-        /* PCB placeholder */
-        .pcb {
-            background: #aeb8c6;
-            color: #ffffff;
-            border: 1.5px solid var(--ink);
-            border-radius: 4px;
-            position: relative;
-            overflow: hidden;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
-        }
-
-        .pcb::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background:
-                radial-gradient(circle at 20% 30%, var(--gold) 0 6px, transparent 7px),
-                radial-gradient(circle at 80% 25%, var(--gold) 0 6px, transparent 7px),
-                radial-gradient(circle at 30% 70%, var(--gold) 0 5px, transparent 6px),
-                radial-gradient(circle at 70% 75%, var(--gold) 0 5px, transparent 6px),
-                radial-gradient(circle at 50% 50%, rgba(215, 181, 109, .18) 0 30%, transparent 31%),
-                linear-gradient(90deg, transparent 0 48%, rgba(255, 255, 255, .34) 48% 52%, transparent 52%),
-                linear-gradient(0deg, transparent 0 48%, rgba(255, 255, 255, .34) 48% 52%, transparent 52%);
-        }
-
-        .pcb .tag {
-            position: absolute;
-            bottom: 6px;
-            right: 8px;
-            opacity: .7
-        }
-
-        .gallery-board {
-            min-height: 190px;
-            padding: 14px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            text-decoration: none;
-            transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-            background-color: var(--ink);
-        }
-
-        .gallery-board:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 24px rgba(41, 49, 62, .16);
-            border-color: var(--accent);
-        }
-
-        .gallery-board::before {
-            background:
-                linear-gradient(180deg, rgba(26, 26, 26, .08) 0%, rgba(26, 26, 26, .32) 48%, rgba(26, 26, 26, .84) 100%),
-                var(--board-image);
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
-
-        .gallery-board::after {
-            content: "open project ↗";
-            position: absolute;
-            top: 10px;
-            right: 12px;
-            color: rgba(255, 255, 255, .82);
-            font-size: 10px;
-            letter-spacing: .04em;
-            text-transform: uppercase;
-        }
-
-        .gallery-board .board-owner {
-            color: rgba(255, 255, 255, .68);
-            font-size: 10px;
-            letter-spacing: .08em;
-            text-transform: uppercase;
-        }
-
-        .gallery-board>div,
-        .gallery-board .tag {
-            position: relative;
-            z-index: 1;
-        }
-
-        .gallery-board .board-name {
-            color: #ffffff;
-            font-size: 18px;
-            line-height: 1.2;
-            max-width: 180px;
-        }
-
-        .gallery-board .tag {
-            position: static;
-            align-self: flex-start;
-            opacity: .85;
-        }
-
         .featured-boards-section {
             padding-bottom: 64px;
         }
@@ -1187,11 +1091,6 @@
             align-items: center;
         }
 
-        .gallery-grid {
-            grid-template-columns: repeat(3, 1fr);
-            margin-top: 20px;
-        }
-
         .faq-shell {
             display: grid;
             grid-template-columns: minmax(0, .9fr) minmax(0, 1.6fr);
@@ -1536,10 +1435,6 @@
             line-height: 1.65;
         }
 
-        .gallery-more {
-            margin-top: 16px;
-        }
-
         .site-footer-note {
             margin-top: 40px;
             padding-top: 20px;
@@ -1562,10 +1457,6 @@
             }
 
             .feature-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-
-            .gallery-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
 
@@ -1757,10 +1648,6 @@
 
             .hero-stack {
                 min-height: 360px;
-            }
-
-            .gallery-grid {
-                grid-template-columns: 1fr;
             }
 
             .featured-boards-header {
@@ -3082,41 +2969,6 @@
                     <img src="assets/playground screenshot.png"
                         alt="tscircuit playground showing editor, 3D board viewer, and console">
                 </div>
-            </div>
-        </section>
-
-        <!-- Gallery -->
-        <section class="section" aria-labelledby="gallery-title">
-            <div class="gallery-shell">
-                <div class="eyebrow">Shipped with tscircuit</div>
-                <h2 id="gallery-title">Boards teams actually sent to fab.</h2>
-                <div class="row gallery-grid">
-                    <a class="pcb gallery-board" href="/tscircuit/motor-controller" target="_blank"
-                        rel="noreferrer" style='--board-image:url("assets/motor_controller.png")'>
-                        <div>
-                            <div class="board-owner">tscircuit</div>
-                            <div class="board-name">motor-controller</div>
-                        </div>
-                    </a>
-
-                    <a class="pcb gallery-board" href="/seveibar/keyboard-default60"
-                        target="_blank" rel="noreferrer" style='--board-image:url("assets/keyboard.png")'>
-                        <div>
-                            <div class="board-owner">seveibar</div>
-                            <div class="board-name">keyboard-default60</div>
-                        </div>
-                    </a>
-                    <a class="pcb gallery-board" href="/seveibar/led-water-accelerometer"
-                        target="_blank" rel="noreferrer"
-                        style='--board-image:url("assets/led-water-accelerometer.png")'>
-                        <div>
-                            <div class="board-owner">seveibar</div>
-                            <div class="board-name">led-water-accelerometer</div>
-                        </div>
-                    </a>
-                </div>
-                <div class="gallery-more"><a class="btn ghost" href="/trending">Browse gallery ·
-                        240 boards →</a></div>
             </div>
         </section>
 
