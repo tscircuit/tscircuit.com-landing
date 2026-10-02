@@ -386,21 +386,8 @@
             margin-bottom: 24px;
         }
 
-        .section .featured-boards-header h2 {
-            margin: 0;
-            font-size: 32px;
-            font-weight: 575;
-            line-height: 1.15;
-            letter-spacing: -.03em;
-        }
-
-        .section .featured-boards-header .eyebrow {
-            margin-bottom: 10px;
-            font-family: 'Geist', sans-serif;
-            font-size: 12px;
-            font-weight: 500;
-            letter-spacing: 0;
-            text-transform: none;
+        .featured-boards-header h2 {
+            margin-bottom: 0;
         }
 
         .featured-boards-link {
@@ -423,82 +410,44 @@
             border-radius: 4px;
         }
 
-        .featured-boards-stage {
-            position: relative;
-            border: 1px solid var(--line-2);
-            background: linear-gradient(180deg, #ffffff, #f5f7fa);
-        }
-
-        .featured-boards-stage::before,
-        .featured-boards-stage::after,
-        .featured-board-card:not(:first-child)::before {
-            content: "";
-            position: absolute;
-            z-index: 2;
-            width: 12px;
-            height: 12px;
-            background:
-                linear-gradient(#b6bfcd, #b6bfcd) center / 1px 100% no-repeat,
-                linear-gradient(90deg, #b6bfcd, #b6bfcd) center / 100% 1px no-repeat;
-            pointer-events: none;
-        }
-
-        .featured-boards-stage::before,
-        .featured-board-card:not(:first-child)::before {
-            top: -6px;
-            left: -6px;
-        }
-
-        .featured-boards-stage::after {
-            bottom: -6px;
-            right: -6px;
-        }
-
         .featured-boards-grid {
             display: grid;
             grid-template-columns: repeat(5, minmax(0, 1fr));
-            gap: 0;
+            gap: 16px;
         }
 
         .featured-board-card {
-            position: relative;
             min-width: 0;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            background: #ffffff;
             color: var(--ink);
             text-decoration: none;
+            transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
         }
 
-        .featured-board-card:not(:first-child) {
-            border-left: 1px solid var(--line-2);
-        }
-
-        .featured-board-card::after {
-            content: "↗";
-            position: absolute;
-            right: 18px;
-            bottom: 18px;
-            color: #8a94a4;
-            font-size: 16px;
-        }
-
-        .featured-board-card:is(:hover, :focus-visible) {
-            background: rgba(235, 241, 250, .55);
-        }
-
-        .featured-board-card:is(:hover, :focus-visible)::after {
-            color: #2563eb;
+        .featured-board-card:hover {
+            transform: translateY(-2px);
+            border-color: #b8c4d4;
+            box-shadow: 0 8px 24px rgba(20, 24, 32, .08);
         }
 
         .featured-board-card:focus-visible {
             outline: 2px solid #3b82f6;
-            outline-offset: -2px;
+            outline-offset: 3px;
         }
 
         .featured-board-thumb {
             aspect-ratio: 3 / 2;
             flex-shrink: 0;
             position: relative;
+            border-bottom: 1px solid var(--line-2);
+            background-color: #f8fafc;
+            background-image: radial-gradient(#dce3eb .7px, transparent .7px);
+            background-size: 16px 16px;
         }
 
         .featured-board-thumb img {
@@ -508,20 +457,14 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            filter: drop-shadow(0 10px 8px rgba(28, 43, 67, .12));
-            transition: transform .2s ease;
-        }
-
-        .featured-board-card:is(:hover, :focus-visible) .featured-board-thumb img {
-            transform: translateY(-4px);
         }
 
         .featured-board-meta {
             display: grid;
             flex: 1;
             grid-template-rows: auto 1fr;
-            gap: 5px;
-            padding: 10px 36px 18px 18px;
+            gap: 6px;
+            padding: 12px 14px;
         }
 
         .featured-board-owner {
@@ -537,8 +480,8 @@
             overflow-wrap: anywhere;
             font-family: 'Geist', sans-serif;
             font-size: 14px;
-            font-weight: 500;
-            line-height: 1.5;
+            font-weight: 600;
+            line-height: 1.4;
         }
 
         /* Code block */
@@ -858,7 +801,7 @@
         }
 
         .feature-section {
-            padding: 96px clamp(24px, 4vw, 64px) 64px;
+            padding: 88px clamp(24px, 4vw, 64px) 64px;
         }
 
         .feature-section>.feature-shell {
@@ -866,155 +809,121 @@
         }
 
         .feature-intro {
+            width: min(100%, 1280px);
+            margin: 0 auto 88px;
             display: grid;
-            grid-template-columns: minmax(390px, .74fr) minmax(0, 1.26fr);
-            gap: clamp(36px, 2.5vw, 44px);
+            grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+            gap: clamp(40px, 5vw, 80px);
             align-items: center;
-            margin-bottom: 80px;
         }
 
         .feature-intro-eyebrow {
-            margin: 0 0 30px;
-            color: #59677e;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            line-height: 1.3;
-            font-weight: 600;
-            letter-spacing: .12em;
-            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0 0 20px;
+            color: #536176;
+            font-family: 'Geist', system-ui, sans-serif;
+            font-size: 12px;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        .feature-intro-eyebrow::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            flex: none;
+            border-radius: 50%;
+            background: #3b82f6;
         }
 
         .section .feature-intro h2 {
-            max-width: 560px;
+            max-width: 500px;
             margin: 0;
-            font-size: clamp(42px, 3.2vw, 54px);
-            line-height: 1.08;
-            letter-spacing: -.052em;
-            font-weight: 680;
+            font-size: clamp(34px, 3vw, 42px);
+            line-height: 1.14;
+            letter-spacing: -.04em;
+            font-weight: 500;
+            text-wrap: balance;
+        }
+
+        .feature-intro h2 span {
+            color: #77808e;
         }
 
         .feature-intro .sub {
-            max-width: 570px;
-            margin: 30px 0 0;
-            font-size: 18px;
-            line-height: 1.55;
-            letter-spacing: -.02em;
+            max-width: 440px;
+            margin: 24px 0 0;
+            font-size: 15px;
+            line-height: 1.65;
+            letter-spacing: -.01em;
         }
 
         .feature-intro-actions {
             display: flex;
+            flex-wrap: wrap;
             align-items: center;
-            gap: 28px;
-            margin-top: 42px;
+            gap: 20px;
+            margin-top: 28px;
         }
 
         .feature-intro-action {
-            min-height: 62px;
+            min-height: 44px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            border-radius: 5px;
+            gap: 8px;
+            border-radius: 7px;
             color: var(--ink);
             font-family: 'Geist', system-ui, sans-serif;
-            font-size: 16px;
+            font-size: 14px;
             line-height: 1;
-            font-weight: 650;
+            font-weight: 500;
             text-decoration: none;
-            transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+            transition: background 160ms ease, color 160ms ease;
+        }
+
+        .feature-intro-action:focus-visible {
+            outline: 2px solid #3b82f6;
+            outline-offset: 4px;
         }
 
         .feature-intro-action-primary {
-            min-width: 220px;
-            padding: 0 34px;
+            padding: 0 20px;
             color: #ffffff;
-            background: #111317;
-            border: 1px solid #111317;
-            box-shadow: 0 3px 10px rgba(15, 18, 25, .16);
+            background: #181b20;
+            border: 1px solid #181b20;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1), 0 1px 2px rgba(15, 18, 25, .12);
         }
 
         .feature-intro-action-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 7px 20px rgba(15, 18, 25, .2);
+            background: #353b45;
         }
 
         .feature-intro-action-secondary {
-            padding: 0 10px;
+            color: #596170;
         }
 
         .feature-intro-action-secondary:hover {
-            opacity: .58;
+            color: var(--ink);
         }
 
         .feature-video-stage {
-            position: relative;
             min-width: 0;
-            padding: 108px 0 135px 56px;
-            border: 1px solid rgba(137, 153, 181, .22);
-            background-color: #fcfdff;
-            background-image:
-                linear-gradient(rgba(113, 137, 177, .12) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(113, 137, 177, .12) 1px, transparent 1px);
-            background-size: 60px 60px;
-            isolation: isolate;
-        }
-
-        .feature-video-stage::after {
-            content: "";
-            position: absolute;
-            z-index: 1;
-            top: 30px;
-            left: 30px;
-            width: 44px;
-            height: 44px;
-            background: radial-gradient(circle, rgba(75, 139, 244, .65) 1.1px, transparent 1.3px) 0 0 / 8px 8px;
-        }
-
-        .feature-stage-marker {
-            position: absolute;
-            z-index: 3;
-            width: 20px;
-            height: 20px;
+            padding: 32px;
+            border-radius: 20px;
             background:
-                linear-gradient(rgba(120, 137, 166, .55), rgba(120, 137, 166, .55)) center / 1px 100% no-repeat,
-                linear-gradient(90deg, rgba(120, 137, 166, .55), rgba(120, 137, 166, .55)) center / 100% 1px no-repeat;
-        }
-
-        .feature-stage-marker::after {
-            content: "";
-            position: absolute;
-            inset: 7px;
-            border: 1px solid rgba(120, 137, 166, .65);
-            border-radius: 50%;
-            background: #fcfdff;
-        }
-
-        .feature-stage-marker-tl {
-            top: -10px;
-            left: -10px;
-        }
-
-        .feature-stage-marker-tr {
-            top: -10px;
-            right: -10px;
-        }
-
-        .feature-stage-marker-bl {
-            bottom: -10px;
-            left: -10px;
-        }
-
-        .feature-stage-marker-br {
-            right: -10px;
-            bottom: -10px;
+                radial-gradient(ellipse at 85% 10%, #edf0fa, transparent 65%),
+                linear-gradient(145deg, #f5f6f8, #e5e9f0);
         }
 
         .feature-usage-video {
-            position: relative;
-            z-index: 2;
-            width: calc(100% + 32px);
+            width: 100%;
             aspect-ratio: 16 / 9;
-            border-radius: 8px;
-            box-shadow: 0 24px 64px rgba(41, 49, 62, .2), 0 3px 10px rgba(41, 49, 62, .14);
+            border-radius: 10px;
+            border: 1px solid rgba(15, 23, 42, .1);
+            box-shadow: 0 20px 32px -16px rgba(23, 36, 60, .35), 0 2px 6px rgba(23, 36, 60, .12);
         }
 
         .feature-grid {
@@ -1518,19 +1427,7 @@
             }
 
             .featured-boards-grid {
-                display: flex;
-                overflow-x: auto;
-                scroll-snap-type: x proximity;
-                scrollbar-width: thin;
-            }
-
-            .featured-board-card {
-                flex: 0 0 240px;
-                scroll-snap-align: start;
-            }
-
-            .featured-board-card:not(:first-child)::before {
-                display: none;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
             }
 
             .foot-shell {
@@ -1725,8 +1622,19 @@
                 gap: 8px;
             }
 
+            .featured-boards-grid {
+                display: flex;
+                width: calc(100% + 24px);
+                margin-left: -4px;
+                padding: 4px 20px 8px 4px;
+                overflow-x: auto;
+                scroll-snap-type: x proximity;
+                scrollbar-width: thin;
+            }
+
             .featured-board-card {
-                flex-basis: 210px;
+                flex: 0 0 190px;
+                scroll-snap-align: start;
             }
 
             .feature-card {
@@ -1800,11 +1708,11 @@
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .featured-board-thumb img {
+            .featured-board-card {
                 transition: none;
             }
 
-            .featured-board-card:is(:hover, :focus-visible) .featured-board-thumb img {
+            .featured-board-card:hover {
                 transform: none;
             }
 
@@ -2349,24 +2257,25 @@
         @media (max-width: 1100px) {
             .feature-intro {
                 grid-template-columns: 1fr;
-                gap: 48px;
+                gap: 36px;
                 margin-bottom: 64px;
             }
 
             .feature-intro-copy {
-                max-width: 760px;
+                max-width: 640px;
             }
 
             .section .feature-intro h2 {
-                max-width: 720px;
+                max-width: 640px;
+                font-size: 40px;
+            }
+
+            .feature-intro .sub {
+                max-width: 560px;
             }
 
             .feature-video-stage {
-                padding: 80px 0 72px 48px;
-            }
-
-            .feature-usage-video {
-                width: auto;
+                max-width: 800px;
             }
         }
 
@@ -2461,59 +2370,26 @@
                 padding-top: 64px;
             }
 
-            .feature-intro-eyebrow {
-                margin-bottom: 22px;
-                font-size: 11px;
-            }
-
             .section .feature-intro h2 {
-                font-size: clamp(36px, 10.2vw, 42px);
-                line-height: 1.08;
+                font-size: clamp(30px, 8vw, 36px);
             }
 
             .feature-intro .sub {
-                margin-top: 22px;
-                font-size: 16px;
-            }
-
-            .feature-desktop-break {
-                display: none;
+                margin-top: 20px;
             }
 
             .feature-intro-actions {
-                gap: 10px;
-                margin-top: 30px;
-            }
-
-            .feature-intro-action {
-                min-height: 54px;
-                font-size: 14px;
-            }
-
-            .feature-intro-action-primary {
-                min-width: 0;
-                padding: 0 24px;
-            }
-
-            .feature-intro-action-secondary {
-                padding: 0 8px;
+                gap: 16px;
+                margin-top: 24px;
             }
 
             .feature-video-stage {
-                padding: 56px 0 48px 18px;
-                background-size: 44px 44px;
-            }
-
-            .feature-video-stage::after {
-                top: 18px;
-                left: 18px;
-                width: 34px;
-                height: 34px;
-                background-size: 7px 7px;
+                padding: 16px;
+                border-radius: 14px;
             }
 
             .feature-usage-video {
-                border-radius: 6px;
+                border-radius: 7px;
             }
 
             .landing-hero-shell {
@@ -2782,8 +2658,8 @@
                 <div class="feature-intro">
                     <div class="feature-intro-copy">
                         <p class="feature-intro-eyebrow">AI-native electronics design</p>
-                        <h2 id="features-title">A fully-featured, ground-up reimagining of an electronic design tool
-                            built for AI</h2>
+                        <h2 id="features-title">A fully-featured, ground-up reimagining <span>of an electronic design tool
+                            built for AI</span></h2>
                         <p class="sub">Usable with any AI agent. tscircuit doesn't require any special installation-
                             just tell your agent to "use tscircuit" and it gains the ability to create circuit boards</p>
                         <div class="feature-intro-actions">
@@ -2798,10 +2674,6 @@
                         </div>
                     </div>
                     <div class="feature-video-stage">
-                        <span class="feature-stage-marker feature-stage-marker-tl" aria-hidden="true"></span>
-                        <span class="feature-stage-marker feature-stage-marker-tr" aria-hidden="true"></span>
-                        <span class="feature-stage-marker feature-stage-marker-bl" aria-hidden="true"></span>
-                        <span class="feature-stage-marker feature-stage-marker-br" aria-hidden="true"></span>
                         <div class="media feature-usage-video">
                             <video autoplay muted loop playsinline preload="metadata"
                                 poster="assets/tscircuit-usage-video-poster.png"
@@ -2821,66 +2693,64 @@
                         </div>
                         <a class="featured-boards-link" href="/trending">Explore more boards →</a>
                     </div>
-                    <div class="featured-boards-stage">
-                        <div class="featured-boards-grid">
-                            <a class="featured-board-card" href="/seveibar/nrf-smart-watch?version=0.1.1"
-                                target="_blank" rel="noreferrer">
-                                <div class="featured-board-thumb">
-                                    <img src="assets/featured-boards/nrf-smart-watch-v0.1.1.png"
-                                        alt="3D preview of the nRF smart watch board" loading="lazy">
-                                </div>
-                                <div class="featured-board-meta">
-                                    <span class="featured-board-owner">seveibar</span>
-                                    <span class="featured-board-name">nrf-smart-watch</span>
-                                </div>
-                            </a>
-                            <a class="featured-board-card"
-                                href="/imrishabh18/rp2040-motor-controller?version=1.0.41" target="_blank"
-                                rel="noreferrer">
-                                <div class="featured-board-thumb">
-                                    <img src="assets/featured-boards/rp2040-motor-controller-v1.0.41.png"
-                                        alt="3D preview of the RP2040 motor controller board" loading="lazy">
-                                </div>
-                                <div class="featured-board-meta">
-                                    <span class="featured-board-owner">imrishabh18</span>
-                                    <span class="featured-board-name">rp2040-motor-controller</span>
-                                </div>
-                            </a>
-                            <a class="featured-board-card" href="/abse/wifi-smart-switch?version=1.0.29"
-                                target="_blank" rel="noreferrer">
-                                <div class="featured-board-thumb">
-                                    <img src="assets/featured-boards/wifi-smart-switch-v1.0.29.png"
-                                        alt="3D preview of the Wi-Fi smart switch board" loading="lazy">
-                                </div>
-                                <div class="featured-board-meta">
-                                    <span class="featured-board-owner">abse</span>
-                                    <span class="featured-board-name">wifi-smart-switch</span>
-                                </div>
-                            </a>
-                            <a class="featured-board-card" href="/abse/gameboy?version=1.0.15" target="_blank"
-                                rel="noreferrer">
-                                <div class="featured-board-thumb">
-                                    <img src="assets/featured-boards/gameboy-v1.0.15.png"
-                                        alt="3D preview of the Game Boy board" loading="lazy">
-                                </div>
-                                <div class="featured-board-meta">
-                                    <span class="featured-board-owner">abse</span>
-                                    <span class="featured-board-name">gameboy</span>
-                                </div>
-                            </a>
-                            <a class="featured-board-card"
-                                href="/seveibar/f1c100s-linux-dev-board?version=1.9.2" target="_blank"
-                                rel="noreferrer">
-                                <div class="featured-board-thumb">
-                                    <img src="assets/featured-boards/f1c100s-linux-dev-board-v1.9.2.png"
-                                        alt="3D preview of the F1C100S Linux development board" loading="lazy">
-                                </div>
-                                <div class="featured-board-meta">
-                                    <span class="featured-board-owner">seveibar</span>
-                                    <span class="featured-board-name">f1c100s-linux-dev-board</span>
-                                </div>
-                            </a>
-                        </div>
+                    <div class="featured-boards-grid">
+                        <a class="featured-board-card" href="/seveibar/nrf-smart-watch?version=0.1.1"
+                            target="_blank" rel="noreferrer">
+                            <div class="featured-board-thumb">
+                                <img src="assets/featured-boards/nrf-smart-watch-v0.1.1.png"
+                                    alt="3D preview of the nRF smart watch board" loading="lazy">
+                            </div>
+                            <div class="featured-board-meta">
+                                <span class="featured-board-owner">seveibar</span>
+                                <span class="featured-board-name">nrf-smart-watch</span>
+                            </div>
+                        </a>
+                        <a class="featured-board-card"
+                            href="/imrishabh18/rp2040-motor-controller?version=1.0.41" target="_blank"
+                            rel="noreferrer">
+                            <div class="featured-board-thumb">
+                                <img src="assets/featured-boards/rp2040-motor-controller-v1.0.41.png"
+                                    alt="3D preview of the RP2040 motor controller board" loading="lazy">
+                            </div>
+                            <div class="featured-board-meta">
+                                <span class="featured-board-owner">imrishabh18</span>
+                                <span class="featured-board-name">rp2040-motor-controller</span>
+                            </div>
+                        </a>
+                        <a class="featured-board-card" href="/abse/wifi-smart-switch?version=1.0.29"
+                            target="_blank" rel="noreferrer">
+                            <div class="featured-board-thumb">
+                                <img src="assets/featured-boards/wifi-smart-switch-v1.0.29.png"
+                                    alt="3D preview of the Wi-Fi smart switch board" loading="lazy">
+                            </div>
+                            <div class="featured-board-meta">
+                                <span class="featured-board-owner">abse</span>
+                                <span class="featured-board-name">wifi-smart-switch</span>
+                            </div>
+                        </a>
+                        <a class="featured-board-card" href="/abse/gameboy?version=1.0.15" target="_blank"
+                            rel="noreferrer">
+                            <div class="featured-board-thumb">
+                                <img src="assets/featured-boards/gameboy-v1.0.15.png"
+                                    alt="3D preview of the Game Boy board" loading="lazy">
+                            </div>
+                            <div class="featured-board-meta">
+                                <span class="featured-board-owner">abse</span>
+                                <span class="featured-board-name">gameboy</span>
+                            </div>
+                        </a>
+                        <a class="featured-board-card"
+                            href="/seveibar/f1c100s-linux-dev-board?version=1.9.2" target="_blank"
+                            rel="noreferrer">
+                            <div class="featured-board-thumb">
+                                <img src="assets/featured-boards/f1c100s-linux-dev-board-v1.9.2.png"
+                                    alt="3D preview of the F1C100S Linux development board" loading="lazy">
+                            </div>
+                            <div class="featured-board-meta">
+                                <span class="featured-board-owner">seveibar</span>
+                                <span class="featured-board-name">f1c100s-linux-dev-board</span>
+                            </div>
+                        </a>
                     </div>
                 </section>
 
