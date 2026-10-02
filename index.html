@@ -2571,39 +2571,39 @@
 
         /* Photographs of manufactured community boards. */
         .verified-section {
-            padding: 80px clamp(24px, 6vw, 96px);
+            padding: 40px clamp(24px, 6vw, 96px);
             background: #f8faf9;
         }
 
         .verified-intro {
             display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            align-items: end;
-            gap: 48px;
-            margin-bottom: 32px;
+            grid-template-columns: 1fr 1.5fr;
+            align-items: center;
+            gap: 32px;
+            margin-bottom: 24px;
         }
 
         .verified-section h2 {
             margin: 0;
-            max-width: 640px;
-            font-size: clamp(30px, 3.3vw, 46px);
+            max-width: 420px;
+            font-size: clamp(24px, 2.3vw, 30px);
             line-height: 1.12;
             letter-spacing: -.045em;
             font-weight: 600;
         }
 
         .verified-intro p {
-            max-width: 430px;
-            margin: 0 0 3px;
+            max-width: 650px;
+            margin: 0;
             color: var(--ink-2);
-            font-size: 16px;
-            line-height: 1.65;
+            font-size: 14px;
+            line-height: 1.6;
         }
 
         .verified-grid {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 32px 24px;
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+            gap: 24px 16px;
         }
 
         .verified-card {
@@ -2615,7 +2615,7 @@
             overflow: hidden;
             aspect-ratio: 1;
             border: 1px solid var(--line);
-            border-radius: 12px;
+            border-radius: 8px;
             background: #e9eeeb;
         }
 
@@ -2627,9 +2627,9 @@
         }
 
         .verified-card h3 {
-            margin: 16px 0 8px;
+            margin: 10px 0 6px;
             color: var(--ink);
-            font-size: 17px;
+            font-size: 14px;
             font-weight: 600;
             letter-spacing: -.025em;
         }
@@ -2645,10 +2645,10 @@
         .verified-result {
             display: flex;
             align-items: baseline;
-            gap: 8px;
-            margin: 0 0 14px;
+            gap: 6px;
+            margin: 0 0 8px;
             color: var(--ink-2);
-            font-size: 13px;
+            font-size: 12px;
             line-height: 1.5;
         }
 
@@ -2660,7 +2660,7 @@
 
         .verified-source {
             color: var(--ink-2);
-            font-size: 13px;
+            font-size: 12px;
             text-decoration: underline;
             text-decoration-color: #c6cec9;
             text-underline-offset: 4px;
@@ -2677,16 +2677,16 @@
         }
 
         .verified-note {
-            margin: 28px 0 0;
+            margin: 20px 0 0;
             color: var(--muted);
             font-size: 12px;
             line-height: 1.6;
         }
 
-        @media (max-width: 960px) {
+        @media (max-width: 1100px) {
             .verified-intro {
                 grid-template-columns: 1fr;
-                gap: 18px;
+                gap: 12px;
             }
 
             .verified-intro p {
@@ -2694,23 +2694,27 @@
             }
 
             .verified-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 28px 18px;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 24px 16px;
             }
         }
 
         @media (max-width: 640px) {
             .verified-section {
-                padding: 56px 24px;
+                padding: 32px 24px;
             }
 
             .verified-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 28px 14px;
+                gap: 22px 14px;
+            }
+
+            .verified-photo {
+                max-width: 140px;
             }
 
             .verified-card h3 {
-                font-size: 15px;
+                font-size: 14px;
             }
 
             .verified-source {
@@ -2844,11 +2848,10 @@
             <div class="verified-shell">
                 <div class="verified-intro">
                     <div>
-                        <div class="eyebrow">From code to the workbench</div>
                         <h2 id="verified-title">tscircuit boards are<br>physically verified.</h2>
                     </div>
                     <p>Handhelds, smart switches, Linux computers, and motor drivers.
-                        Real tscircuit designs, brought to life as physical hardware.</p>
+                        Fully designed in tscircuit with no other tooling, then exported for standard fabrication and assembly</p>
                 </div>
                 <div class="verified-grid">
                     <article class="verified-card">
