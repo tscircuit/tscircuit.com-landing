@@ -375,8 +375,6 @@
         }
 
         .featured-boards-section {
-            width: min(100%, var(--content-max));
-            margin-inline: auto;
             padding-bottom: 64px;
         }
 
@@ -386,14 +384,6 @@
             justify-content: space-between;
             gap: 20px;
             margin-bottom: 24px;
-        }
-
-        .featured-boards-header h2 {
-            margin: 0;
-            font-size: clamp(24px, 2.3vw, 30px);
-            line-height: 1.12;
-            letter-spacing: -.045em;
-            font-weight: 600;
         }
 
         .featured-boards-link {
@@ -416,12 +406,6 @@
             border-radius: 4px;
         }
 
-        .featured-boards-grid {
-            display: grid;
-            grid-template-columns: repeat(5, minmax(0, 1fr));
-            gap: 24px 16px;
-        }
-
         .featured-board-card {
             min-width: 0;
             display: flex;
@@ -435,49 +419,14 @@
             text-underline-offset: 3px;
         }
 
-        .featured-board-card:focus-visible {
-            outline: 2px solid #3b82f6;
-            outline-offset: 4px;
-            border-radius: 8px;
-        }
-
-        .featured-board-thumb {
-            aspect-ratio: 1;
-            overflow: hidden;
-            border: 1px solid var(--line);
-            border-radius: 8px;
-            background: #f8fafc;
-        }
-
-        .featured-board-thumb img {
-            display: block;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
         .featured-board-meta {
-            display: grid;
-            gap: 6px;
-            padding-top: 10px;
+            min-width: 0;
         }
 
         .featured-board-owner {
             overflow: hidden;
-            color: var(--ink-2);
-            font-size: 12px;
-            line-height: 1.5;
             text-overflow: ellipsis;
             white-space: nowrap;
-        }
-
-        .featured-board-name {
-            overflow-wrap: anywhere;
-            font-family: 'Geist', sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            line-height: 1.4;
-            letter-spacing: -.025em;
         }
 
         /* Code block */
@@ -1470,10 +1419,6 @@
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
 
-            .featured-boards-grid {
-                grid-template-columns: repeat(3, minmax(0, 1fr));
-            }
-
             .foot-shell {
                 grid-template-columns: repeat(4, minmax(0, 1fr));
             }
@@ -1664,10 +1609,6 @@
                 align-items: flex-start;
                 flex-direction: column;
                 gap: 8px;
-            }
-
-            .featured-boards-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
             }
 
             .feature-card {
@@ -2586,16 +2527,17 @@
             }
         }
 
-        /* Photographs of manufactured community boards. */
+        /* Shared layout and typography for both board galleries. */
         .verified-section {
             padding: 0 0 32px;
             margin-bottom: 32px;
             border-bottom: 1px solid var(--line);
         }
 
-        .verified-shell {
-            max-width: 1200px;
-            margin: 0 auto;
+        .verified-section,
+        .featured-boards-section {
+            width: min(100%, 1200px);
+            margin-inline: auto;
         }
 
         .verified-intro {
@@ -2606,7 +2548,8 @@
             margin-bottom: 24px;
         }
 
-        .verified-section h2 {
+        .verified-section h2,
+        .featured-boards-section h2 {
             margin: 0;
             max-width: 420px;
             font-size: clamp(24px, 2.3vw, 30px);
@@ -2623,7 +2566,8 @@
             line-height: 1.6;
         }
 
-        .verified-grid {
+        .verified-grid,
+        .featured-boards-grid {
             display: grid;
             grid-template-columns: repeat(6, minmax(0, 1fr));
             gap: 24px 16px;
@@ -2633,7 +2577,8 @@
             min-width: 0;
         }
 
-        .verified-photo {
+        .verified-photo,
+        .featured-board-thumb {
             display: block;
             overflow: hidden;
             aspect-ratio: 1;
@@ -2642,19 +2587,23 @@
             background: #e9eeeb;
         }
 
-        .verified-photo img {
+        .verified-photo img,
+        .featured-board-thumb img {
             display: block;
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        .verified-card h3 {
+        .verified-card h3,
+        .featured-board-name {
             margin: 10px 0 6px;
             color: var(--ink);
             font-size: 14px;
             font-weight: 600;
             letter-spacing: -.025em;
+            line-height: 1.4;
+            overflow-wrap: anywhere;
         }
 
         .verified-photo-gameboy img {
@@ -2665,14 +2614,18 @@
             object-position: center 60%;
         }
 
-        .verified-result {
-            display: flex;
-            align-items: baseline;
-            gap: 6px;
+        .verified-result,
+        .featured-board-owner {
             margin: 0 0 8px;
             color: var(--ink-2);
             font-size: 12px;
             line-height: 1.5;
+        }
+
+        .verified-result {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
         }
 
         .verified-result::before {
@@ -2681,9 +2634,11 @@
             font-weight: 600;
         }
 
-        .verified-card a:focus-visible {
+        .verified-card a:focus-visible,
+        .featured-board-card:focus-visible {
             outline: 2px solid #28734b;
             outline-offset: 5px;
+            border-radius: 8px;
         }
 
         @media (max-width: 1100px) {
@@ -2696,24 +2651,23 @@
                 max-width: 600px;
             }
 
-            .verified-grid {
+            .verified-grid,
+            .featured-boards-grid {
                 grid-template-columns: repeat(3, minmax(0, 1fr));
                 gap: 24px 16px;
             }
         }
 
         @media (max-width: 640px) {
-            .verified-grid {
+            .verified-grid,
+            .featured-boards-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
                 gap: 22px 14px;
             }
 
-            .verified-photo {
+            .verified-photo,
+            .featured-board-thumb {
                 max-width: 140px;
-            }
-
-            .verified-card h3 {
-                font-size: 14px;
             }
 
         }
@@ -2993,8 +2947,8 @@
                                     alt="3D preview of the nRF smart watch board" loading="lazy">
                             </div>
                             <div class="featured-board-meta">
-                                <span class="featured-board-name">nrf-smart-watch</span>
-                                <span class="featured-board-owner">seveibar</span>
+                                <h3 class="featured-board-name">nRF smart watch</h3>
+                                <p class="featured-board-owner">seveibar</p>
                             </div>
                         </a>
                         <a class="featured-board-card"
@@ -3005,8 +2959,8 @@
                                     alt="3D preview of the RP2040 motor controller board" loading="lazy">
                             </div>
                             <div class="featured-board-meta">
-                                <span class="featured-board-name">rp2040-motor-controller</span>
-                                <span class="featured-board-owner">imrishabh18</span>
+                                <h3 class="featured-board-name">RP2040 motor controller</h3>
+                                <p class="featured-board-owner">imrishabh18</p>
                             </div>
                         </a>
                         <a class="featured-board-card" href="/abse/wifi-smart-switch?version=1.0.29"
@@ -3016,8 +2970,8 @@
                                     alt="3D preview of the Wi-Fi smart switch board" loading="lazy">
                             </div>
                             <div class="featured-board-meta">
-                                <span class="featured-board-name">wifi-smart-switch</span>
-                                <span class="featured-board-owner">abse</span>
+                                <h3 class="featured-board-name">Wi-Fi smart switch</h3>
+                                <p class="featured-board-owner">abse</p>
                             </div>
                         </a>
                         <a class="featured-board-card" href="/abse/gameboy?version=1.0.15" target="_blank"
@@ -3027,8 +2981,8 @@
                                     alt="3D preview of the Game Boy board" loading="lazy">
                             </div>
                             <div class="featured-board-meta">
-                                <span class="featured-board-name">gameboy</span>
-                                <span class="featured-board-owner">abse</span>
+                                <h3 class="featured-board-name">Game Boy</h3>
+                                <p class="featured-board-owner">abse</p>
                             </div>
                         </a>
                         <a class="featured-board-card"
@@ -3039,8 +2993,8 @@
                                     alt="3D preview of the F1C100S Linux development board" loading="lazy">
                             </div>
                             <div class="featured-board-meta">
-                                <span class="featured-board-name">f1c100s-linux-dev-board</span>
-                                <span class="featured-board-owner">seveibar</span>
+                                <h3 class="featured-board-name">F1C100S Linux board</h3>
+                                <p class="featured-board-owner">seveibar</p>
                             </div>
                         </a>
                     </div>
