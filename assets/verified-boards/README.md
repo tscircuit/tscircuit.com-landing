@@ -1,6 +1,10 @@
 # Physically verified boards
 
 Six distinct physical builds. Photos are bundled locally and lazy-loaded.
+Gallery JPEGs are resized to 640px wide and encoded at quality 60. This supports
+the largest tablet thumbnails at approximately 2× density, while avoiding the
+full-resolution originals in the page download. Vite bundles these assets
+without automatically resizing them.
 
 | Asset | Build / source | Photo provenance |
 | --- | --- | --- |
