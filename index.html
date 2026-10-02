@@ -1081,7 +1081,8 @@
         }
 
         .feature-grid {
-            grid-template-columns: repeat(3, 1fr)
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 48px 28px;
         }
 
         .playground-grid {
@@ -1245,13 +1246,11 @@
         }
 
         .feature-card {
-            border: 1.5px solid var(--ink);
-            border-radius: 4px;
-            padding: 20px;
-            background: var(--paper);
-            min-height: 340px;
+            min-width: 0;
+            min-height: 380px;
             display: flex;
             flex-direction: column;
+            gap: 24px;
             box-sizing: border-box;
         }
 
@@ -1261,25 +1260,32 @@
         }
 
         .feature-card> :first-child .mono {
-            font-size: 10px;
-            letter-spacing: .12em;
+            font-size: 11px;
+            letter-spacing: .08em;
+            line-height: 1.5;
         }
 
         .feature-card> :first-child h3 {
             margin: 0;
-            font-size: 18px;
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 1.25;
+            letter-spacing: -.02em;
         }
 
         .feature-card> :first-child p {
             margin: 0;
             color: var(--ink-2);
-            font-size: 13px;
-            line-height: 1.45;
+            font-size: 14px;
+            line-height: 1.6;
         }
 
         .feature-card> :last-child {
             margin-top: auto !important;
-            height: 180px;
+            height: 220px;
+            flex-shrink: 0;
+            border-width: 1px;
+            border-radius: 10px;
         }
 
         .feature-card> :last-child.is-white {
@@ -1295,9 +1301,17 @@
         }
 
         .feature-card .code {
-            padding: 12px 14px;
-            font-size: 10px;
-            line-height: 1.4;
+            padding: 16px;
+            font-size: 11px;
+            line-height: 1.5;
+            overflow: auto;
+            color-scheme: dark;
+            scrollbar-width: thin;
+        }
+
+        .feature-card .code:focus-visible {
+            outline: 2px solid #3b82f6;
+            outline-offset: 3px;
         }
 
         .feature-card .code pre {
@@ -1675,6 +1689,11 @@
                 min-height: 0;
             }
 
+            .feature-card .media {
+                height: auto;
+                aspect-ratio: 16 / 10;
+            }
+
             .foot-shell {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
                 gap: 28px 24px;
@@ -1722,8 +1741,6 @@
 
             .feature-card {
                 width: 100%;
-                max-width: 300px;
-                padding: 14px;
             }
 
             .trust-strip .hand {
@@ -2225,7 +2242,6 @@
             border-color: var(--line-2);
         }
 
-        .feature-card,
         .faq-item,
         .media,
         .code,
@@ -2234,7 +2250,6 @@
             border-color: var(--line);
         }
 
-        .feature-card,
         .faq-item,
         .closing-cta-panel {
             background-color: #ffffff;
@@ -2832,7 +2847,7 @@
                             <h3>TSX components for circuits</h3>
                             <p>Compose boards the way you compose UI. Props, children, hooks — but for resistors.</p>
                         </div>
-                        <div class="code">
+                        <div class="code" tabindex="0" role="region" aria-label="TSX circuit example">
                             <pre><span class="kw">export default</span> () =&gt; (
   &lt;<span class="tg">board</span> <span class="at">width</span>=<span class="st">"18mm"</span> <span class="at">height</span>=<span class="st">"12mm"</span>&gt;
     &lt;<span class="tg">resistor</span>
