@@ -1192,20 +1192,40 @@
             margin-top: 20px;
         }
 
+        .faq-shell {
+            display: grid;
+            grid-template-columns: minmax(0, .9fr) minmax(0, 1.6fr);
+            gap: 64px;
+            align-items: start;
+        }
+
+        .section .faq-intro h2 {
+            margin-bottom: 16px;
+            font-size: 32px;
+            line-height: 1.15;
+            letter-spacing: -.035em;
+        }
+
+        .section .faq-intro .sub {
+            max-width: 360px;
+            margin: 0;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
         .faq-list {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 12px;
-            margin-top: 18px;
+            gap: 0;
+            border-top: 1px solid var(--line);
             align-items: start;
         }
 
         .faq-item {
-            border: 1.5px solid var(--ink);
-            border-radius: 4px;
+            border: 0;
+            border-bottom: 1px solid var(--line);
             padding: 0;
             background: var(--paper);
-            overflow: hidden;
         }
 
         .faq-item summary {
@@ -1213,15 +1233,17 @@
             cursor: pointer;
             width: 100%;
             box-sizing: border-box;
-            padding: 20px;
+            min-height: 72px;
+            padding: 20px 0;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 16px;
             font-family: 'Geist', sans-serif;
-            font-weight: 600;
+            font-weight: 500;
             font-size: 16px;
-            line-height: 1.2;
+            line-height: 1.45;
         }
 
         .faq-item summary::-webkit-details-marker {
@@ -1229,15 +1251,30 @@
         }
 
         .faq-item summary:focus-visible {
-            outline: 2px solid var(--accent);
+            outline: 2px solid #3b82f6;
             outline-offset: 4px;
         }
 
         .faq-item summary::after {
             content: "+";
             flex: 0 0 auto;
-            font-family: 'JetBrains Mono', monospace;
+            width: 28px;
+            height: 28px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: #f4f5f7;
+            font-size: 20px;
+            font-weight: 400;
+            line-height: 1;
             color: var(--muted);
+        }
+
+        .faq-item summary:hover::after,
+        .faq-item summary:focus-visible::after,
+        .faq-item[open] summary::after {
+            color: #2563eb;
+            background: #eff6ff;
         }
 
         .faq-item[open] summary::after {
@@ -1245,10 +1282,11 @@
         }
 
         .faq-answer {
-            padding: 0 20px 20px;
+            padding: 0 44px 24px 0;
             color: var(--ink-2);
             line-height: 1.65;
-            font-size: 13px;
+            font-size: 14px;
+            overflow-wrap: anywhere;
         }
 
         .faq-answer p {
@@ -1614,8 +1652,9 @@
                 grid-template-columns: 1fr;
             }
 
-            .faq-list {
+            .faq-shell {
                 grid-template-columns: 1fr;
+                gap: 28px;
             }
 
             .playground-grid .media {
@@ -1628,6 +1667,10 @@
         }
 
         @media (max-width: 640px) {
+            .faq-answer {
+                padding-right: 0;
+            }
+
             .nav-shell {
                 gap: 10px;
             }
@@ -3080,9 +3123,11 @@
         <!-- FAQ -->
         <section class="section" aria-labelledby="faq-title">
             <div class="shell faq-shell">
-                <div class="eyebrow">FAQ</div>
-                <h2 id="faq-title">Questions people ask before trying tscircuit.</h2>
-                <p class="sub">A quick pass over licensing, workflows, imports, and the API surface.</p>
+                <div class="faq-intro">
+                    <div class="eyebrow">FAQ</div>
+                    <h2 id="faq-title">Questions people ask before trying tscircuit.</h2>
+                    <p class="sub">A quick pass over licensing, workflows, imports, and the API surface.</p>
+                </div>
 
                 <div class="faq-list">
                     <details class="faq-item">
