@@ -2571,8 +2571,14 @@
 
         /* Photographs of manufactured community boards. */
         .verified-section {
-            padding: 40px clamp(24px, 6vw, 96px);
-            background: #f8faf9;
+            padding: 0 0 32px;
+            margin-bottom: 32px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .verified-shell {
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .verified-intro {
@@ -2700,10 +2706,6 @@
         }
 
         @media (max-width: 640px) {
-            .verified-section {
-                padding: 32px 24px;
-            }
-
             .verified-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
                 gap: 22px 14px;
@@ -2843,95 +2845,6 @@
             </div>
         </section>
 
-        <!-- Physically verified hardware -->
-        <section id="verified-boards" class="section verified-section" aria-labelledby="verified-title">
-            <div class="verified-shell">
-                <div class="verified-intro">
-                    <div>
-                        <h2 id="verified-title">tscircuit boards are<br>physically verified.</h2>
-                    </div>
-                    <p>Handhelds, smart switches, Linux computers, and motor drivers.
-                        Fully designed in tscircuit with no other tooling, then exported for standard fabrication and assembly</p>
-                </div>
-                <div class="verified-grid">
-                    <article class="verified-card">
-                        <a class="verified-photo verified-photo-gameboy" href="https://tscircuit.com/abse/gameboy"
-                            target="_blank" rel="noreferrer" aria-label="See Game Boy">
-                            <img src="assets/verified-boards/gameboy.jpg"
-                                alt="Assembled Game Boy board with buttons and a powered display showing HELLO and RP2040"
-                                width="900" height="1200" loading="lazy" decoding="async">
-                        </a>
-                        <h3>Game Boy</h3>
-                        <p class="verified-result">RP2040 handheld with its display running.</p>
-                        <a class="verified-source" href="https://tscircuit.com/abse/gameboy"
-                            target="_blank" rel="noreferrer" aria-label="Explore abse/gameboy for Game Boy">Explore board ↗</a>
-                    </article>
-                    <article class="verified-card">
-                        <a class="verified-photo" href="https://x.com/seveibar/status/2102913477157560510"
-                            target="_blank" rel="noreferrer" aria-label="See NEMA17 motor driver">
-                            <img src="assets/verified-boards/usb-motor-driver.jpg"
-                                alt="Compact RP2040 driver with two USB-C ports mounted on a NEMA17 stepper motor"
-                                width="1108" height="1200" loading="lazy" decoding="async">
-                        </a>
-                        <h3>NEMA17 motor driver</h3>
-                        <p class="verified-result">Stepper motor running on the bench.</p>
-                        <a class="verified-source" href="https://x.com/seveibar/status/2102913477157560510"
-                            target="_blank" rel="noreferrer" aria-label="View test on X for NEMA17 motor driver">View test on X ↗</a>
-                    </article>
-                    <article class="verified-card">
-                        <a class="verified-photo" href="https://tscircuit.com/abse/wifi-smart-switch"
-                            target="_blank" rel="noreferrer" aria-label="See Wi-Fi smart switch">
-                            <img src="assets/verified-boards/wifi-smart-switch.jpg"
-                                alt="Assembled Wi-Fi smart switch with relays and wiring in a custom enclosure"
-                                width="1200" height="900" loading="lazy" decoding="async">
-                        </a>
-                        <h3>Wi-Fi smart switch</h3>
-                        <p class="verified-result">Wi-Fi relay control in a custom enclosure.</p>
-                        <a class="verified-source" href="https://tscircuit.com/abse/wifi-smart-switch"
-                            target="_blank" rel="noreferrer" aria-label="Explore abse/wifi-smart-switch for Wi-Fi smart switch">Explore board ↗</a>
-                    </article>
-                    <article class="verified-card">
-                        <a class="verified-photo" href="https://x.com/seveibar/status/2105089653795873274"
-                            target="_blank" rel="noreferrer" aria-label="See F1C100S Linux board">
-                            <img src="assets/verified-boards/f1c100s-linux.jpg"
-                                alt="Manufactured Linux board connected to USB and test wires"
-                                width="676" height="900" loading="lazy" decoding="async">
-                        </a>
-                        <h3>F1C100S Linux board</h3>
-                        <p class="verified-result">Linux running. SSH over USB.</p>
-                        <a class="verified-source" href="https://x.com/seveibar/status/2105089653795873274"
-                            target="_blank" rel="noreferrer" aria-label="View test on X for F1C100S Linux board">View test on X ↗</a>
-                    </article>
-                    <article class="verified-card">
-                        <a class="verified-photo" href="https://x.com/seveibar/status/2089862423205597334"
-                            target="_blank" rel="noreferrer" aria-label="See nRF52810 Bluetooth board">
-                            <img src="assets/verified-boards/nrf52810-bluetooth.jpg"
-                                alt="Powered nRF52810 Bluetooth board with its LED lit"
-                                width="900" height="900" loading="lazy" decoding="async">
-                        </a>
-                        <h3>nRF52810 Bluetooth board</h3>
-                        <p class="verified-result">Advertising and detected on a phone.</p>
-                        <a class="verified-source" href="https://x.com/seveibar/status/2089862423205597334"
-                            target="_blank" rel="noreferrer" aria-label="View test on X for nRF52810 Bluetooth board">View test on X ↗</a>
-                    </article>
-                    <article class="verified-card">
-                        <a class="verified-photo verified-photo-pico" href="https://x.com/seveibar/status/2095192727898214542"
-                            target="_blank" rel="noreferrer" aria-label="See MSP430 Pico">
-                            <img src="assets/verified-boards/msp430-pico.jpg"
-                                alt="Four assembled MSP430F5503 Pico boards held in a hand"
-                                width="900" height="1200" loading="lazy" decoding="async">
-                        </a>
-                        <h3>MSP430 Pico</h3>
-                        <p class="verified-result">MSP430F5503 in a Pico form factor.</p>
-                        <a class="verified-source" href="https://x.com/seveibar/status/2095192727898214542"
-                            target="_blank" rel="noreferrer" aria-label="View build on X for MSP430 Pico">View build on X ↗</a>
-                    </article>
-                </div>
-                <p class="verified-note">Real builds from the tscircuit community. Explore the designs and
-                    @seveibar’s build logs.</p>
-            </div>
-        </section>
-
         <!-- Trust strip
         <section class="trust-strip-section" aria-label="Hardware teams building with tscircuit">
             <div class="shell trust-strip">
@@ -2995,6 +2908,95 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Physically verified hardware -->
+                <section id="verified-boards" class="verified-section" aria-labelledby="verified-title">
+                    <div class="verified-shell">
+                        <div class="verified-intro">
+                            <div>
+                                <h2 id="verified-title">tscircuit boards are<br>physically verified.</h2>
+                            </div>
+                            <p>Handhelds, smart switches, Linux computers, and motor drivers.
+                                Fully designed in tscircuit with no other tooling, then exported for standard fabrication and assembly</p>
+                        </div>
+                        <div class="verified-grid">
+                            <article class="verified-card">
+                                <a class="verified-photo verified-photo-gameboy" href="https://tscircuit.com/abse/gameboy"
+                                    target="_blank" rel="noreferrer" aria-label="See Game Boy">
+                                    <img src="assets/verified-boards/gameboy.jpg"
+                                        alt="Assembled Game Boy board with buttons and a powered display showing HELLO and RP2040"
+                                        width="900" height="1200" loading="lazy" decoding="async">
+                                </a>
+                                <h3>Game Boy</h3>
+                                <p class="verified-result">RP2040 handheld with its display running.</p>
+                                <a class="verified-source" href="https://tscircuit.com/abse/gameboy"
+                                    target="_blank" rel="noreferrer" aria-label="Explore abse/gameboy for Game Boy">Explore board ↗</a>
+                            </article>
+                            <article class="verified-card">
+                                <a class="verified-photo" href="https://x.com/seveibar/status/2102913477157560510"
+                                    target="_blank" rel="noreferrer" aria-label="See NEMA17 motor driver">
+                                    <img src="assets/verified-boards/usb-motor-driver.jpg"
+                                        alt="Compact RP2040 driver with two USB-C ports mounted on a NEMA17 stepper motor"
+                                        width="1108" height="1200" loading="lazy" decoding="async">
+                                </a>
+                                <h3>NEMA17 motor driver</h3>
+                                <p class="verified-result">Stepper motor running on the bench.</p>
+                                <a class="verified-source" href="https://x.com/seveibar/status/2102913477157560510"
+                                    target="_blank" rel="noreferrer" aria-label="View test on X for NEMA17 motor driver">View test on X ↗</a>
+                            </article>
+                            <article class="verified-card">
+                                <a class="verified-photo" href="https://tscircuit.com/abse/wifi-smart-switch"
+                                    target="_blank" rel="noreferrer" aria-label="See Wi-Fi smart switch">
+                                    <img src="assets/verified-boards/wifi-smart-switch.jpg"
+                                        alt="Assembled Wi-Fi smart switch with relays and wiring in a custom enclosure"
+                                        width="1200" height="900" loading="lazy" decoding="async">
+                                </a>
+                                <h3>Wi-Fi smart switch</h3>
+                                <p class="verified-result">Wi-Fi relay control in a custom enclosure.</p>
+                                <a class="verified-source" href="https://tscircuit.com/abse/wifi-smart-switch"
+                                    target="_blank" rel="noreferrer" aria-label="Explore abse/wifi-smart-switch for Wi-Fi smart switch">Explore board ↗</a>
+                            </article>
+                            <article class="verified-card">
+                                <a class="verified-photo" href="https://x.com/seveibar/status/2105089653795873274"
+                                    target="_blank" rel="noreferrer" aria-label="See F1C100S Linux board">
+                                    <img src="assets/verified-boards/f1c100s-linux.jpg"
+                                        alt="Manufactured Linux board connected to USB and test wires"
+                                        width="676" height="900" loading="lazy" decoding="async">
+                                </a>
+                                <h3>F1C100S Linux board</h3>
+                                <p class="verified-result">Linux running. SSH over USB.</p>
+                                <a class="verified-source" href="https://x.com/seveibar/status/2105089653795873274"
+                                    target="_blank" rel="noreferrer" aria-label="View test on X for F1C100S Linux board">View test on X ↗</a>
+                            </article>
+                            <article class="verified-card">
+                                <a class="verified-photo" href="https://x.com/seveibar/status/2089862423205597334"
+                                    target="_blank" rel="noreferrer" aria-label="See nRF52810 Bluetooth board">
+                                    <img src="assets/verified-boards/nrf52810-bluetooth.jpg"
+                                        alt="Powered nRF52810 Bluetooth board with its LED lit"
+                                        width="900" height="900" loading="lazy" decoding="async">
+                                </a>
+                                <h3>nRF52810 Bluetooth board</h3>
+                                <p class="verified-result">Advertising and detected on a phone.</p>
+                                <a class="verified-source" href="https://x.com/seveibar/status/2089862423205597334"
+                                    target="_blank" rel="noreferrer" aria-label="View test on X for nRF52810 Bluetooth board">View test on X ↗</a>
+                            </article>
+                            <article class="verified-card">
+                                <a class="verified-photo verified-photo-pico" href="https://x.com/seveibar/status/2095192727898214542"
+                                    target="_blank" rel="noreferrer" aria-label="See MSP430 Pico">
+                                    <img src="assets/verified-boards/msp430-pico.jpg"
+                                        alt="Four assembled MSP430F5503 Pico boards held in a hand"
+                                        width="900" height="1200" loading="lazy" decoding="async">
+                                </a>
+                                <h3>MSP430 Pico</h3>
+                                <p class="verified-result">MSP430F5503 in a Pico form factor.</p>
+                                <a class="verified-source" href="https://x.com/seveibar/status/2095192727898214542"
+                                    target="_blank" rel="noreferrer" aria-label="View build on X for MSP430 Pico">View build on X ↗</a>
+                            </article>
+                        </div>
+                        <p class="verified-note">Real builds from the tscircuit community. Explore the designs and
+                            @seveibar’s build logs.</p>
+                    </div>
+                </section>
 
                 <!-- Featured boards -->
                 <section class="featured-boards-section" aria-labelledby="featured-boards-title">
