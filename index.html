@@ -2569,7 +2569,137 @@
             }
         }
 
-        /* Direction-specific sections load below */
+        /* Photographs of manufactured community boards. */
+        .verified-section {
+            padding: 0 0 32px;
+            margin-bottom: 32px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .verified-shell {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .verified-intro {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            align-items: center;
+            gap: 32px;
+            margin-bottom: 24px;
+        }
+
+        .verified-section h2 {
+            margin: 0;
+            max-width: 420px;
+            font-size: clamp(24px, 2.3vw, 30px);
+            line-height: 1.12;
+            letter-spacing: -.045em;
+            font-weight: 600;
+        }
+
+        .verified-intro p {
+            max-width: 650px;
+            margin: 0;
+            color: var(--ink-2);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .verified-grid {
+            display: grid;
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+            gap: 24px 16px;
+        }
+
+        .verified-card {
+            min-width: 0;
+        }
+
+        .verified-photo {
+            display: block;
+            overflow: hidden;
+            aspect-ratio: 1;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: #e9eeeb;
+        }
+
+        .verified-photo img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .verified-card h3 {
+            margin: 10px 0 6px;
+            color: var(--ink);
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: -.025em;
+        }
+
+        .verified-photo-gameboy img {
+            object-position: center 38%;
+        }
+
+        .verified-photo-pico img {
+            object-position: center 60%;
+        }
+
+        .verified-result {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+            margin: 0 0 8px;
+            color: var(--ink-2);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .verified-result::before {
+            content: "✓";
+            color: #28734b;
+            font-weight: 600;
+        }
+
+        .verified-card a:focus-visible {
+            outline: 2px solid #28734b;
+            outline-offset: 5px;
+        }
+
+        @media (max-width: 1100px) {
+            .verified-intro {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .verified-intro p {
+                max-width: 600px;
+            }
+
+            .verified-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 24px 16px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .verified-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 22px 14px;
+            }
+
+            .verified-photo {
+                max-width: 140px;
+            }
+
+            .verified-card h3 {
+                font-size: 14px;
+            }
+
+            /* Direction-specific sections load below */
     </style>
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-LC5FBCPK4B"></script>
@@ -2753,6 +2883,81 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Physically verified hardware -->
+                <section id="verified-boards" class="verified-section" aria-labelledby="verified-title">
+                    <div class="verified-shell">
+                        <div class="verified-intro">
+                            <div>
+                                <h2 id="verified-title">tscircuit boards are<br>physically verified.</h2>
+                            </div>
+                            <p>Handhelds, smart switches, Linux computers, and motor drivers.
+                                Fully designed in tscircuit with no other tooling, then exported for standard fabrication and assembly</p>
+                        </div>
+                        <div class="verified-grid">
+                            <article class="verified-card">
+                                <a class="verified-photo verified-photo-gameboy" href="https://tscircuit.com/abse/gameboy"
+                                    target="_blank" rel="noreferrer" aria-label="See Game Boy">
+                                    <img src="assets/verified-boards/gameboy.jpg"
+                                        alt="Assembled Game Boy board with buttons and a powered display showing HELLO and RP2040"
+                                        width="640" height="853" loading="lazy" decoding="async">
+                                </a>
+                                <h3>Game Boy</h3>
+                                <p class="verified-result">RP2040 handheld with its display running.</p>
+                            </article>
+                            <article class="verified-card">
+                                <a class="verified-photo" href="https://x.com/seveibar/status/2102913477157560510"
+                                    target="_blank" rel="noreferrer" aria-label="See NEMA17 motor driver">
+                                    <img src="assets/verified-boards/usb-motor-driver.jpg"
+                                        alt="Compact RP2040 driver with two USB-C ports mounted on a NEMA17 stepper motor"
+                                        width="640" height="693" loading="lazy" decoding="async">
+                                </a>
+                                <h3>NEMA17 motor driver</h3>
+                                <p class="verified-result">Stepper motor running on the bench.</p>
+                            </article>
+                            <article class="verified-card">
+                                <a class="verified-photo" href="https://tscircuit.com/abse/wifi-smart-switch"
+                                    target="_blank" rel="noreferrer" aria-label="See Wi-Fi smart switch">
+                                    <img src="assets/verified-boards/wifi-smart-switch.jpg"
+                                        alt="Assembled Wi-Fi smart switch with relays and wiring in a custom enclosure"
+                                        width="640" height="480" loading="lazy" decoding="async">
+                                </a>
+                                <h3>Wi-Fi smart switch</h3>
+                                <p class="verified-result">Wi-Fi relay control in a custom enclosure.</p>
+                            </article>
+                            <article class="verified-card">
+                                <a class="verified-photo" href="https://x.com/seveibar/status/2105089653795873274"
+                                    target="_blank" rel="noreferrer" aria-label="See F1C100S Linux board">
+                                    <img src="assets/verified-boards/f1c100s-linux.jpg"
+                                        alt="Manufactured Linux board connected to USB and test wires"
+                                        width="640" height="852" loading="lazy" decoding="async">
+                                </a>
+                                <h3>F1C100S Linux board</h3>
+                                <p class="verified-result">Linux running. SSH over USB.</p>
+                            </article>
+                            <article class="verified-card">
+                                <a class="verified-photo" href="https://x.com/seveibar/status/2089862423205597334"
+                                    target="_blank" rel="noreferrer" aria-label="See nRF52810 Bluetooth board">
+                                    <img src="assets/verified-boards/nrf52810-bluetooth.jpg"
+                                        alt="Powered nRF52810 Bluetooth board with its LED lit"
+                                        width="640" height="640" loading="lazy" decoding="async">
+                                </a>
+                                <h3>nRF52810 Bluetooth board</h3>
+                                <p class="verified-result">Advertising and detected on a phone.</p>
+                            </article>
+                            <article class="verified-card">
+                                <a class="verified-photo verified-photo-pico" href="https://x.com/seveibar/status/2095192727898214542"
+                                    target="_blank" rel="noreferrer" aria-label="See MSP430 Pico">
+                                    <img src="assets/verified-boards/msp430-pico.jpg"
+                                        alt="Four assembled MSP430F5503 Pico boards held in a hand"
+                                        width="640" height="853" loading="lazy" decoding="async">
+                                </a>
+                                <h3>MSP430 Pico</h3>
+                                <p class="verified-result">MSP430F5503 in a Pico form factor.</p>
+                            </article>
+                        </div>
+                    </div>
+                </section>
 
                 <!-- Featured boards -->
                 <section class="featured-boards-section" aria-labelledby="featured-boards-title">
