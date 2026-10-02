@@ -1087,27 +1087,27 @@
 
         /* Footer */
         .foot {
-            padding: 40px clamp(24px, 6vw, 96px) 28px;
-            background: var(--panel);
+            padding: 56px clamp(24px, 6vw, 96px) 24px;
+            background: #f8fafc;
             border-top: 1px solid var(--line);
         }
 
         .foot-shell {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-            gap: 28px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
+            grid-template-columns: 2fr repeat(4, minmax(0, 1fr));
+            gap: 40px;
+            font-size: 14px;
+            line-height: 1.5;
             color: var(--ink-2);
         }
 
         .foot h5 {
-            margin: 0 0 10px;
-            font-size: 11px;
-            letter-spacing: .12em;
+            margin: 0 0 14px;
+            font-size: 12px;
+            letter-spacing: .06em;
             text-transform: uppercase;
-            color: var(--muted);
-            font-weight: 500
+            color: var(--ink);
+            font-weight: 600;
         }
 
         .foot ul {
@@ -1115,7 +1115,7 @@
             margin: 0;
             padding: 0;
             display: grid;
-            gap: 6px
+            gap: 4px;
         }
 
         .foot a {
@@ -1123,15 +1123,28 @@
             text-decoration: none;
         }
 
-        .foot .logo,
-        .foot .logo:hover {
-            color: #fff;
+        .foot ul a {
+            min-height: 28px;
+            display: inline-flex;
+            align-items: center;
+            border-radius: 4px;
+        }
+
+        .foot .foot-brand,
+        .foot .foot-brand:hover {
+            color: var(--ink);
+            text-decoration: none;
+        }
+
+        .foot a:focus-visible {
+            outline: 2px solid #3b82f6;
+            outline-offset: 3px;
         }
 
         .foot a:hover {
             color: var(--ink);
             text-decoration: underline;
-            text-underline-offset: 2px;
+            text-underline-offset: 4px;
         }
 
         /* Utility grid */
@@ -1475,12 +1488,14 @@
         }
 
         .foot-brand {
-            margin-bottom: 10px;
+            margin-bottom: 16px;
         }
 
         .foot-brand-copy {
             margin: 0;
-            max-width: 280px;
+            max-width: 240px;
+            color: var(--muted);
+            line-height: 1.65;
         }
 
         .gallery-more {
@@ -1488,11 +1503,12 @@
         }
 
         .site-footer-note {
-            margin-top: 24px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--line-2);
+            font-size: 12px;
             color: var(--muted);
-            text-align: center;
+            text-align: left;
         }
 
         @media (max-width: 1100px) {
@@ -1520,7 +1536,11 @@
             }
 
             .foot-shell {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
+
+            .foot-shell>div:first-child {
+                grid-column: 1 / -1;
             }
         }
 
@@ -1603,12 +1623,7 @@
             }
 
             .foot-shell {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 18px 16px;
-            }
-
-            .foot-shell>div:first-child {
-                grid-column: 1 / -1;
+                gap: 32px 24px;
             }
         }
 
@@ -1731,34 +1746,8 @@
             }
 
             .foot-shell {
-                gap: 14px 10px;
-            }
-
-            .foot-shell>div:first-child {
-                text-align: center;
-                justify-self: center;
-                max-width: 240px;
-            }
-
-            .foot-shell>div:not(:first-child) {
-                padding: 12px;
-                border: 1px solid rgba(102, 112, 133, .18);
-                border-radius: 4px;
-                background: rgba(255, 255, 255, .72);
-            }
-
-            .foot h5 {
-                margin-bottom: 6px;
-                font-size: 10px;
-            }
-
-            .foot ul {
-                gap: 4px;
-            }
-
-            .foot-brand {
-                margin-bottom: 8px;
-                display: inline-flex;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 28px 24px;
             }
 
             .foot-brand-copy {
@@ -1766,7 +1755,7 @@
             }
 
             .site-footer-note {
-                margin-top: 20px;
+                margin-top: 32px;
             }
         }
 
@@ -3236,7 +3225,10 @@
     <footer class="foot">
         <div class="shell foot-shell">
             <div>
-                <a class="logo foot-brand" href="/"><span class="sq"></span>tscircuit</a>
+                <a class="landing-brand foot-brand" href="/" aria-label="tscircuit home">
+                    <img src="/tscircuit-logo.png" alt="" width="32" height="32" />
+                    <span>tscircuit</span>
+                </a>
                 <p class="foot-brand-copy">Hardware as code. Built in the open.</p>
             </div>
             <div>
