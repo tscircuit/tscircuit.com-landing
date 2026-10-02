@@ -1769,6 +1769,7 @@
             width: min(1218px, calc(100% - 48px));
             height: 100%;
             margin: 0 auto;
+            transform: translateX(18px);
             display: flex;
             align-items: center;
             font-family: 'Geist', system-ui, sans-serif;
@@ -2093,24 +2094,27 @@
         .landing-hero-shell {
             width: min(1218px, calc(100% - 48px));
             margin: 0 auto;
-            border-inline: 1px solid var(--line);
+            transform: translateX(18px);
+            border-left: 1px solid var(--line);
+            border-right: 1px solid var(--line);
             position: relative;
             overflow: clip;
             font-family: 'Geist', system-ui, sans-serif;
         }
 
         .landing-hero-main {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            align-items: center;
-            gap: 32px;
-            padding: 32px 64px;
+            height: 625px;
+            position: relative;
+            overflow: visible;
+            isolation: isolate;
             background: #ffffff;
         }
 
         .landing-hero-copy {
             position: relative;
-            z-index: 1;
+            z-index: 8;
+            padding-top: 106px;
+            margin-left: 65px;
         }
 
         .landing-hero-copy h1 {
@@ -2164,6 +2168,12 @@
             box-shadow: 0 1px 2px rgba(15, 18, 25, .12);
         }
 
+        .landing-button-plain {
+            padding-left: 11px;
+            padding-right: 7px;
+            box-shadow: none;
+        }
+
         .landing-hero-actions .landing-button-plain {
             border: 1px solid var(--line);
             background: #ffffff;
@@ -2180,26 +2190,59 @@
         }
 
         .landing-hero-art {
-            width: calc(100% + 64px);
-            margin-left: -24px;
+            position: absolute;
+            z-index: 7;
+            inset: 0;
             pointer-events: none;
         }
 
+        .landing-board-halo {
+            position: absolute;
+            width: 650px;
+            height: 420px;
+            right: -22px;
+            top: 104px;
+            border-radius: 50%;
+            background: radial-gradient(ellipse at center, rgba(149, 160, 177, .17) 0%, rgba(191, 199, 211, .09) 42%, transparent 72%);
+            filter: blur(12px);
+        }
+
         .landing-hero-board {
-            width: 100%;
+            position: absolute;
+            width: 880px;
+            max-width: none;
             height: auto;
+            right: -14px;
+            top: 10px;
             display: block;
-            filter: contrast(1.08) saturate(1.12) drop-shadow(0 18px 14px rgba(41, 49, 62, .12));
+            opacity: .99;
+            filter: contrast(1.045) saturate(1.035) drop-shadow(0 16px 10px rgba(41, 49, 62, .07)) drop-shadow(0 38px 29px rgba(41, 49, 62, .15));
         }
 
         .landing-proof-panel {
-            padding: 32px 64px;
-            border-block: 1px solid var(--line);
-            background: #ffffff;
+            height: 211px;
+            position: relative;
+            z-index: 5;
+            border: 1px solid var(--line);
+            border-left: 0;
+            border-right: 0;
+            border-radius: 13px 13px 0 0;
+            background: radial-gradient(circle, rgba(182, 189, 200, .34) .8px, transparent .95px) 53% 0 / 8px 8px, linear-gradient(90deg, #ffffff 0%, #ffffff 51%, rgba(255, 255, 255, .78) 64%, rgba(255, 255, 255, .5) 100%);
+            overflow: hidden;
+        }
+
+        .landing-proof-panel::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, #ffffff 0%, rgba(255, 255, 255, .97) 42%, rgba(255, 255, 255, .2) 65%, rgba(255, 255, 255, .55) 100%);
+            pointer-events: none;
         }
 
         .landing-proof-panel p {
-            margin: 0;
+            position: relative;
+            z-index: 2;
+            margin: 62px 0 0 65px;
             color: #5d6572;
             font-size: 16px;
             line-height: 1.7;
@@ -2259,6 +2302,22 @@
 
             .landing-nav-actions {
                 gap: 8px;
+            }
+
+            .landing-hero-copy {
+                margin-left: 50px;
+            }
+
+
+            .landing-hero-board {
+                width: 800px;
+                right: -12px;
+                top: 24px;
+            }
+
+            .landing-board-halo {
+                width: 570px;
+                right: -12px;
             }
         }
 
@@ -2324,6 +2383,46 @@
                 min-width: auto;
                 min-height: 36px;
                 font-size: 14px;
+            }
+
+            .landing-hero-main {
+                height: 760px;
+            }
+
+            .landing-hero-copy {
+                padding: 67px 32px 0;
+                margin: 0;
+            }
+
+            .landing-hero-copy h1 {
+                max-width: 600px;
+                font-size: clamp(40px, 6.5vw, 54px);
+            }
+
+            .landing-hero-copy p {
+                font-size: 16px;
+            }
+
+            .landing-hero-board {
+                width: min(760px, 92vw);
+                right: auto;
+                left: 50%;
+                top: 326px;
+                transform: translateX(-50%);
+            }
+
+            .landing-board-halo {
+                width: min(590px, 80vw);
+                height: 320px;
+                right: auto;
+                left: 50%;
+                top: 430px;
+                transform: translateX(-50%);
+            }
+
+            .landing-proof-panel p {
+                margin-left: 32px;
+                font-size: 16px;
             }
         }
 
@@ -2429,41 +2528,12 @@
                 display: none;
             }
 
-            .landing-desktop-break {
-                display: none;
-            }
-        }
-
-        @media (max-width: 980px) {
             .landing-hero-main {
-                grid-template-columns: 1fr;
-                gap: 32px;
-                padding: 56px 32px 32px;
+                height: 720px;
             }
 
             .landing-hero-copy {
-                max-width: 640px;
-            }
-
-            .landing-hero-copy h1 {
-                max-width: 600px;
-                font-size: clamp(40px, 6.5vw, 54px);
-            }
-
-            .landing-hero-art {
-                width: min(100%, 600px);
-                margin: 0 auto;
-            }
-
-            .landing-proof-panel {
-                padding: 28px 32px;
-            }
-        }
-
-        @media (max-width: 620px) {
-            .landing-hero-main {
-                gap: 28px;
-                padding: 44px 24px 24px;
+                padding: 48px 22px 0;
             }
 
             .landing-hero-copy h1 {
@@ -2473,6 +2543,10 @@
             .landing-hero-copy p {
                 margin-top: 20px;
                 font-size: 15px;
+            }
+
+            .landing-desktop-break {
+                display: none;
             }
 
             .landing-hero-actions {
@@ -2485,23 +2559,50 @@
                 font-size: 13px;
             }
 
+            .landing-hero-board {
+                width: min(650px, 118vw);
+                top: 336px;
+            }
+
+            .landing-board-halo {
+                width: min(480px, 92vw);
+                height: 240px;
+                top: 456px;
+            }
+
             .landing-proof-panel {
-                padding: 24px;
+                height: 230px;
             }
 
             .landing-proof-panel p {
-                font-size: 14px;
+                margin: 52px 22px 0;
+                font-size: 15px;
+                line-height: 1.7;
+                letter-spacing: -.015em;
             }
 
-            .landing-proof-panel br {
-                display: none;
+        }
+
+        @media (max-width: 420px) {
+            .landing-hero-copy {
+                padding-top: 42px;
+            }
+
+
+            .landing-hero-copy p {
+                font-size: 15px;
             }
         }
 
         @media (max-width: 360px) {
             .landing-hero-actions {
-                display: grid;
-                grid-template-columns: 1fr;
+                flex-wrap: nowrap;
+                gap: 6px;
+            }
+
+            .landing-hero-actions .landing-button {
+                padding-inline: 10px;
+                font-size: 12px;
             }
         }
 
@@ -2611,6 +2712,7 @@
                 </div>
 
                 <div class="landing-hero-art" aria-label="Four real circuit boards generated from tscircuit projects">
+                    <span class="landing-board-halo" aria-hidden="true"></span>
                     <img class="landing-hero-board" src="assets/hero-board-four-real-3d.png"
                         alt="3D renders of the tscircuit RP2040, Game Boy, nRF52810, and Attiny85 Arcade Keychain circuit boards"
                         width="1600" height="1500" fetchpriority="high">
