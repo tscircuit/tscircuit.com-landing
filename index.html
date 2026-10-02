@@ -2602,8 +2602,16 @@
 
         .verified-grid {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 32px 20px;
+        }
+
+        .verified-count {
+            margin-top: 14px;
+            color: #28734b;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            line-height: 1.6;
         }
 
         .verified-card {
@@ -2627,11 +2635,49 @@
         }
 
         .verified-card h3 {
-            margin: 18px 0 8px;
+            margin: 0 0 8px;
             color: var(--ink);
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 600;
             letter-spacing: -.025em;
+        }
+
+        .verified-card-kind {
+            margin: 14px 0 6px;
+            color: var(--muted);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .verified-photo-terminal {
+            background: #24272e;
+        }
+
+        .verified-photo-phone {
+            background: #101112;
+        }
+
+        .verified-photo-phone img {
+            object-fit: contain;
+        }
+
+        .verified-photo-terminal img {
+            position: relative;
+            top: 50%;
+            left: 16px;
+            width: 300%;
+            height: auto;
+            transform: translateY(-50%);
+        }
+
+        .verified-photo-first-circuit img {
+            object-position: 75% 40%;
+        }
+
+        .verified-photo-motor-test img {
+            object-position: 80% center;
         }
 
         .verified-result {
@@ -2640,7 +2686,7 @@
             gap: 8px;
             margin: 0 0 14px;
             color: var(--ink-2);
-            font-size: 14px;
+            font-size: 13px;
             line-height: 1.5;
         }
 
@@ -2686,7 +2732,8 @@
             }
 
             .verified-grid {
-                gap: 18px;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 28px 18px;
             }
         }
 
@@ -2696,8 +2743,16 @@
             }
 
             .verified-grid {
-                grid-template-columns: 1fr;
-                gap: 32px;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 28px 14px;
+            }
+
+            .verified-card h3 {
+                font-size: 15px;
+            }
+
+            .verified-source {
+                font-size: 12px;
             }
         }
 
@@ -2830,45 +2885,168 @@
                         <div class="eyebrow">From code to the workbench</div>
                         <h2 id="verified-title">tscircuit boards are<br>physically verified.</h2>
                     </div>
-                    <p>Real boards, manufactured and tested. These tscircuit builds have been powered on,
-                        programmed, and put to work on the bench.</p>
+                    <div class="verified-intro-copy">
+                        <p>Linux computers, Bluetooth modules, motor controllers, input devices, and more.
+                            Real tscircuit builds, manufactured and put to work on the bench.</p>
+                        <div class="verified-count">8 working builds · 12 photos &amp; test results</div>
+                    </div>
                 </div>
                 <div class="verified-grid">
                     <article class="verified-card">
                         <a class="verified-photo" href="https://x.com/seveibar/status/2105089653795873274"
-                            target="_blank" rel="noreferrer" aria-label="See the F1C100S Linux board test on X">
+                            target="_blank" rel="noreferrer" aria-label="See F1C100S Linux board on X">
                             <img src="assets/verified-boards/f1c100s-linux.jpg"
-                                alt="Manufactured F1C100S Linux development board connected to USB and test wires"
+                                alt="Manufactured Linux board connected to USB and test wires"
                                 width="676" height="900" loading="lazy" decoding="async">
                         </a>
+                        <div class="verified-card-kind">Build</div>
                         <h3>F1C100S Linux board</h3>
                         <p class="verified-result">Linux running. SSH over USB.</p>
                         <a class="verified-source" href="https://x.com/seveibar/status/2105089653795873274"
-                            target="_blank" rel="noreferrer">See the Linux bring-up on X ↗</a>
+                            target="_blank" rel="noreferrer" aria-label="View F1C100S Linux board test post on X">View test on X ↗</a>
                     </article>
                     <article class="verified-card">
                         <a class="verified-photo" href="https://x.com/seveibar/status/2089862423205597334"
-                            target="_blank" rel="noreferrer" aria-label="See the nRF52810 Bluetooth board test on X">
+                            target="_blank" rel="noreferrer" aria-label="See nRF52810 Bluetooth board on X">
                             <img src="assets/verified-boards/nrf52810-bluetooth.jpg"
-                                alt="Assembled nRF52810 Bluetooth board with its LED lit and programming cable connected"
+                                alt="Powered nRF52810 Bluetooth board with its LED lit"
                                 width="900" height="900" loading="lazy" decoding="async">
                         </a>
+                        <div class="verified-card-kind">Build</div>
                         <h3>nRF52810 Bluetooth board</h3>
-                        <p class="verified-result">Bluetooth advertising. Detected on a phone.</p>
+                        <p class="verified-result">Advertising and detected on a phone.</p>
                         <a class="verified-source" href="https://x.com/seveibar/status/2089862423205597334"
-                            target="_blank" rel="noreferrer">See the Bluetooth test on X ↗</a>
+                            target="_blank" rel="noreferrer" aria-label="View nRF52810 Bluetooth board test post on X">View test on X ↗</a>
+                    </article>
+                    <article class="verified-card">
+                        <a class="verified-photo" href="https://x.com/seveibar/status/2052088203562369138"
+                            target="_blank" rel="noreferrer" aria-label="See Volume-control macropad on X">
+                            <img src="assets/verified-boards/volume-macropad.jpg"
+                                alt="Assembled macropad with mechanical switches, two knobs, and a display"
+                                width="675" height="900" loading="lazy" decoding="async">
+                        </a>
+                        <div class="verified-card-kind">Build</div>
+                        <h3>Volume-control macropad</h3>
+                        <p class="verified-result">Keyboard input and volume controls.</p>
+                        <a class="verified-source" href="https://x.com/seveibar/status/2052088203562369138"
+                            target="_blank" rel="noreferrer" aria-label="View Volume-control macropad test post on X">View test on X ↗</a>
                     </article>
                     <article class="verified-card">
                         <a class="verified-photo" href="https://x.com/seveibar/status/2102913477157560510"
-                            target="_blank" rel="noreferrer" aria-label="Watch the USB motor driver test on X">
+                            target="_blank" rel="noreferrer" aria-label="See NEMA17 motor driver on X">
                             <img src="assets/verified-boards/usb-motor-driver.jpg"
-                                alt="Powered USB motor driver attached to a stepper motor during a bench test"
+                                alt="Powered compact USB motor driver attached to a stepper motor"
                                 width="675" height="1200" loading="lazy" decoding="async">
                         </a>
-                        <h3>USB motor driver</h3>
-                        <p class="verified-result">Stepper motor driven. Hardware in motion.</p>
+                        <div class="verified-card-kind">Build</div>
+                        <h3>NEMA17 motor driver</h3>
+                        <p class="verified-result">Stepper motor running on the bench.</p>
                         <a class="verified-source" href="https://x.com/seveibar/status/2102913477157560510"
-                            target="_blank" rel="noreferrer">Watch the motor test on X ↗</a>
+                            target="_blank" rel="noreferrer" aria-label="View NEMA17 motor driver test post on X">View test on X ↗</a>
+                    </article>
+                    <article class="verified-card">
+                        <a class="verified-photo" href="https://x.com/seveibar/status/2052088203562369138"
+                            target="_blank" rel="noreferrer" aria-label="See LiPo voltage meter on X">
+                            <img src="assets/verified-boards/lipo-voltage-meter.jpg"
+                                alt="Manufactured blue LiPo voltage meter boards with battery holders"
+                                width="675" height="900" loading="lazy" decoding="async">
+                        </a>
+                        <div class="verified-card-kind">Build</div>
+                        <h3>LiPo voltage meter</h3>
+                        <p class="verified-result">Battery-voltage measurement verified.</p>
+                        <a class="verified-source" href="https://x.com/seveibar/status/2052088203562369138"
+                            target="_blank" rel="noreferrer" aria-label="View LiPo voltage meter test post on X">View test on X ↗</a>
+                    </article>
+                    <article class="verified-card">
+                        <a class="verified-photo" href="https://x.com/seveibar/status/1937945069367288314"
+                            target="_blank" rel="noreferrer" aria-label="See LED accelerometer board on X">
+                            <img src="assets/verified-boards/led-accelerometer.jpg"
+                                alt="Physical LED matrix with blue LEDs illuminated during an accelerometer test"
+                                width="1200" height="675" loading="lazy" decoding="async">
+                        </a>
+                        <div class="verified-card-kind">Build</div>
+                        <h3>LED accelerometer board</h3>
+                        <p class="verified-result">LEDs responding to movement at 20 Hz.</p>
+                        <a class="verified-source" href="https://x.com/seveibar/status/1937945069367288314"
+                            target="_blank" rel="noreferrer" aria-label="View LED accelerometer board test post on X">View test on X ↗</a>
+                    </article>
+                    <article class="verified-card">
+                        <a class="verified-photo" href="https://x.com/seveibar/status/2097093559069610078"
+                            target="_blank" rel="noreferrer" aria-label="See RP2040 stepper controller on X">
+                            <img src="assets/verified-boards/rp2040-stepper-controller.jpg"
+                                alt="Assembled RP2040 stepper controller with two USB-C ports and screw terminals"
+                                width="1115" height="1200" loading="lazy" decoding="async">
+                        </a>
+                        <div class="verified-card-kind">Build</div>
+                        <h3>RP2040 stepper controller</h3>
+                        <p class="verified-result">USB-powered motor control tested.</p>
+                        <a class="verified-source" href="https://x.com/seveibar/status/2097093559069610078"
+                            target="_blank" rel="noreferrer" aria-label="View RP2040 stepper controller test post on X">View test on X ↗</a>
+                    </article>
+                    <article class="verified-card">
+                        <a class="verified-photo verified-photo-first-circuit" href="https://x.com/seveibar/status/1785149340253839382"
+                            target="_blank" rel="noreferrer" aria-label="See The first React circuit on X">
+                            <img src="assets/verified-boards/first-react-circuit.jpg"
+                                alt="Seve holding the first manufactured tscircuit circuit board"
+                                width="900" height="1200" loading="lazy" decoding="async">
+                        </a>
+                        <div class="verified-card-kind">Build</div>
+                        <h3>The first React circuit</h3>
+                        <p class="verified-result">Manufactured and tested in April 2024.</p>
+                        <a class="verified-source" href="https://x.com/seveibar/status/1785149340253839382"
+                            target="_blank" rel="noreferrer" aria-label="View The first React circuit test post on X">View test on X ↗</a>
+                    </article>
+                    <article class="verified-card">
+                        <a class="verified-photo verified-photo-terminal" href="https://x.com/seveibar/status/2105089653795873274"
+                            target="_blank" rel="noreferrer" aria-label="See Hello from the board on X">
+                            <img src="assets/verified-boards/linux-ssh-session.jpg"
+                                alt="SSH terminal running a program that reports Linux 6.12.0 on the physical board"
+                                width="1852" height="330" loading="lazy" decoding="async">
+                        </a>
+                        <div class="verified-card-kind">Test detail</div>
+                        <h3>Hello from the board</h3>
+                        <p class="verified-result">Live Linux shell over USB.</p>
+                        <a class="verified-source" href="https://x.com/seveibar/status/2105089653795873274"
+                            target="_blank" rel="noreferrer" aria-label="View Hello from the board test post on X">View test on X ↗</a>
+                    </article>
+                    <article class="verified-card">
+                        <a class="verified-photo verified-photo-phone" href="https://x.com/seveibar/status/2089862423205597334"
+                            target="_blank" rel="noreferrer" aria-label="See Bluetooth, on a real phone on X">
+                            <img src="assets/verified-boards/bluetooth-phone-test.jpg"
+                                alt="Phone Bluetooth scanner detecting the nRF52810 Tracker"
+                                width="581" height="900" loading="lazy" decoding="async">
+                        </a>
+                        <div class="verified-card-kind">Test detail</div>
+                        <h3>Bluetooth, on a real phone</h3>
+                        <p class="verified-result">nRF52810 Tracker detected by a BLE scanner.</p>
+                        <a class="verified-source" href="https://x.com/seveibar/status/2089862423205597334"
+                            target="_blank" rel="noreferrer" aria-label="View Bluetooth, on a real phone test post on X">View test on X ↗</a>
+                    </article>
+                    <article class="verified-card">
+                        <a class="verified-photo" href="https://x.com/seveibar/status/2052088203562369138"
+                            target="_blank" rel="noreferrer" aria-label="See Macropad USB connection on X">
+                            <img src="assets/verified-boards/macropad-usb-test.jpg"
+                                alt="Rear of the manufactured macropad connected by USB to its Raspberry Pi Pico"
+                                width="675" height="900" loading="lazy" decoding="async">
+                        </a>
+                        <div class="verified-card-kind">Test detail</div>
+                        <h3>Macropad USB connection</h3>
+                        <p class="verified-result">A closer look at the assembled input board.</p>
+                        <a class="verified-source" href="https://x.com/seveibar/status/2052088203562369138"
+                            target="_blank" rel="noreferrer" aria-label="View Macropad USB connection test post on X">View test on X ↗</a>
+                    </article>
+                    <article class="verified-card">
+                        <a class="verified-photo verified-photo-motor-test" href="https://x.com/seveibar/status/2097093559069610078"
+                            target="_blank" rel="noreferrer" aria-label="See RP2040 motor bring-up on X">
+                            <img src="assets/verified-boards/rp2040-motor-test.jpg"
+                                alt="Physical RP2040 motor-controller board wired up during the working demonstration"
+                                width="1200" height="675" loading="lazy" decoding="async">
+                        </a>
+                        <div class="verified-card-kind">Test detail</div>
+                        <h3>RP2040 motor bring-up</h3>
+                        <p class="verified-result">The controller connected during its test.</p>
+                        <a class="verified-source" href="https://x.com/seveibar/status/2097093559069610078"
+                            target="_blank" rel="noreferrer" aria-label="View RP2040 motor bring-up test post on X">View test on X ↗</a>
                     </article>
                 </div>
                 <p class="verified-note">Photos from @seveibar’s build logs. Some prototypes needed small fixes
