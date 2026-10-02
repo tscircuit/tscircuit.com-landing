@@ -374,96 +374,6 @@
             object-fit: contain;
         }
 
-        .gallery-board {
-            min-width: 0;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            border: 1px solid var(--line);
-            border-radius: 12px;
-            background: #ffffff;
-            color: var(--ink);
-            text-decoration: none;
-            transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-        }
-
-        .gallery-board:hover {
-            transform: translateY(-2px);
-            border-color: #b8c4d4;
-            box-shadow: 0 8px 24px rgba(20, 24, 32, .08);
-        }
-
-        .gallery-board:focus-visible {
-            outline: 2px solid #3b82f6;
-            outline-offset: 3px;
-        }
-
-        .gallery-board-preview {
-            aspect-ratio: 2 / 1;
-            position: relative;
-            overflow: hidden;
-            background: var(--ink);
-        }
-
-        .gallery-board-preview img {
-            position: absolute;
-            inset: 0;
-            display: block;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            transform: scale(1.25);
-        }
-
-        /* This render has extra space around the keyboard. */
-        .gallery-board-preview--keyboard img {
-            object-fit: cover;
-        }
-
-        .gallery-board-caption {
-            display: flex;
-            flex: 1;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            padding: 16px 18px;
-        }
-
-        .gallery-board-caption>div {
-            min-width: 0;
-        }
-
-        .gallery-board .board-owner {
-            margin-bottom: 4px;
-            color: var(--muted);
-            font-size: 12px;
-            line-height: 1.4;
-        }
-
-        .gallery-board .board-name {
-            font-size: 16px;
-            font-weight: 500;
-            line-height: 1.4;
-            overflow-wrap: anywhere;
-        }
-
-        .gallery-board-arrow {
-            display: grid;
-            flex: 0 0 30px;
-            place-items: center;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: #f4f6f8;
-            color: var(--muted);
-            font-size: 16px;
-        }
-
-        .gallery-board:is(:hover, :focus-visible) .gallery-board-arrow {
-            background: #eff6ff;
-            color: #2563eb;
-        }
-
         .featured-boards-section {
             padding-bottom: 64px;
         }
@@ -1181,11 +1091,6 @@
             align-items: center;
         }
 
-        .gallery-grid {
-            grid-template-columns: repeat(3, 1fr);
-            margin-top: 20px;
-        }
-
         .faq-shell {
             display: grid;
             grid-template-columns: minmax(0, .9fr) minmax(0, 1.6fr);
@@ -1530,32 +1435,6 @@
             line-height: 1.65;
         }
 
-        .gallery-more {
-            margin-top: 20px;
-        }
-
-        .gallery-more a {
-            display: inline-flex;
-            align-items: center;
-            min-height: 32px;
-            color: var(--ink-2);
-            font-size: 14px;
-            font-weight: 500;
-            text-decoration: none;
-            text-underline-offset: 4px;
-        }
-
-        .gallery-more a:hover {
-            color: var(--ink);
-            text-decoration: underline;
-        }
-
-        .gallery-more a:focus-visible {
-            outline: 2px solid #3b82f6;
-            outline-offset: 4px;
-            border-radius: 4px;
-        }
-
         .site-footer-note {
             margin-top: 40px;
             padding-top: 20px;
@@ -1578,10 +1457,6 @@
             }
 
             .feature-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-
-            .gallery-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
 
@@ -1775,10 +1650,6 @@
                 min-height: 360px;
             }
 
-            .gallery-grid {
-                grid-template-columns: 1fr;
-            }
-
             .featured-boards-header {
                 align-items: flex-start;
                 flex-direction: column;
@@ -1871,13 +1742,11 @@
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .featured-board-card,
-            .gallery-board {
+            .featured-board-card {
                 transition: none;
             }
 
-            .featured-board-card:hover,
-            .gallery-board:hover {
+            .featured-board-card:hover {
                 transform: none;
             }
 
@@ -3100,56 +2969,6 @@
                     <img src="assets/playground screenshot.png"
                         alt="tscircuit playground showing editor, 3D board viewer, and console">
                 </div>
-            </div>
-        </section>
-
-        <!-- Gallery -->
-        <section class="section" aria-labelledby="gallery-title">
-            <div class="gallery-shell">
-                <div class="eyebrow">Shipped with tscircuit</div>
-                <h2 id="gallery-title">Boards teams actually sent to fab.</h2>
-                <div class="row gallery-grid">
-                    <a class="gallery-board" href="/tscircuit/motor-controller" target="_blank"
-                        rel="noreferrer">
-                        <div class="gallery-board-preview">
-                            <img src="assets/motor_controller.png" alt="" loading="lazy" decoding="async">
-                        </div>
-                        <div class="gallery-board-caption">
-                            <div>
-                                <div class="board-owner">tscircuit</div>
-                                <div class="board-name">motor-controller</div>
-                            </div>
-                            <span class="gallery-board-arrow" aria-hidden="true">↗</span>
-                        </div>
-                    </a>
-                    <a class="gallery-board" href="/seveibar/keyboard-default60" target="_blank"
-                        rel="noreferrer">
-                        <div class="gallery-board-preview gallery-board-preview--keyboard">
-                            <img src="assets/keyboard.png" alt="" loading="lazy" decoding="async">
-                        </div>
-                        <div class="gallery-board-caption">
-                            <div>
-                                <div class="board-owner">seveibar</div>
-                                <div class="board-name">keyboard-default60</div>
-                            </div>
-                            <span class="gallery-board-arrow" aria-hidden="true">↗</span>
-                        </div>
-                    </a>
-                    <a class="gallery-board" href="/seveibar/led-water-accelerometer" target="_blank"
-                        rel="noreferrer">
-                        <div class="gallery-board-preview">
-                            <img src="assets/led-water-accelerometer.png" alt="" loading="lazy" decoding="async">
-                        </div>
-                        <div class="gallery-board-caption">
-                            <div>
-                                <div class="board-owner">seveibar</div>
-                                <div class="board-name">led-water-accelerometer</div>
-                            </div>
-                            <span class="gallery-board-arrow" aria-hidden="true">↗</span>
-                        </div>
-                    </a>
-                </div>
-                <div class="gallery-more"><a href="/trending">Browse gallery · 240 boards →</a></div>
             </div>
         </section>
 
