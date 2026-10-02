@@ -374,10 +374,13 @@
             object-fit: contain;
         }
 
-        .featured-boards-section {
+        .section.featured-boards-section {
+            background: var(--panel);
+            border-block: 1px solid var(--line);
+        }
+
+        .featured-boards-section>.featured-boards-shell {
             width: min(100%, 1200px);
-            margin-inline: auto;
-            padding-bottom: 64px;
         }
 
         .featured-boards-header {
@@ -803,7 +806,12 @@
         }
 
         .feature-section {
-            padding: 96px clamp(24px, 4vw, 64px) 64px;
+            padding: 96px clamp(24px, 4vw, 64px) 0;
+            border-bottom: none;
+        }
+
+        .section.feature-section {
+            padding-bottom: 0;
         }
 
         .feature-section>.feature-shell {
@@ -963,8 +971,7 @@
         }
 
         .features-section {
-            padding-top: 40px;
-            border-top: 1px solid var(--line);
+            border-bottom: none;
         }
 
         .features-section h2 {
@@ -2613,9 +2620,7 @@
 
         /* Photographs of manufactured community boards. */
         .verified-section {
-            padding: 0 0 32px;
-            margin-bottom: 32px;
-            border-bottom: 1px solid var(--line);
+            padding: 0 0 56px;
         }
 
         .verified-shell {
@@ -3002,87 +3007,93 @@
                     </div>
                 </section>
 
-                <!-- Featured boards -->
-                <section class="featured-boards-section" aria-labelledby="featured-boards-title">
-                    <div class="featured-boards-header">
-                        <div>
-                            <div class="eyebrow">From the community</div>
-                            <h2 id="featured-boards-title">Featured boards</h2>
-                        </div>
-                        <a class="featured-boards-link" href="/trending">Explore more boards →</a>
-                    </div>
-                    <div class="featured-boards-grid">
-                        <a class="featured-board-card" href="/seveibar/nrf-smart-watch?version=0.1.1"
-                            target="_blank" rel="noreferrer">
-                            <div class="featured-board-thumb">
-                                <img src="assets/featured-boards/nrf-smart-watch-v0.1.1.png"
-                                    alt="3D preview of the nRF smart watch board" loading="lazy">
-                            </div>
-                            <div class="featured-board-meta">
-                                <span class="featured-board-owner">seveibar</span>
-                                <span class="featured-board-name">nrf-smart-watch</span>
-                            </div>
-                        </a>
-                        <a class="featured-board-card"
-                            href="/imrishabh18/rp2040-motor-controller?version=1.0.41" target="_blank"
-                            rel="noreferrer">
-                            <div class="featured-board-thumb">
-                                <img src="assets/featured-boards/rp2040-motor-controller-v1.0.41.png"
-                                    alt="3D preview of the RP2040 motor controller board" loading="lazy">
-                            </div>
-                            <div class="featured-board-meta">
-                                <span class="featured-board-owner">imrishabh18</span>
-                                <span class="featured-board-name">rp2040-motor-controller</span>
-                            </div>
-                        </a>
-                        <a class="featured-board-card" href="/abse/wifi-smart-switch?version=1.0.29"
-                            target="_blank" rel="noreferrer">
-                            <div class="featured-board-thumb">
-                                <img src="assets/featured-boards/wifi-smart-switch-v1.0.29.png"
-                                    alt="3D preview of the Wi-Fi smart switch board" loading="lazy">
-                            </div>
-                            <div class="featured-board-meta">
-                                <span class="featured-board-owner">abse</span>
-                                <span class="featured-board-name">wifi-smart-switch</span>
-                            </div>
-                        </a>
-                        <a class="featured-board-card" href="/abse/gameboy?version=1.0.15" target="_blank"
-                            rel="noreferrer">
-                            <div class="featured-board-thumb">
-                                <img src="assets/featured-boards/gameboy-v1.0.15.png"
-                                    alt="3D preview of the Game Boy board" loading="lazy">
-                            </div>
-                            <div class="featured-board-meta">
-                                <span class="featured-board-owner">abse</span>
-                                <span class="featured-board-name">gameboy</span>
-                            </div>
-                        </a>
-                        <a class="featured-board-card"
-                            href="/seveibar/f1c100s-linux-dev-board?version=1.9.2" target="_blank"
-                            rel="noreferrer">
-                            <div class="featured-board-thumb">
-                                <img src="assets/featured-boards/f1c100s-linux-dev-board-v1.9.2.png"
-                                    alt="3D preview of the F1C100S Linux development board" loading="lazy">
-                            </div>
-                            <div class="featured-board-meta">
-                                <span class="featured-board-owner">seveibar</span>
-                                <span class="featured-board-name">f1c100s-linux-dev-board</span>
-                            </div>
-                        </a>
-                    </div>
-                </section>
+            </div>
+        </section>
 
-                <section class="row feature-grid features-section" aria-labelledby="capabilities-title">
-                    <h2 id="capabilities-title">Features</h2>
-                    <!-- feature card template -->
-                    <div class="feature-card">
-                        <div>
-                            <div class="mono muted">01 · REACT</div>
-                            <h3>TSX components for circuits</h3>
-                            <p>Compose boards the way you compose UI. Props, children, hooks — but for resistors.</p>
+        <!-- Featured boards -->
+        <section class="section featured-boards-section" aria-labelledby="featured-boards-title">
+            <div class="featured-boards-shell">
+                <div class="featured-boards-header">
+                    <div>
+                        <div class="eyebrow">From the community</div>
+                        <h2 id="featured-boards-title">Featured boards</h2>
+                    </div>
+                    <a class="featured-boards-link" href="/trending">Explore more boards →</a>
+                </div>
+                <div class="featured-boards-grid">
+                    <a class="featured-board-card" href="/seveibar/nrf-smart-watch?version=0.1.1"
+                        target="_blank" rel="noreferrer">
+                        <div class="featured-board-thumb">
+                            <img src="assets/featured-boards/nrf-smart-watch-v0.1.1.png"
+                                alt="3D preview of the nRF smart watch board" loading="lazy">
                         </div>
-                        <div class="code">
-                            <pre><span class="kw">export default</span> () =&gt; (
+                        <div class="featured-board-meta">
+                            <span class="featured-board-owner">seveibar</span>
+                            <span class="featured-board-name">nrf-smart-watch</span>
+                        </div>
+                    </a>
+                    <a class="featured-board-card"
+                        href="/imrishabh18/rp2040-motor-controller?version=1.0.41" target="_blank"
+                        rel="noreferrer">
+                        <div class="featured-board-thumb">
+                            <img src="assets/featured-boards/rp2040-motor-controller-v1.0.41.png"
+                                alt="3D preview of the RP2040 motor controller board" loading="lazy">
+                        </div>
+                        <div class="featured-board-meta">
+                            <span class="featured-board-owner">imrishabh18</span>
+                            <span class="featured-board-name">rp2040-motor-controller</span>
+                        </div>
+                    </a>
+                    <a class="featured-board-card" href="/abse/wifi-smart-switch?version=1.0.29"
+                        target="_blank" rel="noreferrer">
+                        <div class="featured-board-thumb">
+                            <img src="assets/featured-boards/wifi-smart-switch-v1.0.29.png"
+                                alt="3D preview of the Wi-Fi smart switch board" loading="lazy">
+                        </div>
+                        <div class="featured-board-meta">
+                            <span class="featured-board-owner">abse</span>
+                            <span class="featured-board-name">wifi-smart-switch</span>
+                        </div>
+                    </a>
+                    <a class="featured-board-card" href="/abse/gameboy?version=1.0.15" target="_blank"
+                        rel="noreferrer">
+                        <div class="featured-board-thumb">
+                            <img src="assets/featured-boards/gameboy-v1.0.15.png"
+                                alt="3D preview of the Game Boy board" loading="lazy">
+                        </div>
+                        <div class="featured-board-meta">
+                            <span class="featured-board-owner">abse</span>
+                            <span class="featured-board-name">gameboy</span>
+                        </div>
+                    </a>
+                    <a class="featured-board-card"
+                        href="/seveibar/f1c100s-linux-dev-board?version=1.9.2" target="_blank"
+                        rel="noreferrer">
+                        <div class="featured-board-thumb">
+                            <img src="assets/featured-boards/f1c100s-linux-dev-board-v1.9.2.png"
+                                alt="3D preview of the F1C100S Linux development board" loading="lazy">
+                        </div>
+                        <div class="featured-board-meta">
+                            <span class="featured-board-owner">seveibar</span>
+                            <span class="featured-board-name">f1c100s-linux-dev-board</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section features-section" aria-labelledby="capabilities-title">
+            <div class="row feature-grid">
+                <h2 id="capabilities-title">Features</h2>
+                <!-- feature card template -->
+                <div class="feature-card">
+                    <div>
+                        <div class="mono muted">01 · REACT</div>
+                        <h3>TSX components for circuits</h3>
+                        <p>Compose boards the way you compose UI. Props, children, hooks — but for resistors.</p>
+                    </div>
+                    <div class="code">
+                        <pre><span class="kw">export default</span> () =&gt; (
   &lt;<span class="tg">board</span> <span class="at">width</span>=<span class="st">"18mm"</span> <span class="at">height</span>=<span class="st">"12mm"</span>&gt;
     &lt;<span class="tg">resistor</span>
       <span class="at">name</span>=<span class="st">"R1"</span>
@@ -3100,106 +3111,105 @@
     &lt;<span class="tg">trace</span> <span class="at">from</span>=<span class="st">".D1 &gt; .cathode"</span> <span class="at">to</span>=<span class="st">".R1 &gt; .pin1"</span> /&gt;
   &lt;/<span class="tg">board</span>&gt;
 )</pre>
-                        </div>
                     </div>
-                    <div class="feature-card">
-                        <div>
-                            <div class="mono muted">02 · AUTOROUTE</div>
-                            <h3>Real-time autorouting</h3>
-                            <p>Sub-second routing on 4-layer boards. Runs locally with LLM-compatible tweaking.</p>
-                        </div>
-                        <div class="media is-white">
-                            <video autoplay muted loop playsinline preload="metadata" aria-label="Autorouting demo">
-                                <source src="assets/autorouting-animation.web.mp4" type="video/mp4">
-                            </video>
-                        </div>
+                </div>
+                <div class="feature-card">
+                    <div>
+                        <div class="mono muted">02 · AUTOROUTE</div>
+                        <h3>Real-time autorouting</h3>
+                        <p>Sub-second routing on 4-layer boards. Runs locally with LLM-compatible tweaking.</p>
                     </div>
-                    <div class="feature-card">
-                        <div>
-                            <div class="mono muted">03 · AI</div>
-                            <h3>AI coding skills for hardware</h3>
-                            <p>Give Claude Code, Codex, or custom agents the
-                                <a href="https://github.com/tscircuit/skill" target="_blank" rel="noreferrer">tscircuit
-                                    skill</a>
-                                with the CLI, syntax, workflow, and pre-fab context they need to make useful changes.
-                            </p>
-                        </div>
-                        <div class="media">
-                            <img src="assets/example_ai_coding.png" alt="AI coding example for tscircuit">
-                        </div>
+                    <div class="media is-white">
+                        <video autoplay muted loop playsinline preload="metadata" aria-label="Autorouting demo">
+                            <source src="assets/autorouting-animation.web.mp4" type="video/mp4">
+                        </video>
                     </div>
-                    <div class="feature-card">
-                        <div>
-                            <div class="mono muted">04 · FAB</div>
-                            <h3>Export every format you need</h3>
-                            <p>Download PCB, schematic, and assembly images plus fabrication files, KiCad, DSN, JSON,
-                                and netlists from the same board source.</p>
-                        </div>
-                        <div class="media contain">
-                            <img src="assets/multiple_formats.png" alt="Multiple export formats available in tscircuit">
-                        </div>
+                </div>
+                <div class="feature-card">
+                    <div>
+                        <div class="mono muted">03 · AI</div>
+                        <h3>AI coding skills for hardware</h3>
+                        <p>Give Claude Code, Codex, or custom agents the
+                            <a href="https://github.com/tscircuit/skill" target="_blank" rel="noreferrer">tscircuit
+                                skill</a>
+                            with the CLI, syntax, workflow, and pre-fab context they need to make useful changes.
+                        </p>
                     </div>
-                    <div class="feature-card">
-                        <div>
-                            <div class="mono muted">05 · REVIEW</div>
-                            <h3>Visual Diffs Inside GitHub</h3>
-                            <p>All the capabilities of version control tool works natively with tscircuit. Approvals,
-                                comments, rollback.</p>
-                        </div>
-                        <div class="media">
-                            <img src="assets/review.png" alt="PR-native schematic review screenshot">
-                        </div>
+                    <div class="media">
+                        <img src="assets/example_ai_coding.png" alt="AI coding example for tscircuit">
                     </div>
-                    <div class="feature-card">
-                        <div>
-                            <div class="mono muted">06 · OSS</div>
-                            <h3>Open &amp; forkable</h3>
-                            <p>Open source under MIT. Explore the
-                                <a href="https://github.com/tscircuit" target="_blank" rel="noreferrer">tscircuit
-                                    GitHub org</a>, fork what you need, and build on top of it.
-                            </p>
-                        </div>
-                        <div class="media contain">
-                            <img src="assets/tscircuit-npm-downloads-thumbnail.svg"
-                                alt="Weekly tscircuit NPM downloads over the past year">
-                        </div>
+                </div>
+                <div class="feature-card">
+                    <div>
+                        <div class="mono muted">04 · FAB</div>
+                        <h3>Export every format you need</h3>
+                        <p>Download PCB, schematic, and assembly images plus fabrication files, KiCad, DSN, JSON,
+                            and netlists from the same board source.</p>
                     </div>
-                    <div class="feature-card">
-                        <div>
-                            <div class="mono muted">07 · SIMULATION</div>
-                            <h3>Analog Simulation</h3>
-                            <p>Run analog simulations with <a
-                                    href="https://docs.tscircuit.com/command-line/tsci-simulate" target="_blank"
-                                    rel="noreferrer">tsci simulate</a> on
-                                the command line or in the browser, backed by WebAssembly ngspice.</p>
-                        </div>
-                        <div class="media contain is-sand">
-                            <img src="assets/analogsimulation.png" alt="Analog simulation view in tscircuit">
-                        </div>
+                    <div class="media contain">
+                        <img src="assets/multiple_formats.png" alt="Multiple export formats available in tscircuit">
                     </div>
-                    <div class="feature-card">
-                        <div>
-                            <div class="mono muted">08 · KICAD</div>
-                            <h3>First Class KiCad Support</h3>
-                            <p>Import and export your library anywhere. Import KiCad files natively. Import your
-                                tscircuit packages directly into KiCad with native KiCad PCM support.</p>
-                        </div>
-                        <div class="media contain is-charcoal">
-                            <img src="assets/import-kicad-library.png" alt="KiCad library import workflow in tscircuit">
-                        </div>
+                </div>
+                <div class="feature-card">
+                    <div>
+                        <div class="mono muted">05 · REVIEW</div>
+                        <h3>Visual Diffs Inside GitHub</h3>
+                        <p>All the capabilities of version control tool works natively with tscircuit. Approvals,
+                            comments, rollback.</p>
                     </div>
-                    <div class="feature-card">
-                        <div>
-                            <div class="mono muted">09 · BOM</div>
-                            <h3>Automatic Part Selection</h3>
-                            <p>Specify parts without part numbers. Bill of materials automatically generated based on
-                                realtime availability from supplier integrations.</p>
-                        </div>
-                        <div class="media contain">
-                            <img src="assets/BOM.png" alt="Automatic part selection and bill of materials in tscircuit">
-                        </div>
+                    <div class="media">
+                        <img src="assets/review.png" alt="PR-native schematic review screenshot">
                     </div>
-                </section>
+                </div>
+                <div class="feature-card">
+                    <div>
+                        <div class="mono muted">06 · OSS</div>
+                        <h3>Open &amp; forkable</h3>
+                        <p>Open source under MIT. Explore the
+                            <a href="https://github.com/tscircuit" target="_blank" rel="noreferrer">tscircuit
+                                GitHub org</a>, fork what you need, and build on top of it.
+                        </p>
+                    </div>
+                    <div class="media contain">
+                        <img src="assets/tscircuit-npm-downloads-thumbnail.svg"
+                            alt="Weekly tscircuit NPM downloads over the past year">
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div>
+                        <div class="mono muted">07 · SIMULATION</div>
+                        <h3>Analog Simulation</h3>
+                        <p>Run analog simulations with <a
+                                href="https://docs.tscircuit.com/command-line/tsci-simulate" target="_blank"
+                                rel="noreferrer">tsci simulate</a> on
+                            the command line or in the browser, backed by WebAssembly ngspice.</p>
+                    </div>
+                    <div class="media contain is-sand">
+                        <img src="assets/analogsimulation.png" alt="Analog simulation view in tscircuit">
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div>
+                        <div class="mono muted">08 · KICAD</div>
+                        <h3>First Class KiCad Support</h3>
+                        <p>Import and export your library anywhere. Import KiCad files natively. Import your
+                            tscircuit packages directly into KiCad with native KiCad PCM support.</p>
+                    </div>
+                    <div class="media contain is-charcoal">
+                        <img src="assets/import-kicad-library.png" alt="KiCad library import workflow in tscircuit">
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div>
+                        <div class="mono muted">09 · BOM</div>
+                        <h3>Automatic Part Selection</h3>
+                        <p>Specify parts without part numbers. Bill of materials automatically generated based on
+                            realtime availability from supplier integrations.</p>
+                    </div>
+                    <div class="media contain">
+                        <img src="assets/BOM.png" alt="Automatic part selection and bill of materials in tscircuit">
+                    </div>
+                </div>
             </div>
         </section>
 
