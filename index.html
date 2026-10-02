@@ -1413,6 +1413,28 @@
             background: var(--panel);
         }
 
+        .section.playground-section h2 {
+            max-width: 440px;
+            margin: 0;
+            font-size: clamp(32px, 3vw, 40px);
+            font-weight: 500;
+            line-height: 1.12;
+            letter-spacing: -.04em;
+            text-wrap: balance;
+        }
+
+        .playground-section .sub {
+            max-width: 440px;
+            margin: 16px 0 24px;
+            font-size: 16px;
+            line-height: 1.65;
+        }
+
+        .playground-section .landing-button:focus-visible {
+            outline: 2px solid #3b82f6;
+            outline-offset: 4px;
+        }
+
         .playground-media {
             aspect-ratio: 16 / 9;
             height: auto;
@@ -2168,7 +2190,8 @@
             margin-top: 28px;
         }
 
-        .landing-hero-actions .landing-button {
+        .landing-hero-actions .landing-button,
+        .playground-section .landing-button {
             min-height: 44px;
             padding: 0 16px;
             font-family: inherit;
@@ -2176,7 +2199,8 @@
             letter-spacing: -.015em;
         }
 
-        .landing-hero-actions .landing-button-dark {
+        .landing-hero-actions .landing-button-dark,
+        .playground-section .landing-button-dark {
             box-shadow: 0 1px 2px rgba(15, 18, 25, .12);
         }
 
@@ -3222,7 +3246,7 @@
                     <p class="sub">Every save re-renders the schematic, PCB, and 3D view — the same loop you have with
                         Next.js or Vite, but for hardware. No IDE to install, no toolchain to babysit. 50+ reference
                         boards ready to fork.</p>
-                    <a class="btn accent" href="/playground">Open playground →</a>
+                    <a class="landing-button landing-button-dark" href="/playground">Open playground →</a>
                 </div>
                 <div class="media playground-media">
                     <img src="assets/playground screenshot.png"
