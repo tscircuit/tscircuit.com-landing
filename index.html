@@ -2097,7 +2097,7 @@
         }
 
         .landing-hero-stage {
-            --hero-height: 625px;
+            --hero-height: 685px;
             position: relative;
             isolation: isolate;
         }
@@ -2251,21 +2251,28 @@
 
         .landing-hero-copy h1 {
             margin: 0;
-            max-width: 520px;
+            max-width: 660px;
             color: var(--ink);
             font-size: clamp(44px, 4.25vw, 54px);
             line-height: 1.08;
             letter-spacing: -.045em;
-            font-weight: 500;
-            text-wrap: balance;
+            font-weight: 680;
+        }
+
+        .landing-hero-title-line {
+            display: block;
+        }
+
+        .landing-hero-title-word {
+            white-space: nowrap;
         }
 
         .landing-hero-copy p {
             margin: 24px 0 0;
-            color: #5d6572;
-            font-size: 16px;
-            line-height: 1.7;
-            letter-spacing: -.015em;
+            color: var(--ink-2);
+            font-size: 18px;
+            line-height: 1.55;
+            letter-spacing: -.02em;
             font-weight: 400;
         }
 
@@ -2322,7 +2329,7 @@
             width: 650px;
             height: 420px;
             right: -22px;
-            top: 104px;
+            top: 164px;
             border-radius: 50%;
             background: radial-gradient(ellipse at center, rgba(149, 160, 177, .17) 0%, rgba(191, 199, 211, .09) 42%, transparent 72%);
             filter: blur(12px);
@@ -2334,7 +2341,7 @@
             max-width: none;
             height: auto;
             right: -14px;
-            top: 10px;
+            top: 70px;
             display: block;
             opacity: .99;
             filter: contrast(1.045) saturate(1.035) drop-shadow(0 16px 10px rgba(41, 49, 62, .07)) drop-shadow(0 38px 29px rgba(41, 49, 62, .15));
@@ -2430,7 +2437,7 @@
             .landing-hero-board {
                 width: 800px;
                 right: -12px;
-                top: 24px;
+                top: 84px;
             }
 
             .landing-board-halo {
@@ -2513,12 +2520,8 @@
             }
 
             .landing-hero-copy h1 {
-                max-width: 600px;
+                max-width: 660px;
                 font-size: clamp(40px, 6.5vw, 54px);
-            }
-
-            .landing-hero-copy p {
-                font-size: 16px;
             }
 
             .landing-hero-board {
@@ -2647,12 +2650,12 @@
             }
 
             .landing-hero-copy h1 {
-                font-size: clamp(32px, 9vw, 46px);
+                font-size: clamp(28px, 9vw, 46px);
             }
 
             .landing-hero-copy p {
                 margin-top: 20px;
-                font-size: 15px;
+                font-size: 16px;
             }
 
             .landing-desktop-break {
@@ -2698,10 +2701,6 @@
                 padding-top: 42px;
             }
 
-
-            .landing-hero-copy p {
-                font-size: 15px;
-            }
         }
 
         @media (max-width: 360px) {
@@ -2936,7 +2935,9 @@
             <div class="landing-hero-shell">
                 <div class="landing-hero-main">
                     <div class="landing-hero-copy">
-                        <h1 id="hero-title">The framework for AI-generated electronics.</h1>
+                        <h1 id="hero-title"><span class="landing-hero-title-line">The framework for</span>
+                            <span class="landing-hero-title-line"><span class="landing-hero-title-word">AI-generated</span> electronics</span>
+                        </h1>
                         <p>Build real circuit boards with any AI.<br class="landing-desktop-break">
                             Just tell your agent to &quot;use tscircuit&quot;</p>
                         <div class="landing-hero-actions">
