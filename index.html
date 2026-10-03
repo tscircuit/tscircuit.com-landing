@@ -2146,6 +2146,99 @@
             height: 100%;
         }
 
+        body { padding-bottom: var(--signal-controls-height, 0px); }
+
+        .signal-controls {
+            position: fixed;
+            inset: auto 0 0;
+            z-index: 1000;
+            padding: 0 max(18px, env(safe-area-inset-right)) env(safe-area-inset-bottom) max(18px, env(safe-area-inset-left));
+            border-top: 1px solid #dfe3e8;
+            background: #fff;
+            box-shadow: 0 -4px 24px rgba(0, 0, 0, .06);
+            font: 12px 'Geist', system-ui, sans-serif;
+        }
+
+        .signal-controls > summary {
+            max-width: 1280px;
+            margin: auto;
+            padding: 10px 0;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .signal-controls > summary span {
+            margin-left: 12px;
+            color: #667085;
+            font-weight: 400;
+        }
+
+        .signal-controls-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px 24px;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding-bottom: 12px;
+        }
+
+        .signal-control label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .signal-control-inputs { display: flex; align-items: center; gap: 10px; }
+        .signal-control input[type="range"] { width: 100%; min-width: 0; accent-color: #555; }
+        .signal-control input[type="number"] {
+            width: 70px;
+            flex: 0 0 70px;
+            padding: 5px 6px;
+            border: 1px solid #dfe3e8;
+            border-radius: 5px;
+            font: inherit;
+        }
+
+        .signal-controls-share {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .signal-controls-share textarea {
+            flex: 1 1 340px;
+            min-width: 0;
+            height: 36px;
+            resize: none;
+            padding: 8px;
+            border: 1px solid #dfe3e8;
+            border-radius: 5px;
+            background: #f8f9fa;
+            font: 11px monospace;
+        }
+
+        .signal-controls button {
+            padding: 8px 12px;
+            border: 1px solid #dfe3e8;
+            border-radius: 5px;
+            background: #fff;
+            color: #25272d;
+            cursor: pointer;
+            font: inherit;
+        }
+
+        .signal-controls button:hover { background: #f3f4f6; }
+        .signal-controls :focus-visible { outline: 2px solid #3b82f6; outline-offset: 2px; }
+        #signal-copy-status { color: #667085; }
+        #signal-motion-note { grid-column: 1 / -1; margin: 0; color: #667085; }
+
+        @media (max-width: 700px) {
+            .signal-controls-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 16px; }
+            .signal-controls-share textarea { flex-basis: 100%; height: 44px; }
+        }
+
         .landing-hero-copy h1 {
             margin: 0;
             max-width: 520px;
@@ -3424,15 +3517,58 @@
             © 2026 tscircuit Inc.
         </div>
     </footer>
+    <details class="signal-controls" open>
+        <summary>Signal controls <span>Live preview</span></summary>
+        <div class="signal-controls-grid">
+            <div class="signal-control">
+                <label for="signal-speed">Speed (px/s)</label>
+                <div class="signal-control-inputs">
+                    <input id="signal-speed" type="range" min="50" max="4000" step="10" value="600">
+                    <input id="signal-speed-number" type="number" min="50" max="4000" step="10" value="600" aria-label="Speed (px/s)">
+                </div>
+            </div>
+            <div class="signal-control">
+                <label for="signal-length">Length (px)</label>
+                <div class="signal-control-inputs">
+                    <input id="signal-length" type="range" min="20" max="600" step="10" value="240">
+                    <input id="signal-length-number" type="number" min="20" max="600" step="10" value="240" aria-label="Length (px)">
+                </div>
+            </div>
+            <div class="signal-control">
+                <label for="signal-density">Density (%)</label>
+                <div class="signal-control-inputs">
+                    <input id="signal-density" type="range" min="1" max="100" step="1" value="10">
+                    <input id="signal-density-number" type="number" min="1" max="100" step="1" value="10" aria-label="Density (%)">
+                </div>
+            </div>
+            <div class="signal-control">
+                <label for="signal-strokeWidth">Stroke width (px)</label>
+                <div class="signal-control-inputs">
+                    <input id="signal-strokeWidth" type="range" min="0.1" max="4" step="0.1" value="0.7">
+                    <input id="signal-strokeWidth-number" type="number" min="0.1" max="4" step="0.1" value="0.7" aria-label="Stroke width (px)">
+                </div>
+            </div>
+            <div class="signal-controls-share">
+                <textarea id="signal-settings" readonly aria-label="Signal parameters to copy" spellcheck="false"></textarea>
+                <button id="signal-copy" type="button">Copy settings</button>
+                <button id="signal-reset" type="button">Reset</button>
+                <span id="signal-copy-status" role="status"></span>
+            </div>
+            <p id="signal-motion-note" hidden>Animation is off because reduced motion is enabled.</p>
+        </div>
+    </details>
     <script type="module">
         import heroModuleFsMap from "./assets/hero-stm32f746g-disco-fs-map.json"
         import heroPcbStaticUrl from "./assets/hero-stm32f746g-disco-pcb.png"
         import heroSchematicStaticUrl from "./assets/hero-stm32f746g-disco-schematic.png"
         import hero3dStaticUrl from "./assets/hero-stm32f746g-disco-3d.png"
 
-        import { initHeroCircuitBackground } from "./assets/hero-circuit-background.js"
+        import { initHeroCircuitControls } from "./assets/hero-circuit-controls.js"
 
-        initHeroCircuitBackground(document.querySelector(".hero-circuit-background"))
+        initHeroCircuitControls(
+            document.querySelector(".hero-circuit-background"),
+            document.querySelector(".signal-controls"),
+        )
 
         const defaultHeroCode = `import { CodecSection } from "./components/CodecSection/CodecSection";
 import { DebugHeader } from "./components/DebugHeader/DebugHeader";

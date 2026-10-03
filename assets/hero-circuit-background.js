@@ -2,11 +2,9 @@
 const CELL_WIDTH = 480
 const CELL_HEIGHT = 320
 const FRAME_INTERVAL = 1000 / 30
-const SIGNAL_SPEED_MULTIPLIER = 100
-const SIGNAL_LENGTH_MULTIPLIER = 4
-const SIGNAL_DUTY_CYCLE = 0.1
 
-export function initHeroCircuitBackground(container) {
+export function initHeroCircuitBackground(container, initialSettings) {
+  let settings = { ...initialSettings }
   const canvas = container.querySelector("canvas")
   const context = canvas.getContext("2d")
   if (!context) return
@@ -18,7 +16,7 @@ export function initHeroCircuitBackground(container) {
   let visible = false
   let frame = 0
   let lastTime = 0
-  let elapsed = 0
+  let distanceTraveled = 0
 
   const makeRoute = (points, seed) => {
     let length = 0
@@ -29,16 +27,10 @@ export function initHeroCircuitBackground(container) {
       length += distance
       return segment
     })
-    const tail = (38 + (seed % 47)) * SIGNAL_LENGTH_MULTIPLIER
-    // Each route is visible for one tenth of its cycle, with staggered starts.
-    const cycle = (length + tail) / SIGNAL_DUTY_CYCLE
     return {
       segments,
       length,
-      tail,
-      cycle,
-      speed: (18 + (seed % 17)) * SIGNAL_SPEED_MULTIPLIER,
-      phase: ((seed * 0.61803398875) % 1) * cycle,
+      phase: (seed * 0.61803398875) % 1,
       opacity: 0.22 + (seed % 5) * 0.035,
     }
   }
@@ -52,7 +44,6 @@ export function initHeroCircuitBackground(container) {
     canvas.width = Math.round(width * pixelRatio)
     canvas.height = Math.round(height * pixelRatio)
     context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0)
-    context.lineWidth = 0.7
     context.lineCap = "round"
     context.lineJoin = "round"
     context.strokeStyle = "#929292"
@@ -99,10 +90,12 @@ export function initHeroCircuitBackground(container) {
   const draw = () => {
     context.clearRect(0, 0, width, height)
     if (reducedMotion.matches) return
+    context.lineWidth = settings.strokeWidth
     for (const route of routes) {
-      const head = (elapsed * route.speed + route.phase) % route.cycle
-      if (head >= route.length + route.tail) continue
-      const start = Math.max(0, head - route.tail)
+      const cycle = (route.length + settings.length) / (settings.density / 100)
+      const head = (distanceTraveled + route.phase * cycle) % cycle
+      if (head >= route.length + settings.length) continue
+      const start = Math.max(0, head - settings.length)
       const end = Math.min(route.length, head)
       context.beginPath()
       for (const segment of route.segments) {
@@ -125,7 +118,7 @@ export function initHeroCircuitBackground(container) {
   const tick = (time) => {
     if (!lastTime) lastTime = time
     if (time - lastTime >= FRAME_INTERVAL) {
-      elapsed += (time - lastTime) / 1000
+      distanceTraveled += ((time - lastTime) / 1000) * settings.speed
       lastTime = time
       draw()
     }
@@ -147,4 +140,11 @@ export function initHeroCircuitBackground(container) {
   }).observe(container)
   document.addEventListener("visibilitychange", updateActivity)
   reducedMotion.addEventListener("change", updateActivity)
+
+  return {
+    setSettings(nextSettings) {
+      settings = { ...nextSettings }
+      draw()
+    },
+  }
 }
