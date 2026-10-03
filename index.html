@@ -808,6 +808,7 @@
         .feature-section {
             padding: 96px clamp(24px, 4vw, 64px) 0;
             border-bottom: none;
+            overflow-x: clip;
         }
 
         .section.feature-section {
@@ -899,66 +900,46 @@
         }
 
         .feature-video-stage {
+            --feature-grid-size: 60px;
+            --feature-border-color: rgba(137, 153, 181, .22);
             position: relative;
             min-width: 0;
             padding: 108px 0 135px 56px;
-            border: 1px solid rgba(137, 153, 181, .22);
-            background-color: #fcfdff;
-            background-image:
-                linear-gradient(rgba(113, 137, 177, .12) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(113, 137, 177, .12) 1px, transparent 1px);
-            background-size: 60px 60px;
             isolation: isolate;
         }
 
+        /* Continue the grid to the viewport edge without widening the video. */
+        .feature-video-stage::before {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 100vw;
+            background-color: #fcfdff;
+            background-image:
+                linear-gradient(90deg, var(--feature-border-color) .5px, transparent .5px),
+                linear-gradient(to bottom, transparent calc(100% - .5px), rgba(113, 137, 177, .12) 0),
+                linear-gradient(to right, transparent calc(100% - .5px), rgba(113, 137, 177, .12) 0);
+            background-size:
+                100% 100%,
+                var(--feature-grid-size) var(--feature-grid-size),
+                var(--feature-grid-size) var(--feature-grid-size);
+            background-repeat: no-repeat, repeat, repeat;
+            pointer-events: none;
+        }
+
+        /* Thin top and bottom dividers continue across both viewport edges. */
         .feature-video-stage::after {
             content: "";
             position: absolute;
-            z-index: 1;
-            top: 30px;
-            left: 30px;
-            width: 44px;
-            height: 44px;
-            background: radial-gradient(circle, rgba(75, 139, 244, .65) 1.1px, transparent 1.3px) 0 0 / 8px 8px;
-        }
-
-        .feature-stage-marker {
-            position: absolute;
-            z-index: 3;
-            width: 20px;
-            height: 20px;
+            z-index: -1;
+            inset: 0 -100vw;
             background:
-                linear-gradient(rgba(120, 137, 166, .55), rgba(120, 137, 166, .55)) center / 1px 100% no-repeat,
-                linear-gradient(90deg, rgba(120, 137, 166, .55), rgba(120, 137, 166, .55)) center / 100% 1px no-repeat;
-        }
-
-        .feature-stage-marker::after {
-            content: "";
-            position: absolute;
-            inset: 7px;
-            border: 1px solid rgba(120, 137, 166, .65);
-            border-radius: 50%;
-            background: #fcfdff;
-        }
-
-        .feature-stage-marker-tl {
-            top: -10px;
-            left: -10px;
-        }
-
-        .feature-stage-marker-tr {
-            top: -10px;
-            right: -10px;
-        }
-
-        .feature-stage-marker-bl {
-            bottom: -10px;
-            left: -10px;
-        }
-
-        .feature-stage-marker-br {
-            right: -10px;
-            bottom: -10px;
+                linear-gradient(var(--feature-border-color), var(--feature-border-color)) top / 100% .5px no-repeat,
+                linear-gradient(var(--feature-border-color), var(--feature-border-color)) bottom / 100% .5px no-repeat;
+            pointer-events: none;
         }
 
         .feature-usage-video {
@@ -2120,6 +2101,7 @@
             transform: translateX(18px);
             border-left: 1px solid var(--line);
             border-right: 1px solid var(--line);
+            border-image: linear-gradient(to bottom, var(--line) calc(100% - 40px), #ffffff) 1;
             position: relative;
             overflow: clip;
             font-family: 'Geist', system-ui, sans-serif;
@@ -2235,10 +2217,7 @@
             height: 211px;
             position: relative;
             z-index: 5;
-            border: 1px solid var(--line);
-            border-left: 0;
-            border-right: 0;
-            border-radius: 13px 13px 0 0;
+            border-top: 1px solid var(--line);
             background: radial-gradient(circle, rgba(182, 189, 200, .34) .8px, transparent .95px) 53% 0 / 8px 8px, linear-gradient(90deg, #ffffff 0%, #ffffff 51%, rgba(255, 255, 255, .78) 64%, rgba(255, 255, 255, .5) 100%);
             overflow: hidden;
         }
@@ -2247,7 +2226,7 @@
             content: "";
             position: absolute;
             inset: 0;
-            background: linear-gradient(90deg, #ffffff 0%, rgba(255, 255, 255, .97) 42%, rgba(255, 255, 255, .2) 65%, rgba(255, 255, 255, .55) 100%);
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0) calc(100% - 40px), #ffffff), linear-gradient(90deg, #ffffff 0%, rgba(255, 255, 255, .97) 42%, rgba(255, 255, 255, .2) 65%, rgba(255, 255, 255, .55) 100%);
             pointer-events: none;
         }
 
@@ -2487,16 +2466,8 @@
             }
 
             .feature-video-stage {
+                --feature-grid-size: 44px;
                 padding: 56px 0 48px 18px;
-                background-size: 44px 44px;
-            }
-
-            .feature-video-stage::after {
-                top: 18px;
-                left: 18px;
-                width: 34px;
-                height: 34px;
-                background-size: 7px 7px;
             }
 
             .feature-usage-video {
@@ -2918,10 +2889,6 @@
                         </div>
                     </div>
                     <div class="feature-video-stage">
-                        <span class="feature-stage-marker feature-stage-marker-tl" aria-hidden="true"></span>
-                        <span class="feature-stage-marker feature-stage-marker-tr" aria-hidden="true"></span>
-                        <span class="feature-stage-marker feature-stage-marker-bl" aria-hidden="true"></span>
-                        <span class="feature-stage-marker feature-stage-marker-br" aria-hidden="true"></span>
                         <div class="media feature-usage-video">
                             <video autoplay muted loop playsinline preload="metadata"
                                 poster="assets/tscircuit-usage-video-poster.png"
