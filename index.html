@@ -2120,6 +2120,7 @@
             transform: translateX(18px);
             border-left: 1px solid var(--line);
             border-right: 1px solid var(--line);
+            border-image: linear-gradient(to bottom, var(--line) calc(100% - 40px), #ffffff) 1;
             position: relative;
             overflow: clip;
             font-family: 'Geist', system-ui, sans-serif;
@@ -2235,9 +2236,7 @@
             height: 211px;
             position: relative;
             z-index: 5;
-            border: 1px solid var(--line);
-            border-left: 0;
-            border-right: 0;
+            border-top: 1px solid var(--line);
             background: radial-gradient(circle, rgba(182, 189, 200, .34) .8px, transparent .95px) 53% 0 / 8px 8px, linear-gradient(90deg, #ffffff 0%, #ffffff 51%, rgba(255, 255, 255, .78) 64%, rgba(255, 255, 255, .5) 100%);
             overflow: hidden;
         }
@@ -2246,7 +2245,7 @@
             content: "";
             position: absolute;
             inset: 0;
-            background: linear-gradient(90deg, #ffffff 0%, rgba(255, 255, 255, .97) 42%, rgba(255, 255, 255, .2) 65%, rgba(255, 255, 255, .55) 100%);
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0) calc(100% - 40px), #ffffff), linear-gradient(90deg, #ffffff 0%, rgba(255, 255, 255, .97) 42%, rgba(255, 255, 255, .2) 65%, rgba(255, 255, 255, .55) 100%);
             pointer-events: none;
         }
 
