@@ -920,8 +920,13 @@
             background-color: #fcfdff;
             background-image:
                 linear-gradient(90deg, var(--feature-border-color) .5px, transparent .5px),
-                repeating-linear-gradient(transparent 0 calc(var(--feature-grid-size) - .5px), rgba(113, 137, 177, .12) calc(var(--feature-grid-size) - .5px) var(--feature-grid-size)),
-                repeating-linear-gradient(90deg, transparent 0 calc(var(--feature-grid-size) - .5px), rgba(113, 137, 177, .12) calc(var(--feature-grid-size) - .5px) var(--feature-grid-size));
+                linear-gradient(to bottom, transparent calc(100% - .5px), rgba(113, 137, 177, .12) 0),
+                linear-gradient(to right, transparent calc(100% - .5px), rgba(113, 137, 177, .12) 0);
+            background-size:
+                100% 100%,
+                var(--feature-grid-size) var(--feature-grid-size),
+                var(--feature-grid-size) var(--feature-grid-size);
+            background-repeat: no-repeat, repeat, repeat;
             pointer-events: none;
         }
 
