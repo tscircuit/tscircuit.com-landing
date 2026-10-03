@@ -2122,6 +2122,70 @@
             margin-left: 65px;
         }
 
+        /* A small SVG keeps the circuit texture crisp without a canvas render loop. */
+        .hero-circuit-background {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+            contain: paint;
+            mask-image: linear-gradient(to bottom, transparent, #000 10%, #000 85%, transparent);
+        }
+
+        .hero-circuit-background::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 25% 42%, #fff 12%, rgba(255, 255, 255, .94) 28%, transparent 65%);
+        }
+
+        .hero-circuit-background svg {
+            display: block;
+            width: 100%;
+            height: 100%;
+            fill: none;
+            stroke: #dedede;
+            stroke-width: 1;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .hero-circuit-signal {
+            stroke: #999;
+            stroke-dasharray: .055 .945;
+            opacity: 0;
+            animation: hero-circuit-flow 16s linear infinite;
+            animation-play-state: paused;
+        }
+
+        .hero-circuit-background[data-active="true"] .hero-circuit-signal {
+            animation-play-state: running;
+        }
+
+        .hero-circuit-signal:nth-child(2) { animation-delay: -4s; }
+        .hero-circuit-signal:nth-child(3) { animation-delay: -8s; }
+        .hero-circuit-signal:nth-child(4) { animation-delay: -12s; }
+
+        @keyframes hero-circuit-flow {
+            0% { stroke-dashoffset: .055; opacity: 0; }
+            10%, 65% { opacity: .5; }
+            80%, 100% { stroke-dashoffset: -1; opacity: 0; }
+        }
+
+        @media (max-width: 767px) {
+            .hero-circuit-background::after {
+                background: linear-gradient(to bottom, rgba(255, 255, 255, .88) 30%, transparent 70%);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .hero-circuit-signal {
+                animation: none;
+                display: none;
+            }
+        }
+
         .landing-hero-copy h1 {
             margin: 0;
             max-width: 520px;
@@ -2804,6 +2868,42 @@
     <main id="main-content">
         <section class="landing-hero-shell" aria-labelledby="hero-title">
             <div class="landing-hero-main">
+                <div class="hero-circuit-background" aria-hidden="true">
+                    <svg viewBox="0 0 1216 625" preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <defs>
+                            <path id="hero-circuit-top" pathLength="1" d="M-20 72H240L282 114H574L626 62H856L898 104H1236" />
+                            <path id="hero-circuit-right" pathLength="1" d="M1236 172H1100L1052 220H854L806 268H682" />
+                            <path id="hero-circuit-bottom" pathLength="1" d="M-20 510H180L230 460H430L486 516H766L822 572H1236" />
+                            <path id="hero-circuit-middle" pathLength="1" d="M1236 374H1120L1068 426H896L852 382H668L620 430H554" />
+                        </defs>
+                        <g>
+                            <use href="#hero-circuit-top" />
+                            <path d="M-20 88H232L274 130H582L634 78H848L890 120H1236" />
+                            <use href="#hero-circuit-right" />
+                            <path d="M1236 188H1108L1060 236H862L814 284H738" />
+                            <use href="#hero-circuit-bottom" />
+                            <path d="M-20 526H188L238 476H422L478 532H758L814 588H1236" />
+                            <use href="#hero-circuit-middle" />
+                            <path d="M1236 390H1128L1076 442H888L844 398H676L628 446H598" />
+                            <path d="M74-20V188L118 232V346L74 390V454M1006-20V52L962 96V156M344 645V584L390 538V502" />
+                        </g>
+                        <g fill="#fff">
+                            <circle cx="682" cy="268" r="3" />
+                            <circle cx="738" cy="284" r="3" />
+                            <circle cx="554" cy="430" r="3" />
+                            <circle cx="598" cy="446" r="3" />
+                            <circle cx="74" cy="454" r="3" />
+                            <circle cx="962" cy="156" r="3" />
+                            <circle cx="390" cy="502" r="3" />
+                        </g>
+                        <g>
+                            <use class="hero-circuit-signal" href="#hero-circuit-top" />
+                            <use class="hero-circuit-signal" href="#hero-circuit-right" />
+                            <use class="hero-circuit-signal" href="#hero-circuit-bottom" />
+                            <use class="hero-circuit-signal" href="#hero-circuit-middle" />
+                        </g>
+                    </svg>
+                </div>
                 <div class="landing-hero-copy">
                     <h1 id="hero-title">The framework for AI-generated electronics.</h1>
                     <p>Build real circuit boards with any AI.<br class="landing-desktop-break">
@@ -3400,6 +3500,19 @@
         import heroPcbStaticUrl from "./assets/hero-stm32f746g-disco-pcb.png"
         import heroSchematicStaticUrl from "./assets/hero-stm32f746g-disco-schematic.png"
         import hero3dStaticUrl from "./assets/hero-stm32f746g-disco-3d.png"
+
+        // Only run the four CSS pulses while the hero and browser tab are visible.
+        const circuitBackground = document.querySelector(".hero-circuit-background")
+        let circuitIsVisible = false
+        const updateCircuitActivity = () => {
+            circuitBackground.dataset.active = String(circuitIsVisible && !document.hidden)
+        }
+        const circuitObserver = new IntersectionObserver(([entry]) => {
+            circuitIsVisible = entry.isIntersecting
+            updateCircuitActivity()
+        })
+        circuitObserver.observe(circuitBackground)
+        document.addEventListener("visibilitychange", updateCircuitActivity)
 
         const defaultHeroCode = `import { CodecSection } from "./components/CodecSection/CodecSection";
 import { DebugHeader } from "./components/DebugHeader/DebugHeader";
