@@ -2,6 +2,8 @@
 const CELL_WIDTH = 480
 const CELL_HEIGHT = 320
 const FRAME_INTERVAL = 1000 / 30
+const SIGNAL_SPEED_MULTIPLIER = 10
+const SIGNAL_DUTY_CYCLE = 0.1
 
 export function initHeroCircuitBackground(container) {
   const canvas = container.querySelector("canvas")
@@ -26,12 +28,16 @@ export function initHeroCircuitBackground(container) {
       length += distance
       return segment
     })
+    const tail = 38 + (seed % 47)
+    // Each route is visible for one tenth of its cycle, with staggered starts.
+    const cycle = (length + tail) / SIGNAL_DUTY_CYCLE
     return {
       segments,
       length,
-      tail: 38 + (seed % 47),
-      speed: 18 + (seed % 17),
-      phase: ((seed * 0.61803398875) % 1) * length,
+      tail,
+      cycle,
+      speed: (18 + (seed % 17)) * SIGNAL_SPEED_MULTIPLIER,
+      phase: ((seed * 0.61803398875) % 1) * cycle,
       opacity: 0.22 + (seed % 5) * 0.035,
     }
   }
@@ -93,8 +99,8 @@ export function initHeroCircuitBackground(container) {
     context.clearRect(0, 0, width, height)
     if (reducedMotion.matches) return
     for (const route of routes) {
-      const head =
-        (elapsed * route.speed + route.phase) % (route.length + route.tail)
+      const head = (elapsed * route.speed + route.phase) % route.cycle
+      if (head >= route.length + route.tail) continue
       const start = Math.max(0, head - route.tail)
       const end = Math.min(route.length, head)
       context.beginPath()
