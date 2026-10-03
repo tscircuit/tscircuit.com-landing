@@ -33,6 +33,7 @@ export function initHeroCircuitBackground(container, initialSettings) {
       height,
       settings.turns,
       settings.busCount,
+      settings.tracesPerBus,
     )
     draw()
   }
@@ -78,7 +79,8 @@ export function initHeroCircuitBackground(container, initialSettings) {
     setSettings(nextSettings) {
       const geometryChanged =
         nextSettings.turns !== settings.turns ||
-        nextSettings.busCount !== settings.busCount
+        nextSettings.busCount !== settings.busCount ||
+        nextSettings.tracesPerBus !== settings.tracesPerBus
       settings = { ...nextSettings }
       if (geometryChanged)
         routes = createCircuitBuses(
@@ -86,6 +88,7 @@ export function initHeroCircuitBackground(container, initialSettings) {
           height,
           settings.turns,
           settings.busCount,
+          settings.tracesPerBus,
         )
       draw()
     },

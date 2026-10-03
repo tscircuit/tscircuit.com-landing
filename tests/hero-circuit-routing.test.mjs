@@ -5,6 +5,21 @@ import {
   getSignalStates,
 } from "../assets/hero-circuit-routing.js"
 
+const cross = (ax, ay, bx, by) => ax * by - ay * bx
+const intersects = (a, b) => {
+  const ax = a.x - a.fromX
+  const ay = a.y - a.fromY
+  const bx = b.x - b.fromX
+  const by = b.y - b.fromY
+  const determinant = cross(ax, ay, bx, by)
+  if (Math.abs(determinant) < 1e-6) return false
+  const dx = b.fromX - a.fromX
+  const dy = b.fromY - a.fromY
+  const t = cross(dx, dy, bx, by) / determinant
+  const u = cross(dx, dy, ax, ay) / determinant
+  return t >= 0 && t <= 1 && u >= 0 && u <= 1
+}
+
 const routes = createCircuitBuses(1440, 697)
 const settings = { length: 240, density: 2000 }
 
@@ -129,20 +144,6 @@ test("2000% produces substantially more concurrent signals than 100%", () => {
 })
 
 test("forks conserve the 16 wires and never cross wires within a bus", () => {
-  const cross = (ax, ay, bx, by) => ax * by - ay * bx
-  const intersects = (a, b) => {
-    const ax = a.x - a.fromX
-    const ay = a.y - a.fromY
-    const bx = b.x - b.fromX
-    const by = b.y - b.fromY
-    const determinant = cross(ax, ay, bx, by)
-    if (Math.abs(determinant) < 1e-6) return false
-    const dx = b.fromX - a.fromX
-    const dy = b.fromY - a.fromY
-    const t = cross(dx, dy, bx, by) / determinant
-    const u = cross(dx, dy, ax, ay) / determinant
-    return t >= 0 && t <= 1 && u >= 0 && u <= 1
-  }
   for (const [width, height, turns] of geometryCases) {
     const allRoutes = createCircuitBuses(width, height, turns)
     for (const bus of new Set(allRoutes.map((route) => route.bus))) {
@@ -309,4 +310,95 @@ test("bus count handles zero, a single centered bus, and out-of-range values", (
   ]) {
     assert.equal(createCircuitBuses(1440, 1030, 8, input).length, expected * 16)
   }
+})
+
+test("trace count preserves spacing and noncrossing forks for small, odd, and wide buses", () => {
+  for (const [width, height] of viewports) {
+    for (let count = 1; count <= 32; count++) {
+      for (const turns of [0, 8, 24]) {
+        const routes = createCircuitBuses(width, height, turns, 16, count)
+        assert.equal(routes.length, 16 * count)
+        for (const bus of new Set(routes.map((route) => route.bus))) {
+          const lanes = routes.filter((route) => route.bus === bus)
+          assert.equal(bus.laneCount, count)
+          assert.deepEqual(
+            lanes.map((route) => route.lane),
+            Array.from({ length: count }, (_, i) => i),
+          )
+          for (let i = 0; i < lanes.length; i++) {
+            const segments = lanes[i].segments
+            assert.ok(segments.at(-1).x < 0 || segments.at(-1).x > width)
+            for (const segment of segments) {
+              assert.ok(
+                Number.isFinite(segment.distance) && segment.distance > 0,
+              )
+              assert.ok(segment.fromY < height && segment.y < height)
+              const dx = Math.abs(segment.x - segment.fromX)
+              const dy = Math.abs(segment.y - segment.fromY)
+              assert.ok(dx < 1e-6 || dy < 1e-6 || Math.abs(dx - dy) < 1e-6)
+            }
+            if (i > 0) {
+              const a = lanes[i - 1].segments[0]
+              const b = segments[0]
+              assert.ok(
+                Math.abs(Math.hypot(a.fromX - b.fromX, a.fromY - b.fromY) - 4) <
+                  1e-6,
+              )
+            }
+            for (let j = i + 1; j < lanes.length; j++) {
+              assert.ok(
+                !segments.some((a) =>
+                  lanes[j].segments.some((b) => intersects(a, b)),
+                ),
+                `${bus.id} crosses lanes ${i}/${j} with ${count} traces, ${turns} turns at ${width}px`,
+              )
+            }
+          }
+        }
+      }
+    }
+  }
+})
+
+test("every trace can receive signals with any bundle size, including a single trace", () => {
+  const settings = { length: 600, density: 100 }
+  for (let count = 1; count <= 32; count++) {
+    const bus = { maxLength: 1000, seed: 1, phase: 0, laneCount: count }
+    const seen = new Set()
+    for (let emission = 0; emission < 128; emission++) {
+      let active = 0
+      for (let lane = 0; lane < count; lane++) {
+        const signals = getSignalStates(
+          { bus, lane, length: 1000 },
+          emission * 2350 + 1000,
+          settings,
+        )
+        if (signals.length) {
+          active++
+          seen.add(lane)
+        }
+      }
+      assert.ok(active >= Math.max(1, Math.ceil(count / 4)))
+      assert.ok(active <= Math.max(1, Math.floor(count / 2)))
+    }
+    assert.equal(seen.size, count)
+  }
+})
+
+test("trace count clamps invalid settings and works independently of bus count", () => {
+  for (const [input, expected] of [
+    [0, 1],
+    [-5, 1],
+    [100, 32],
+    [2.7, 3],
+    [NaN, 16],
+    [Infinity, 16],
+  ]) {
+    assert.equal(
+      createCircuitBuses(1440, 1030, 8, 7, input).length,
+      7 * expected,
+    )
+  }
+  assert.deepEqual(createCircuitBuses(1440, 1030, 8, 0, 32), [])
+  assert.equal(createCircuitBuses(1440, 1030, 8, 40, 32).length, 1280)
 })

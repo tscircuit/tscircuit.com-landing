@@ -3570,7 +3570,14 @@
                     <input id="signal-busCount" type="range" min="0" max="40" step="1" value="16" aria-describedby="signal-bus-count-help">
                     <input id="signal-busCount-number" type="number" min="0" max="40" step="1" value="16" aria-label="Number of buses" aria-describedby="signal-bus-count-help">
                 </div>
-                <small id="signal-bus-count-help">16 wires per bus · 0 hides all buses</small>
+                <small id="signal-bus-count-help">0 hides all buses</small>
+            </div>
+            <div class="signal-control">
+                <label for="signal-tracesPerBus">Traces per bus</label>
+                <div class="signal-control-inputs">
+                    <input id="signal-tracesPerBus" type="range" min="1" max="32" step="1" value="16">
+                    <input id="signal-tracesPerBus-number" type="number" min="1" max="32" step="1" value="16" aria-label="Traces per bus">
+                </div>
             </div>
             <div class="signal-controls-share">
                 <textarea id="signal-settings" readonly aria-label="Signal parameters to copy" spellcheck="false"></textarea>

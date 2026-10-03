@@ -9,6 +9,7 @@ const DEFAULTS = {
   tailFade: 80,
   turns: 8,
   busCount: 16,
+  tracesPerBus: 16,
 }
 
 export function initHeroCircuitControls(background, controls) {
