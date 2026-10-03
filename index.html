@@ -2095,6 +2095,12 @@
             border: 1px solid var(--line);
         }
 
+        .landing-hero-stage {
+            --hero-height: 625px;
+            position: relative;
+            isolation: isolate;
+        }
+
         .landing-hero-shell {
             width: min(1218px, calc(100% - 48px));
             margin: 0 auto;
@@ -2108,11 +2114,11 @@
         }
 
         .landing-hero-main {
-            height: 625px;
+            height: var(--hero-height);
             position: relative;
             overflow: visible;
             isolation: isolate;
-            background: #ffffff;
+            background: rgba(255, 255, 255, .5);
         }
 
         .landing-hero-copy {
@@ -2125,19 +2131,13 @@
         /* A small SVG keeps the circuit texture crisp without a canvas render loop. */
         .hero-circuit-background {
             position: absolute;
-            inset: 0;
-            z-index: 0;
+            inset: 0 0 auto;
+            height: var(--hero-height);
+            z-index: -1;
             overflow: hidden;
             pointer-events: none;
             contain: paint;
             mask-image: linear-gradient(to bottom, transparent, #000 10%, #000 85%, transparent);
-        }
-
-        .hero-circuit-background::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(ellipse at 25% 42%, #fff 12%, rgba(255, 255, 255, .94) 28%, transparent 65%);
         }
 
         .hero-circuit-background svg {
@@ -2149,6 +2149,11 @@
             stroke-width: 1;
             stroke-linecap: round;
             stroke-linejoin: round;
+        }
+
+        .hero-circuit-background path,
+        .hero-circuit-background circle {
+            vector-effect: non-scaling-stroke;
         }
 
         .hero-circuit-signal {
@@ -2171,12 +2176,6 @@
             0% { stroke-dashoffset: .055; opacity: 0; }
             10%, 65% { opacity: .5; }
             80%, 100% { stroke-dashoffset: -1; opacity: 0; }
-        }
-
-        @media (max-width: 767px) {
-            .hero-circuit-background::after {
-                background: linear-gradient(to bottom, rgba(255, 255, 255, .88) 30%, transparent 70%);
-            }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -2440,8 +2439,8 @@
                 font-size: 14px;
             }
 
-            .landing-hero-main {
-                height: 760px;
+            .landing-hero-stage {
+                --hero-height: 760px;
             }
 
             .landing-hero-copy {
@@ -2575,8 +2574,8 @@
                 display: none;
             }
 
-            .landing-hero-main {
-                height: 720px;
+            .landing-hero-stage {
+                --hero-height: 720px;
             }
 
             .landing-hero-copy {
@@ -2866,77 +2865,79 @@
         </nav>
     </header>
     <main id="main-content">
-        <section class="landing-hero-shell" aria-labelledby="hero-title">
-            <div class="landing-hero-main">
-                <div class="hero-circuit-background" aria-hidden="true">
-                    <svg viewBox="0 0 1216 625" preserveAspectRatio="xMidYMid slice" focusable="false">
-                        <defs>
-                            <path id="hero-circuit-top" pathLength="1" d="M-20 72H240L282 114H574L626 62H856L898 104H1236" />
-                            <path id="hero-circuit-right" pathLength="1" d="M1236 172H1100L1052 220H854L806 268H682" />
-                            <path id="hero-circuit-bottom" pathLength="1" d="M-20 510H180L230 460H430L486 516H766L822 572H1236" />
-                            <path id="hero-circuit-middle" pathLength="1" d="M1236 374H1120L1068 426H896L852 382H668L620 430H554" />
-                        </defs>
-                        <g>
-                            <use href="#hero-circuit-top" />
-                            <path d="M-20 88H232L274 130H582L634 78H848L890 120H1236" />
-                            <use href="#hero-circuit-right" />
-                            <path d="M1236 188H1108L1060 236H862L814 284H738" />
-                            <use href="#hero-circuit-bottom" />
-                            <path d="M-20 526H188L238 476H422L478 532H758L814 588H1236" />
-                            <use href="#hero-circuit-middle" />
-                            <path d="M1236 390H1128L1076 442H888L844 398H676L628 446H598" />
-                            <path d="M74-20V188L118 232V346L74 390V454M1006-20V52L962 96V156M344 645V584L390 538V502" />
-                        </g>
-                        <g fill="#fff">
-                            <circle cx="682" cy="268" r="3" />
-                            <circle cx="738" cy="284" r="3" />
-                            <circle cx="554" cy="430" r="3" />
-                            <circle cx="598" cy="446" r="3" />
-                            <circle cx="74" cy="454" r="3" />
-                            <circle cx="962" cy="156" r="3" />
-                            <circle cx="390" cy="502" r="3" />
-                        </g>
-                        <g>
-                            <use class="hero-circuit-signal" href="#hero-circuit-top" />
-                            <use class="hero-circuit-signal" href="#hero-circuit-right" />
-                            <use class="hero-circuit-signal" href="#hero-circuit-bottom" />
-                            <use class="hero-circuit-signal" href="#hero-circuit-middle" />
-                        </g>
-                    </svg>
-                </div>
-                <div class="landing-hero-copy">
-                    <h1 id="hero-title">The framework for AI-generated electronics.</h1>
-                    <p>Build real circuit boards with any AI.<br class="landing-desktop-break">
-                        Just tell your agent to &quot;use tscircuit&quot;</p>
-                    <div class="landing-hero-actions">
-                        <a class="landing-button landing-button-dark"
-                            href="https://docs.tscircuit.com/guides/circuit-generation/generating-circuit-boards-with-ai">
-                            Get Started <span class="landing-arrow" aria-hidden="true">→</span>
-                        </a>
-                        <a class="landing-button landing-button-plain" href="https://github.com/tscircuit/tscircuit">
-                            <svg class="landing-button-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-                                <path
-                                    d="M8 0C3.58 0 0 3.64 0 8.13c0 3.59 2.29 6.64 5.47 7.71.4.08.55-.18.55-.39 0-.19-.01-.83-.01-1.5-2.01.38-2.53-.5-2.69-.96-.09-.23-.48-.96-.82-1.15-.28-.15-.68-.53-.01-.54.63-.01 1.08.59 1.23.83.72 1.23 1.87.88 2.33.67.07-.53.28-.88.51-1.08-1.78-.21-3.64-.91-3.64-4.02 0-.89.31-1.62.82-2.19-.08-.2-.36-1.04.08-2.16 0 0 .67-.22 2.2.84A7.49 7.49 0 0 1 8 3.93c.68 0 1.36.09 2 .27 1.53-1.06 2.2-.84 2.2-.84.44 1.12.16 1.96.08 2.16.51.57.82 1.3.82 2.19 0 3.12-1.87 3.81-3.65 4.02.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.47.55.39A8.01 8.01 0 0 0 16 8.13C16 3.64 12.42 0 8 0Z">
-                                </path>
-                            </svg>
-                            Star on GitHub
-                        </a>
+        <section class="landing-hero-stage" aria-labelledby="hero-title">
+            <div class="hero-circuit-background" aria-hidden="true">
+                <svg viewBox="0 0 1216 625" preserveAspectRatio="none" focusable="false">
+                    <defs>
+                        <path id="hero-circuit-top" pathLength="1" d="M-20 72H240L282 114H574L626 62H856L898 104H1236" />
+                        <path id="hero-circuit-right" pathLength="1" d="M1236 172H1100L1052 220H854L806 268H682" />
+                        <path id="hero-circuit-bottom" pathLength="1" d="M-20 510H180L230 460H430L486 516H766L822 572H1236" />
+                        <path id="hero-circuit-middle" pathLength="1" d="M1236 374H1120L1068 426H896L852 382H668L620 430H554" />
+                    </defs>
+                    <g>
+                        <use href="#hero-circuit-top" />
+                        <path d="M-20 88H232L274 130H582L634 78H848L890 120H1236" />
+                        <use href="#hero-circuit-right" />
+                        <path d="M1236 188H1108L1060 236H862L814 284H738" />
+                        <use href="#hero-circuit-bottom" />
+                        <path d="M-20 526H188L238 476H422L478 532H758L814 588H1236" />
+                        <use href="#hero-circuit-middle" />
+                        <path d="M1236 390H1128L1076 442H888L844 398H676L628 446H598" />
+                        <path d="M74-20V188L118 232V346L74 390V454M1006-20V52L962 96V156M344 645V584L390 538V502" />
+                    </g>
+                    <g fill="#fff">
+                        <circle cx="682" cy="268" r="3" />
+                        <circle cx="738" cy="284" r="3" />
+                        <circle cx="554" cy="430" r="3" />
+                        <circle cx="598" cy="446" r="3" />
+                        <circle cx="74" cy="454" r="3" />
+                        <circle cx="962" cy="156" r="3" />
+                        <circle cx="390" cy="502" r="3" />
+                    </g>
+                    <g>
+                        <use class="hero-circuit-signal" href="#hero-circuit-top" />
+                        <use class="hero-circuit-signal" href="#hero-circuit-right" />
+                        <use class="hero-circuit-signal" href="#hero-circuit-bottom" />
+                        <use class="hero-circuit-signal" href="#hero-circuit-middle" />
+                    </g>
+                </svg>
+            </div>
+            <div class="landing-hero-shell">
+                <div class="landing-hero-main">
+                    <div class="landing-hero-copy">
+                        <h1 id="hero-title">The framework for AI-generated electronics.</h1>
+                        <p>Build real circuit boards with any AI.<br class="landing-desktop-break">
+                            Just tell your agent to &quot;use tscircuit&quot;</p>
+                        <div class="landing-hero-actions">
+                            <a class="landing-button landing-button-dark"
+                                href="https://docs.tscircuit.com/guides/circuit-generation/generating-circuit-boards-with-ai">
+                                Get Started <span class="landing-arrow" aria-hidden="true">→</span>
+                            </a>
+                            <a class="landing-button landing-button-plain" href="https://github.com/tscircuit/tscircuit">
+                                <svg class="landing-button-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                    <path
+                                        d="M8 0C3.58 0 0 3.64 0 8.13c0 3.59 2.29 6.64 5.47 7.71.4.08.55-.18.55-.39 0-.19-.01-.83-.01-1.5-2.01.38-2.53-.5-2.69-.96-.09-.23-.48-.96-.82-1.15-.28-.15-.68-.53-.01-.54.63-.01 1.08.59 1.23.83.72 1.23 1.87.88 2.33.67.07-.53.28-.88.51-1.08-1.78-.21-3.64-.91-3.64-4.02 0-.89.31-1.62.82-2.19-.08-.2-.36-1.04.08-2.16 0 0 .67-.22 2.2.84A7.49 7.49 0 0 1 8 3.93c.68 0 1.36.09 2 .27 1.53-1.06 2.2-.84 2.2-.84.44 1.12.16 1.96.08 2.16.51.57.82 1.3.82 2.19 0 3.12-1.87 3.81-3.65 4.02.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.47.55.39A8.01 8.01 0 0 0 16 8.13C16 3.64 12.42 0 8 0Z">
+                                    </path>
+                                </svg>
+                                Star on GitHub
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="landing-hero-art" aria-label="Four real circuit boards generated from tscircuit projects">
+                        <span class="landing-board-halo" aria-hidden="true"></span>
+                        <img class="landing-hero-board" src="assets/hero-board-four-real-3d.png"
+                            alt="3D renders of the tscircuit RP2040, Game Boy, nRF52810, and Attiny85 Arcade Keychain circuit boards"
+                            width="1600" height="1500" fetchpriority="high">
                     </div>
                 </div>
 
-                <div class="landing-hero-art" aria-label="Four real circuit boards generated from tscircuit projects">
-                    <span class="landing-board-halo" aria-hidden="true"></span>
-                    <img class="landing-hero-board" src="assets/hero-board-four-real-3d.png"
-                        alt="3D renders of the tscircuit RP2040, Game Boy, nRF52810, and Attiny85 Arcade Keychain circuit boards"
-                        width="1600" height="1500" fetchpriority="high">
+                <div class="landing-proof-panel">
+                    <p>tscircuit is a <strong>TSX framework</strong> to enable AI to build electronics.<br>
+                        Using tscircuit, AI achieves <strong>state-of-the-art</strong> physically-validated<br>
+                        <strong>electronics generation capabilities</strong>.
+                    </p>
                 </div>
-            </div>
-
-            <div class="landing-proof-panel">
-                <p>tscircuit is a <strong>TSX framework</strong> to enable AI to build electronics.<br>
-                    Using tscircuit, AI achieves <strong>state-of-the-art</strong> physically-validated<br>
-                    <strong>electronics generation capabilities</strong>.
-                </p>
             </div>
         </section>
 
