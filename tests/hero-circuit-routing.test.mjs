@@ -209,3 +209,64 @@ test("turns add bends without changing wire endpoints or exceeding the setting",
     }
   }
 })
+
+test("large bends form broad loops with long legs and reverse-running returns", () => {
+  for (const [width, height] of viewports) {
+    const base = createCircuitBuses(width, height, 0)
+    const looped = createCircuitBuses(width, height, 8)
+    let excursion = 0
+    for (let i = 0; i < looped.length; i++) {
+      for (const point of looped[i].segments) {
+        const distance = Math.min(
+          ...base[i].segments.map((segment) => {
+            const dx = segment.x - segment.fromX
+            const dy = segment.y - segment.fromY
+            const t = Math.max(
+              0,
+              Math.min(
+                1,
+                ((point.x - segment.fromX) * dx +
+                  (point.y - segment.fromY) * dy) /
+                  segment.distance ** 2,
+              ),
+            )
+            return Math.hypot(
+              point.x - segment.fromX - t * dx,
+              point.y - segment.fromY - t * dy,
+            )
+          }),
+        )
+        excursion = Math.max(excursion, distance)
+      }
+    }
+    assert.ok(
+      excursion >= 100,
+      `loops should leave the original route by at least 100px at ${width}px`,
+    )
+  }
+  const returns = createCircuitBuses(2560, 1030, 12).filter((route) => {
+    if (!route.bus.id.startsWith("horizontal:")) return false
+    const direction = Math.sign(route.segments[0].x - route.segments[0].fromX)
+    return route.segments.some(
+      (segment) => (segment.x - segment.fromX) * direction < -70,
+    )
+  })
+  assert.ok(
+    returns.length >= 16,
+    "multiple branches should double back on long return legs",
+  )
+  for (const route of createCircuitBuses(2560, 1030, 24)) {
+    for (let i = 1; i < route.segments.length; i++) {
+      const a = route.segments[i - 1]
+      const b = route.segments[i]
+      const cosine =
+        ((a.x - a.fromX) * (b.x - b.fromX) +
+          (a.y - a.fromY) * (b.y - b.fromY)) /
+        (a.distance * b.distance)
+      assert.ok(
+        Math.abs(cosine - Math.SQRT1_2) < 1e-6,
+        "every successive corner must turn exactly 45 degrees",
+      )
+    }
+  }
+})

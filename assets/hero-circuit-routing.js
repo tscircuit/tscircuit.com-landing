@@ -74,35 +74,104 @@ export function getSignalStates(route, distanceTraveled, settings) {
   return signals
 }
 
-// Add doglegs to a straight run without changing its endpoints.
-// Each dogleg has four 45-degree turns. Leave room for the full lane bundle's
-// mitered corners; narrow viewports naturally fit fewer turns.
-function addRunTurns(points, width, height, turns, seed, bounds) {
+// Broad excursions use long legs, not repeated small zigzags. Eight turns form
+// an open octagonal loop; twelve add a return leg that travels back across it.
+const LOOP_SHAPES = [
+  {
+    turns: 4,
+    width: 224,
+    depth: 64,
+    points: [
+      [0, 0],
+      [64, 64],
+      [160, 64],
+      [224, 0],
+    ],
+  },
+  {
+    turns: 8,
+    width: 176,
+    depth: 112,
+    points: [
+      [0, 0],
+      [24, 24],
+      [24, 88],
+      [48, 112],
+      [128, 112],
+      [152, 88],
+      [152, 24],
+      [176, 0],
+    ],
+  },
+  {
+    turns: 12,
+    width: 232,
+    depth: 224,
+    points: [
+      [104, 0],
+      [128, 24],
+      [128, 88],
+      [104, 112],
+      [24, 112],
+      [0, 136],
+      [0, 200],
+      [24, 224],
+      [184, 224],
+      [208, 200],
+      [208, 24],
+      [232, 0],
+    ],
+  },
+]
+
+function addRunLoops(points, width, height, turns, bendDirection) {
+  if (!turns || !bendDirection) return points
   const [fromX, y] = points.at(-2)
-  const [toX] = points.at(-1)
-  const direction = Math.sign(toX - fromX)
+  const direction = Math.sign(points.at(-1)[0] - fromX)
   const startX =
-    direction > 0
-      ? Math.max(0, bounds.startX) + 24
-      : Math.min(width, bounds.startX) - 24
-  const endX = direction > 0 ? width - 24 : 24
-  const available = (endX - startX) * direction
-  const count = Math.min(turns / 4, Math.max(0, Math.floor(available / 96)))
-  if (!count) return points
-  const result = points.slice(0, -1)
-  const spacing = available / count
-  for (let index = 0; index < count; index++) {
-    const lead = (spacing - 64) * (0.2 + random(seed + index * 17) * 0.6)
-    const x = startX + direction * (index * spacing + lead)
-    let bend = random(seed + index * 29 + 3) < 0.5 ? -16 : 16
-    if (bounds.minY + bend < 44 || bounds.maxY + bend > height - 44)
-      bend = -bend
-    result.push(
-      [x, y],
-      [x + direction * 16, y + bend],
-      [x + direction * 48, y + bend],
-      [x + direction * 64, y],
+    direction > 0 ? Math.max(0, fromX) + 40 : Math.min(width, fromX) - 40
+  const available = direction > 0 ? width - 40 - startX : startX - 40
+  const clearance = bendDirection > 0 ? height - 44 - y : y - 44
+  const shapes = LOOP_SHAPES.filter((shape) => shape.depth <= clearance)
+  // Choose the most turns that fit, preferring complete loops over several
+  // shallow detours. Increasing the slider never removes turns from a route.
+  let best = { shapes: [], turns: 0, width: 0, quality: 0 }
+  const fit = (plan) => {
+    if (
+      plan.turns > best.turns ||
+      (plan.turns === best.turns && plan.quality > best.quality)
     )
+      best = plan
+    for (const shape of shapes) {
+      const nextWidth = plan.width + shape.width + (plan.shapes.length ? 80 : 0)
+      if (plan.turns + shape.turns > turns || nextWidth > available) continue
+      fit({
+        shapes: [...plan.shapes, shape],
+        turns: plan.turns + shape.turns,
+        width: nextWidth,
+        quality: plan.quality + shape.turns ** 2,
+      })
+    }
+  }
+  fit(best)
+  if (!best.turns) return points
+  const gaps = (best.shapes.length - 1) * 80
+  const scale = Math.min(
+    1.75,
+    (available - gaps) / (best.width - gaps),
+    ...best.shapes.map((shape) => clearance / shape.depth),
+  )
+  const occupied = (best.width - gaps) * scale + gaps
+  let cursor = (available - occupied) / 2
+  const result = points.slice(0, -1)
+  for (const shape of best.shapes) {
+    for (const [x, dy] of shape.points) {
+      result.push([
+        startX + direction * (cursor + x * scale),
+        y + bendDirection * dy * scale,
+      ])
+    }
+    cursor += shape.width * scale + 80
   }
   result.push(points.at(-1))
   return result
@@ -114,55 +183,42 @@ export function createCircuitBuses(width, height, extraTurns = 8) {
     : 8
   const routes = []
   const rows = Math.max(2, Math.ceil((height - 152) / BUS_ROW_SPACING) + 1)
-  const addBus = (lanePaths, seed, id, mirror = false) => {
+  const addBus = (lanePaths, seed, id, branchDirections, mirror = false) => {
     const bus = { id, seed, phase: (seed * 0.61803398875) % 1 }
-    // Bends start after the last fork and move sibling branches together. This
-    // keeps the outgoing bundles from weaving through each other near an edge.
-    const bounds = new Map()
-    for (const points of lanePaths) {
-      const [x, y] = points.at(-2)
-      const direction = Math.sign(points.at(-1)[0] - x)
-      const group = bounds.get(direction) || { startX: x, minY: y, maxY: y }
-      group.startX =
-        direction > 0 ? Math.max(group.startX, x) : Math.min(group.startX, x)
-      group.minY = Math.min(group.minY, y)
-      group.maxY = Math.max(group.maxY, y)
-      bounds.set(direction, group)
-    }
-    // Put turns into the shared incoming trunk as well as the outgoing branches.
-    // Transposing vertical trunks lets the same spacing rules cover both axes.
     const vertical = lanePaths[0][0][0] === lanePaths[0][1][0]
-    const incoming = lanePaths.map((points) =>
-      [...points].reverse().map(([x, y]) => (vertical ? [y, x] : [x, y])),
-    )
-    const firstFork = Math.min(...incoming.map((points) => points.at(-2)[0]))
-    const trunkPosition = incoming[0].at(-1)[1]
-    const incomingBounds = {
-      startX: firstFork,
-      minY: trunkPosition,
-      maxY: trunkPosition,
-    }
-    const lanes = lanePaths.map((points, lane) => {
-      const trunk = addRunTurns(
-        incoming[lane],
-        vertical ? height : width,
-        vertical ? width : height,
+    let prefix = [lanePaths[0][0]]
+    if (vertical) {
+      const entryX = lanePaths[0][0][0]
+      const firstFork = Math.min(...lanePaths.map((points) => points[1][1]))
+      // A tall mobile viewport has room for a broad loop in the incoming trunk
+      // even when its side-exit runs are too short. Keep it above every fork.
+      prefix = addRunLoops(
+        [
+          [firstFork, entryX],
+          [-64, entryX],
+        ],
+        height,
+        width,
         turns,
-        seed + 241,
-        incomingBounds,
+        entryX < width / 2 ? 1 : -1,
       )
         .reverse()
-        .map(([x, y]) => (vertical ? [y, x] : [x, y]))
-      const remaining = turns - (trunk.length - points.length)
-      const direction = Math.sign(points.at(-1)[0] - points.at(-2)[0])
+        .slice(0, -1)
+        .map(([y, x]) => [x, y])
+    }
+    // A loop in the incoming trunk can occupy the same area as an upper exit
+    // branch. Keep each bus's loops either before its forks or beyond them.
+    const remainingTurns = prefix.length > 1 ? 0 : turns
+    const lanes = lanePaths.map((points, lane) => {
+      // Outer branches loop away from their siblings. The through trunk keeps
+      // the original coverage, and each four-wire branch stays parallel.
       let offset = offsetPoints(
-        addRunTurns(
-          trunk,
+        addRunLoops(
+          [...prefix, ...points.slice(1)],
           width,
           height,
-          remaining,
-          seed,
-          bounds.get(direction),
+          remainingTurns,
+          branchDirections[lane],
         ),
         (lane - (LANE_COUNT - 1) / 2) * LANE_SPACING,
       )
@@ -200,6 +256,9 @@ export function createCircuitBuses(width, height, extraTurns = 8) {
       ),
       row * 17 + 1,
       `horizontal:${row}`,
+      Array.from({ length: LANE_COUNT }, (_, lane) =>
+        lane < 4 ? -1 : lane >= 12 ? 1 : 0,
+      ),
       row % 2 === 1,
     )
   }
@@ -213,7 +272,8 @@ export function createCircuitBuses(width, height, extraTurns = 8) {
       const inner = group === 1 || group === 2
       const exitY =
         height *
-        ((inner ? 0.52 : 0.24) + random(index * 37 + group * 11) * 0.16)
+        ((inner ? (width < 640 ? 0.72 : 0.52) : width < 640 ? 0.48 : 0.24) +
+          random(index * 37 + group * 11) * (width < 640 ? 0.1 : 0.16))
       const diagonal = Math.min(72, width * 0.15)
       return [
         [entryX, -64],
@@ -229,6 +289,9 @@ export function createCircuitBuses(width, height, extraTurns = 8) {
       ),
       index * 31 + 27,
       `top-to-side:${index}`,
+      Array.from({ length: LANE_COUNT }, (_, lane) =>
+        lane < 4 || lane >= 12 ? -1 : 1,
+      ),
     )
   }
   return routes
