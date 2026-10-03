@@ -3564,6 +3564,14 @@
                 </div>
                 <small id="signal-turns-help">Up to 24 extra bends; fewer on short routes</small>
             </div>
+            <div class="signal-control">
+                <label for="signal-busCount">Number of buses</label>
+                <div class="signal-control-inputs">
+                    <input id="signal-busCount" type="range" min="0" max="40" step="1" value="16" aria-describedby="signal-bus-count-help">
+                    <input id="signal-busCount-number" type="number" min="0" max="40" step="1" value="16" aria-label="Number of buses" aria-describedby="signal-bus-count-help">
+                </div>
+                <small id="signal-bus-count-help">16 wires per bus · 0 hides all buses</small>
+            </div>
             <div class="signal-controls-share">
                 <textarea id="signal-settings" readonly aria-label="Signal parameters to copy" spellcheck="false"></textarea>
                 <button id="signal-copy" type="button">Copy settings</button>

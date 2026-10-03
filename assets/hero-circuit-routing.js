@@ -177,12 +177,37 @@ function addRunLoops(points, width, height, turns, bendDirection) {
   return result
 }
 
-export function createCircuitBuses(width, height, extraTurns = 8) {
+export function createCircuitBuses(
+  width,
+  height,
+  extraTurns = 8,
+  busCount = 16,
+) {
   const turns = Number.isFinite(extraTurns)
     ? Math.max(0, Math.min(24, Math.round(extraTurns / 4) * 4))
     : 8
   const routes = []
-  const rows = Math.max(2, Math.ceil((height - 152) / BUS_ROW_SPACING) + 1)
+  const count = Number.isFinite(busCount)
+    ? Math.max(0, Math.min(40, Math.round(busCount)))
+    : 16
+  const naturalRows = Math.max(
+    2,
+    Math.ceil((height - 152) / BUS_ROW_SPACING) + 1,
+  )
+  const naturalTopEntries = Math.max(1, Math.ceil(width / 400))
+  let topEntries =
+    count > 1
+      ? Math.max(
+          1,
+          Math.round(
+            (count * naturalTopEntries) / (naturalRows + naturalTopEntries),
+          ),
+        )
+      : 0
+  // Preserve full-height row coverage when the requested count allows it.
+  if (count > naturalRows)
+    topEntries = Math.min(topEntries, count - naturalRows)
+  const rows = count - topEntries
   const addBus = (lanePaths, seed, id, branchDirections, mirror = false) => {
     const bus = { id, seed, phase: (seed * 0.61803398875) % 1 }
     const vertical = lanePaths[0][0][0] === lanePaths[0][1][0]
@@ -231,7 +256,7 @@ export function createCircuitBuses(width, height, extraTurns = 8) {
   // Each 16-wire trunk sheds its outer four wires on either side. The middle
   // eight continue onward: these are continuous wires, not duplicated branches.
   for (let row = 0; row < rows; row++) {
-    const y = 76 + ((height - 152) * row) / (rows - 1)
+    const y = rows === 1 ? height / 2 : 76 + ((height - 152) * row) / (rows - 1)
     const upperY = Math.max(44, y - 64 - random(row * 13 + 5) * 56)
     const lowerY = Math.min(height - 44, y + 64 + random(row * 23 + 7) * 56)
     const trunkY = y + (row % 2 === 0 ? 1 : -1) * 24
@@ -264,7 +289,6 @@ export function createCircuitBuses(width, height, extraTurns = 8) {
   }
   // Vertical trunks fan out in four-wire groups at separate depths. Outer
   // groups peel away first, leaving the inner wires to continue down the trunk.
-  const topEntries = Math.max(1, Math.ceil(width / 400))
   for (let index = 0; index < topEntries; index++) {
     const entryX = ((index + 0.5) * width) / topEntries
     const branches = Array.from({ length: 4 }, (_, group) => {

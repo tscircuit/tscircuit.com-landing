@@ -270,3 +270,43 @@ test("large bends form broad loops with long legs and reverse-running returns", 
     }
   }
 })
+
+test("bus count creates exactly the requested number of complete bundles at every size", () => {
+  for (const [width, height] of viewports) {
+    for (let count = 0; count <= 40; count++) {
+      const routes = createCircuitBuses(width, height, 8, count)
+      const buses = new Set(routes.map((route) => route.bus))
+      assert.equal(buses.size, count)
+      assert.equal(routes.length, count * 16)
+      for (const bus of buses) {
+        const lanes = routes.filter((route) => route.bus === bus)
+        assert.equal(new Set(lanes.map((route) => route.lane)).size, 16)
+        assert.ok(Number.isFinite(bus.maxLength) && bus.maxLength > 0)
+      }
+      for (const route of routes) {
+        for (const segment of route.segments) {
+          assert.ok(Number.isFinite(segment.distance) && segment.distance > 0)
+          assert.ok(segment.fromY < height && segment.y < height)
+        }
+      }
+    }
+  }
+})
+
+test("bus count handles zero, a single centered bus, and out-of-range values", () => {
+  assert.deepEqual(createCircuitBuses(1440, 1030, 24, 0), [])
+  const single = createCircuitBuses(1440, 1030, 0, 1)
+  assert.equal(
+    (single[0].segments[0].fromY + single[15].segments[0].fromY) / 2,
+    515,
+  )
+  for (const [input, expected] of [
+    [-5, 0],
+    [100, 40],
+    [2.7, 3],
+    [NaN, 16],
+    [Infinity, 16],
+  ]) {
+    assert.equal(createCircuitBuses(1440, 1030, 8, input).length, expected * 16)
+  }
+})
