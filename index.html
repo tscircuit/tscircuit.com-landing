@@ -2199,6 +2199,16 @@
             font: inherit;
         }
 
+        .signal-static-toggle {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .signal-static-toggle input { accent-color: #555; }
+
         .signal-controls-share {
             grid-column: 1 / -1;
             display: flex;
@@ -3548,6 +3558,10 @@
                     <input id="signal-strokeWidth-number" type="number" min="0.1" max="4" step="0.1" value="0.7" aria-label="Stroke width (px)">
                 </div>
             </div>
+            <label class="signal-static-toggle">
+                <input id="signal-show-all" type="checkbox">
+                Show all buses fully drawn (no animation)
+            </label>
             <div class="signal-controls-share">
                 <textarea id="signal-settings" readonly aria-label="Signal parameters to copy" spellcheck="false"></textarea>
                 <button id="signal-copy" type="button">Copy settings</button>

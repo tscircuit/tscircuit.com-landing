@@ -8,6 +8,7 @@ export function initHeroCircuitBackground(container, initialSettings) {
 
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)")
   let routes = []
+  let allRoutes = new Path2D()
   let width = 0
   let height = 0
   let visible = false
@@ -28,18 +29,31 @@ export function initHeroCircuitBackground(container, initialSettings) {
     context.lineJoin = "round"
     context.strokeStyle = "#929292"
     // Crossing routes remain intact; signals exit by moving beyond their endpoints.
-    routes = createCircuitBuses(width, height)
+    allRoutes = new Path2D()
+    routes = createCircuitBuses(width, height).map((route) => {
+      const path = new Path2D()
+      path.moveTo(route.segments[0].fromX, route.segments[0].fromY)
+      for (const segment of route.segments) path.lineTo(segment.x, segment.y)
+      allRoutes.addPath(path)
+      return route
+    })
     draw()
   }
 
   const draw = () => {
     context.clearRect(0, 0, width, height)
-    if (reducedMotion.matches) return
+    if (reducedMotion.matches && !settings.showAll) return
     context.lineWidth = settings.strokeWidth
+    context.globalAlpha = 0.3
+    if (settings.showAll) {
+      // One stroke also keeps overlapping extensions at the same subtle opacity.
+      context.stroke(allRoutes)
+      context.globalAlpha = 1
+      return
+    }
     for (const route of routes) {
       const signal = getSignalState(route, distanceTraveled, settings)
       if (!signal) continue
-      context.globalAlpha = 0.3
       context.beginPath()
       let started = false
       for (const segment of route.segments) {
@@ -73,9 +87,10 @@ export function initHeroCircuitBackground(container, initialSettings) {
   const updateActivity = () => {
     cancelAnimationFrame(frame)
     lastTime = 0
-    const active = visible && !document.hidden && !reducedMotion.matches
+    const active =
+      visible && !document.hidden && !reducedMotion.matches && !settings.showAll
     if (active) frame = requestAnimationFrame(tick)
-    if (reducedMotion.matches) context.clearRect(0, 0, width, height)
+    if (reducedMotion.matches || settings.showAll) draw()
   }
 
   new ResizeObserver(resize).observe(container)
@@ -89,7 +104,8 @@ export function initHeroCircuitBackground(container, initialSettings) {
   return {
     setSettings(nextSettings) {
       settings = { ...nextSettings }
-      draw()
+      updateActivity()
+      if (!reducedMotion.matches && !settings.showAll) draw()
     },
   }
 }

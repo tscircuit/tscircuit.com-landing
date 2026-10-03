@@ -1,10 +1,18 @@
 import { initHeroCircuitBackground } from "./hero-circuit-background.js"
 
 const STORAGE_KEY = "tscircuit-signal-settings-v1"
-const DEFAULTS = { speed: 600, length: 240, density: 10, strokeWidth: 0.7 }
+const DEFAULTS = {
+  speed: 600,
+  length: 240,
+  density: 10,
+  strokeWidth: 0.7,
+  showAll: false,
+}
 
 export function initHeroCircuitControls(background, controls) {
-  const fields = Object.keys(DEFAULTS)
+  const fields = Object.keys(DEFAULTS).filter(
+    (key) => typeof DEFAULTS[key] === "number",
+  )
   const ranges = Object.fromEntries(
     fields.map((key) => [key, controls.querySelector(`#signal-${key}`)]),
   )
@@ -25,6 +33,7 @@ export function initHeroCircuitControls(background, controls) {
   let settings = { ...DEFAULTS }
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY))
+    if (typeof saved?.showAll === "boolean") settings.showAll = saved.showAll
     for (const key of fields) {
       if (typeof saved?.[key] === "number")
         settings[key] = normalize(key, saved[key])
@@ -34,6 +43,7 @@ export function initHeroCircuitControls(background, controls) {
   }
 
   const animation = initHeroCircuitBackground(background, settings)
+  const showAll = controls.querySelector("#signal-show-all")
   const output = controls.querySelector("#signal-settings")
   const status = controls.querySelector("#signal-copy-status")
   const render = () => {
@@ -41,10 +51,11 @@ export function initHeroCircuitControls(background, controls) {
       ranges[key].value = settings[key]
       numbers[key].value = settings[key]
     }
+    showAll.checked = settings.showAll
     output.value = JSON.stringify(settings)
   }
   const update = (key, value) => {
-    settings[key] = normalize(key, value)
+    settings[key] = key === "showAll" ? Boolean(value) : normalize(key, value)
     animation?.setSettings(settings)
     render()
     status.textContent = ""
@@ -55,6 +66,7 @@ export function initHeroCircuitControls(background, controls) {
     }
   }
 
+  showAll.addEventListener("change", () => update("showAll", showAll.checked))
   for (const key of fields) {
     ranges[key].addEventListener("input", () => update(key, ranges[key].value))
     numbers[key].addEventListener("input", () => {
