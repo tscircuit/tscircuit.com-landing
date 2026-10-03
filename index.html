@@ -38,6 +38,7 @@
         rel="stylesheet">
     <style>
         :root {
+            --landing-header-height: 72px;
             --paper: #ffffff;
             --ink: #08090a;
             --ink-2: #4a5262;
@@ -1762,9 +1763,9 @@
 
         /* Seam-inspired tscircuit header and hero */
         .landing-header {
-            height: 72px;
+            height: var(--landing-header-height);
             border-bottom: 1px solid var(--line);
-            background: rgba(255, 255, 255, .97);
+            background: rgba(255, 255, 255, .5);
             position: relative;
             z-index: 20;
         }
@@ -2131,8 +2132,8 @@
         /* The canvas draws only short moving segments, in CSS-pixel coordinates. */
         .hero-circuit-background {
             position: absolute;
-            inset: 0 0 auto;
-            height: var(--hero-height);
+            inset: calc(-1 * var(--landing-header-height)) 0 auto;
+            height: calc(var(--hero-height) + var(--landing-header-height));
             z-index: -1;
             overflow: hidden;
             pointer-events: none;
@@ -2462,8 +2463,8 @@
                 padding-top: 72px;
             }
 
-            .landing-header {
-                height: 70px;
+            :root {
+                --landing-header-height: 70px;
             }
 
             .landing-nav,

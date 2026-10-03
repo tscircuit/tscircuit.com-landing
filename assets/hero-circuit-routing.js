@@ -91,6 +91,8 @@ export function createCircuitBuses(width, height) {
       const top = row * CELL_HEIGHT
       const y = index === 0 ? 100 : 360
       const middle = index === 0 ? 180 : 280
+      // Keep the complete bus above the bottom edge, including outer lanes.
+      if (top + Math.max(y, middle) + 42 >= height) continue
       const points = [[-32, top + y]]
       for (let column = 0; column < columns; column++) {
         const left = column * CELL_WIDTH
@@ -112,23 +114,22 @@ export function createCircuitBuses(width, height) {
       )
     }
   }
-  // Vertical buses likewise enter and exit beyond the canvas bounds.
-  for (let column = 0; column < columns; column++) {
-    const left = column * CELL_WIDTH
-    const points = [[left + 400, -32]]
-    for (let row = 0; row < rows; row++) {
-      const top = row * CELL_HEIGHT
-      if (row === 0) points.push([left + 400, top])
-      points.push(
-        [left + 400, top + 72],
-        [left + 448, top + 120],
-        [left + 448, top + 360],
-        [left + 400, top + 408],
-        [left + 400, top + 480],
-      )
-    }
-    points.push([left + 400, rows * CELL_HEIGHT + 32])
-    addBus(points, column * 31 + 27, `vertical:${column}`, column % 2 === 1)
+  // Enter above the header near the left-middle, then turn out through the right edge.
+  const topEntries = width < 640 ? 1 : 2
+  for (let index = 0; index < topEntries; index++) {
+    const entryX = width * (topEntries === 1 ? 0.34 : 0.28 + index * 0.15)
+    const exitY = height - 80 - index * 80
+    const diagonal = Math.min(120, width * 0.18)
+    const firstTurnY = 96 + index * 64
+    const points = [
+      [entryX, -32],
+      [entryX, firstTurnY],
+      [entryX + 48, firstTurnY + 48],
+      [entryX + 48, exitY - diagonal],
+      [entryX + 48 + diagonal, exitY],
+      [width + 32, exitY],
+    ]
+    addBus(points, index * 31 + 27, `top-to-right:${index}`, false)
   }
   const routes = buses.flatMap((bus) =>
     Array.from({ length: LANE_COUNT }, (_, lane) => ({
