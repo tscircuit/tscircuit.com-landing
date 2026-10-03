@@ -2132,8 +2132,7 @@
         /* The canvas draws only short moving segments, in CSS-pixel coordinates. */
         .hero-circuit-background {
             position: absolute;
-            inset: calc(-1 * var(--landing-header-height)) 0 auto;
-            height: calc(var(--hero-height) + var(--landing-header-height));
+            inset: calc(-1 * var(--landing-header-height)) 0 0;
             z-index: -1;
             overflow: hidden;
             pointer-events: none;
@@ -2342,7 +2341,7 @@
             position: relative;
             z-index: 5;
             border-top: 1px solid var(--line);
-            background: radial-gradient(circle, rgba(182, 189, 200, .34) .8px, transparent .95px) 53% 0 / 8px 8px, linear-gradient(90deg, #ffffff 0%, #ffffff 51%, rgba(255, 255, 255, .78) 64%, rgba(255, 255, 255, .5) 100%);
+            background: radial-gradient(circle, rgba(182, 189, 200, .34) .8px, transparent .95px) 53% 0 / 8px 8px, linear-gradient(90deg, rgba(255, 255, 255, .5) 0%, rgba(255, 255, 255, .5) 51%, rgba(255, 255, 255, .4) 64%, rgba(255, 255, 255, .5) 100%);
             overflow: hidden;
         }
 
@@ -2350,7 +2349,7 @@
             content: "";
             position: absolute;
             inset: 0;
-            background: linear-gradient(to bottom, rgba(255, 255, 255, 0) calc(100% - 40px), #ffffff), linear-gradient(90deg, #ffffff 0%, rgba(255, 255, 255, .97) 42%, rgba(255, 255, 255, .2) 65%, rgba(255, 255, 255, .55) 100%);
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0) calc(100% - 40px), #ffffff), linear-gradient(90deg, rgba(255, 255, 255, .2) 0%, rgba(255, 255, 255, .2) 42%, rgba(255, 255, 255, .2) 65%, rgba(255, 255, 255, .55) 100%);
             pointer-events: none;
         }
 

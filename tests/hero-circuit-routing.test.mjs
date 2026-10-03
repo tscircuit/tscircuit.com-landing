@@ -8,6 +8,64 @@ import {
 const routes = createCircuitBuses(1440, 697)
 const settings = { length: 240, density: 2000 }
 
+const viewports = [
+  [320, 1000],
+  [390, 1080],
+  [768, 1140],
+  [1440, 1030],
+  [2560, 1030],
+  [3440, 1030],
+]
+
+test("buses cover the full section without broad permanent gaps", () => {
+  for (const [width, height] of viewports) {
+    const segments = createCircuitBuses(width, height).flatMap(
+      (route) => route.segments,
+    )
+    for (let x = 0; x <= width; x += 24) {
+      for (let y = 0; y <= height; y += 24) {
+        const covered = segments.some((segment) => {
+          const dx = segment.x - segment.fromX
+          const dy = segment.y - segment.fromY
+          const t = Math.max(
+            0,
+            Math.min(
+              1,
+              ((x - segment.fromX) * dx + (y - segment.fromY) * dy) /
+                segment.distance ** 2,
+            ),
+          )
+          return (
+            Math.hypot(
+              x - segment.fromX - t * dx,
+              y - segment.fromY - t * dy,
+            ) <= 80
+          )
+        })
+        assert.ok(covered, `uncovered area at ${x},${y} in ${width}×${height}`)
+      }
+    }
+  }
+})
+
+test("all lanes enter from an edge, use 45-degree bends, and exit a side", () => {
+  for (const [width, height] of viewports) {
+    for (const route of createCircuitBuses(width, height)) {
+      const first = route.segments[0]
+      const last = route.segments.at(-1)
+      assert.ok(first.fromX < 0 || first.fromX > width || first.fromY < 0)
+      assert.ok(last.x < 0 || last.x > width)
+      for (const segment of route.segments) {
+        assert.ok(Number.isFinite(segment.distance) && segment.distance > 0)
+        assert.ok(segment.fromY < height && segment.y < height)
+        const dx = Math.abs(segment.x - segment.fromX)
+        const dy = Math.abs(segment.y - segment.fromY)
+        assert.ok(dx < 1e-6 || dy < 1e-6 || Math.abs(dx - dy) < 1e-6)
+      }
+    }
+  }
+})
+
 test("high density starts empty and keeps every signal inside its route", () => {
   for (const route of routes) {
     assert.deepEqual(getSignalStates(route, 0, settings), [])

@@ -1,5 +1,5 @@
-const CELL_WIDTH = 800
-const CELL_HEIGHT = 480
+const CELL_WIDTH = 520
+const BUS_ROW_SPACING = 112
 const LANE_COUNT = 16
 const LANE_SPACING = 4
 
@@ -78,7 +78,7 @@ export function getSignalStates(route, distanceTraveled, settings) {
 export function createCircuitBuses(width, height) {
   const buses = []
   const columns = Math.ceil(width / CELL_WIDTH)
-  const rows = Math.ceil(height / CELL_HEIGHT)
+  const rows = Math.max(2, Math.ceil((height - 152) / BUS_ROW_SPACING) + 1)
   const addBus = (points, seed, id, reverse) => {
     const xs = points.map(([x]) => x)
     const ys = points.map(([, y]) => y)
@@ -98,51 +98,44 @@ export function createCircuitBuses(width, height) {
       ...segmentsOf(points),
     })
   }
-  // Join routing cells into full-width buses; internal cell boundaries are not emitters.
+  // Distribute full-width buses over the complete section, including its last row.
+  // Stagger bends independently so neighboring buses do not leave repeating gaps.
   for (let row = 0; row < rows; row++) {
-    for (let index = 0; index < 2; index++) {
-      const top = row * CELL_HEIGHT
-      const y = index === 0 ? 100 : 360
-      const middle = index === 0 ? 180 : 280
-      // Keep the complete bus above the bottom edge, including outer lanes.
-      if (top + Math.max(y, middle) + 42 >= height) continue
-      const points = [[-32, top + y]]
-      for (let column = 0; column < columns; column++) {
-        const left = column * CELL_WIDTH
-        if (column === 0) points.push([left, top + y])
-        points.push(
-          [left + 180, top + y],
-          [left + 260, top + middle],
-          [left + 540, top + middle],
-          [left + 620, top + y],
-          [left + 800, top + y],
-        )
-      }
-      points.push([columns * CELL_WIDTH + 32, top + y])
-      addBus(
-        points,
-        row * 17 + index * 13 + 1,
-        `horizontal:${row}:${index}`,
-        index === 1,
+    const y = 76 + ((height - 152) * row) / (rows - 1)
+    const direction = row === rows - 1 ? -1 : row % 2 === 0 ? 1 : -1
+    const middle = y + direction * 28
+    const points = [[-64, y]]
+    for (let column = 0; column < columns; column++) {
+      const left = column * CELL_WIDTH
+      const turn = left + 48 + random(row * 97 + column * 31) * 120
+      points.push(
+        [turn, y],
+        [turn + 28, middle],
+        [turn + 228, middle],
+        [turn + 256, y],
       )
     }
+    points.push([columns * CELL_WIDTH + 64, y])
+    addBus(points, row * 17 + 1, `horizontal:${row}`, row % 2 === 1)
   }
-  // Enter above the header near the left-middle, then turn out through the right edge.
-  const topEntries = width < 640 ? 1 : 2
+  // Spread top entries across the viewport and send them toward alternating sides.
+  // Varied exit depths avoid collecting all of the vertical buses at the bottom.
+  const topEntries = Math.max(1, Math.ceil(width / 320))
   for (let index = 0; index < topEntries; index++) {
-    const entryX = width * (topEntries === 1 ? 0.34 : 0.28 + index * 0.15)
-    const exitY = height - 80 - index * 80
-    const diagonal = Math.min(120, width * 0.18)
-    const firstTurnY = 96 + index * 64
+    const entryX = ((index + 0.5) * width) / topEntries
+    const direction = index % 2 === 0 ? 1 : -1
+    const exitY = height * (0.5 + random(index * 31 + 9) * 0.4)
+    const diagonal = Math.min(96, width * 0.15)
+    const firstTurnY = 72 + random(index * 17 + 3) * 64
     const points = [
-      [entryX, -32],
+      [entryX, -64],
       [entryX, firstTurnY],
-      [entryX + 48, firstTurnY + 48],
-      [entryX + 48, exitY - diagonal],
-      [entryX + 48 + diagonal, exitY],
-      [width + 32, exitY],
+      [entryX + direction * 48, firstTurnY + 48],
+      [entryX + direction * 48, exitY - diagonal],
+      [entryX + direction * (48 + diagonal), exitY],
+      [direction === 1 ? width + 64 : -64, exitY],
     ]
-    addBus(points, index * 31 + 27, `top-to-right:${index}`, false)
+    addBus(points, index * 31 + 27, `top-to-side:${index}`, false)
   }
   const routes = buses.flatMap((bus) =>
     Array.from({ length: LANE_COUNT }, (_, lane) => ({
