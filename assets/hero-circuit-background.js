@@ -28,7 +28,7 @@ export function initHeroCircuitBackground(container, initialSettings) {
     context.lineJoin = "round"
     context.strokeStyle = "#929292"
     // Crossing routes remain intact; signals exit by moving beyond their endpoints.
-    routes = createCircuitBuses(width, height)
+    routes = createCircuitBuses(width, height, settings.turns)
     draw()
   }
 
@@ -71,7 +71,10 @@ export function initHeroCircuitBackground(container, initialSettings) {
 
   return {
     setSettings(nextSettings) {
+      const turnsChanged = nextSettings.turns !== settings.turns
       settings = { ...nextSettings }
+      if (turnsChanged)
+        routes = createCircuitBuses(width, height, settings.turns)
       draw()
     },
   }

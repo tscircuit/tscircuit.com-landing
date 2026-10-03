@@ -74,14 +74,96 @@ export function getSignalStates(route, distanceTraveled, settings) {
   return signals
 }
 
-export function createCircuitBuses(width, height) {
+// Add doglegs to a straight run without changing its endpoints.
+// Each dogleg has four 45-degree turns. Leave room for the full lane bundle's
+// mitered corners; narrow viewports naturally fit fewer turns.
+function addRunTurns(points, width, height, turns, seed, bounds) {
+  const [fromX, y] = points.at(-2)
+  const [toX] = points.at(-1)
+  const direction = Math.sign(toX - fromX)
+  const startX =
+    direction > 0
+      ? Math.max(0, bounds.startX) + 24
+      : Math.min(width, bounds.startX) - 24
+  const endX = direction > 0 ? width - 24 : 24
+  const available = (endX - startX) * direction
+  const count = Math.min(turns / 4, Math.max(0, Math.floor(available / 96)))
+  if (!count) return points
+  const result = points.slice(0, -1)
+  const spacing = available / count
+  for (let index = 0; index < count; index++) {
+    const lead = (spacing - 64) * (0.2 + random(seed + index * 17) * 0.6)
+    const x = startX + direction * (index * spacing + lead)
+    let bend = random(seed + index * 29 + 3) < 0.5 ? -16 : 16
+    if (bounds.minY + bend < 44 || bounds.maxY + bend > height - 44)
+      bend = -bend
+    result.push(
+      [x, y],
+      [x + direction * 16, y + bend],
+      [x + direction * 48, y + bend],
+      [x + direction * 64, y],
+    )
+  }
+  result.push(points.at(-1))
+  return result
+}
+
+export function createCircuitBuses(width, height, extraTurns = 8) {
+  const turns = Number.isFinite(extraTurns)
+    ? Math.max(0, Math.min(24, Math.round(extraTurns / 4) * 4))
+    : 8
   const routes = []
   const rows = Math.max(2, Math.ceil((height - 152) / BUS_ROW_SPACING) + 1)
   const addBus = (lanePaths, seed, id, mirror = false) => {
     const bus = { id, seed, phase: (seed * 0.61803398875) % 1 }
+    // Bends start after the last fork and move sibling branches together. This
+    // keeps the outgoing bundles from weaving through each other near an edge.
+    const bounds = new Map()
+    for (const points of lanePaths) {
+      const [x, y] = points.at(-2)
+      const direction = Math.sign(points.at(-1)[0] - x)
+      const group = bounds.get(direction) || { startX: x, minY: y, maxY: y }
+      group.startX =
+        direction > 0 ? Math.max(group.startX, x) : Math.min(group.startX, x)
+      group.minY = Math.min(group.minY, y)
+      group.maxY = Math.max(group.maxY, y)
+      bounds.set(direction, group)
+    }
+    // Put turns into the shared incoming trunk as well as the outgoing branches.
+    // Transposing vertical trunks lets the same spacing rules cover both axes.
+    const vertical = lanePaths[0][0][0] === lanePaths[0][1][0]
+    const incoming = lanePaths.map((points) =>
+      [...points].reverse().map(([x, y]) => (vertical ? [y, x] : [x, y])),
+    )
+    const firstFork = Math.min(...incoming.map((points) => points.at(-2)[0]))
+    const trunkPosition = incoming[0].at(-1)[1]
+    const incomingBounds = {
+      startX: firstFork,
+      minY: trunkPosition,
+      maxY: trunkPosition,
+    }
     const lanes = lanePaths.map((points, lane) => {
+      const trunk = addRunTurns(
+        incoming[lane],
+        vertical ? height : width,
+        vertical ? width : height,
+        turns,
+        seed + 241,
+        incomingBounds,
+      )
+        .reverse()
+        .map(([x, y]) => (vertical ? [y, x] : [x, y]))
+      const remaining = turns - (trunk.length - points.length)
+      const direction = Math.sign(points.at(-1)[0] - points.at(-2)[0])
       let offset = offsetPoints(
-        points,
+        addRunTurns(
+          trunk,
+          width,
+          height,
+          remaining,
+          seed,
+          bounds.get(direction),
+        ),
         (lane - (LANE_COUNT - 1) / 2) * LANE_SPACING,
       )
       if (mirror) offset = offset.map(([x, y]) => [width - x, y])

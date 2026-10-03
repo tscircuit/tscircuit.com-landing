@@ -17,9 +17,13 @@ const viewports = [
   [3440, 1030],
 ]
 
+const geometryCases = viewports.flatMap(([width, height]) =>
+  [0, 4, 8, 12, 16, 20, 24].map((turns) => [width, height, turns]),
+)
+
 test("buses cover the full section without broad permanent gaps", () => {
-  for (const [width, height] of viewports) {
-    const segments = createCircuitBuses(width, height).flatMap(
+  for (const [width, height, turns] of geometryCases) {
+    const segments = createCircuitBuses(width, height, turns).flatMap(
       (route) => route.segments,
     )
     for (let x = 0; x <= width; x += 24) {
@@ -49,8 +53,8 @@ test("buses cover the full section without broad permanent gaps", () => {
 })
 
 test("all lanes enter from an edge, use 45-degree bends, and exit a side", () => {
-  for (const [width, height] of viewports) {
-    for (const route of createCircuitBuses(width, height)) {
+  for (const [width, height, turns] of geometryCases) {
+    for (const route of createCircuitBuses(width, height, turns)) {
       const first = route.segments[0]
       const last = route.segments.at(-1)
       assert.ok(first.fromX < 0 || first.fromX > width || first.fromY < 0)
@@ -139,8 +143,8 @@ test("forks conserve the 16 wires and never cross wires within a bus", () => {
     const u = cross(dx, dy, ax, ay) / determinant
     return t >= 0 && t <= 1 && u >= 0 && u <= 1
   }
-  for (const [width, height] of viewports) {
-    const allRoutes = createCircuitBuses(width, height)
+  for (const [width, height, turns] of geometryCases) {
+    const allRoutes = createCircuitBuses(width, height, turns)
     for (const bus of new Set(allRoutes.map((route) => route.bus))) {
       const lanes = allRoutes.filter((route) => route.bus === bus)
       assert.equal(lanes.length, 16)
@@ -176,6 +180,32 @@ test("forks conserve the 16 wires and never cross wires within a bus", () => {
           )
         }
       }
+    }
+  }
+})
+
+test("turns add bends without changing wire endpoints or exceeding the setting", () => {
+  for (const [width, height] of viewports) {
+    const base = createCircuitBuses(width, height, 0)
+    let previousTotal = 0
+    for (const turns of [4, 8, 12, 16, 20, 24]) {
+      const next = createCircuitBuses(width, height, turns)
+      let total = 0
+      for (let index = 0; index < base.length; index++) {
+        const before = base[index].segments
+        const after = next[index].segments
+        const added = after.length - before.length
+        assert.ok(added >= 0 && added <= turns && added % 4 === 0)
+        assert.equal(after[0].fromX, before[0].fromX)
+        assert.equal(after[0].fromY, before[0].fromY)
+        assert.equal(after.at(-1).x, before.at(-1).x)
+        assert.equal(after.at(-1).y, before.at(-1).y)
+        total += added
+      }
+      assert.ok(total > 0, `turns must have a visible effect at ${width}px`)
+      assert.ok(total >= previousTotal)
+      if (width >= 1440) assert.ok(total > previousTotal)
+      previousTotal = total
     }
   }
 })

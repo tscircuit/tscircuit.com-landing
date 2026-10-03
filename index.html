@@ -2174,7 +2174,7 @@
 
         .signal-controls-grid {
             display: grid;
-            grid-template-columns: repeat(5, minmax(0, 1fr));
+            grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 12px 24px;
             max-width: 1280px;
             margin: 0 auto;
@@ -3523,38 +3523,46 @@
             <div class="signal-control">
                 <label for="signal-speed">Speed (px/s)</label>
                 <div class="signal-control-inputs">
-                    <input id="signal-speed" type="range" min="50" max="4000" step="10" value="600">
-                    <input id="signal-speed-number" type="number" min="50" max="4000" step="10" value="600" aria-label="Speed (px/s)">
+                    <input id="signal-speed" type="range" min="50" max="4000" step="10" value="120">
+                    <input id="signal-speed-number" type="number" min="50" max="4000" step="10" value="120" aria-label="Speed (px/s)">
                 </div>
             </div>
             <div class="signal-control">
                 <label for="signal-length">Length (px)</label>
                 <div class="signal-control-inputs">
-                    <input id="signal-length" type="range" min="20" max="600" step="10" value="240">
-                    <input id="signal-length-number" type="number" min="20" max="600" step="10" value="240" aria-label="Length (px)">
+                    <input id="signal-length" type="range" min="20" max="600" step="10" value="600">
+                    <input id="signal-length-number" type="number" min="20" max="600" step="10" value="600" aria-label="Length (px)">
                 </div>
             </div>
             <div class="signal-control">
                 <label for="signal-density">Density (%)</label>
                 <div class="signal-control-inputs">
-                    <input id="signal-density" type="range" min="1" max="2000" step="1" value="10">
-                    <input id="signal-density-number" type="number" min="1" max="2000" step="1" value="10" aria-label="Density (%)">
+                    <input id="signal-density" type="range" min="1" max="2000" step="1" value="80">
+                    <input id="signal-density-number" type="number" min="1" max="2000" step="1" value="80" aria-label="Density (%)">
                 </div>
             </div>
             <div class="signal-control">
                 <label for="signal-strokeWidth">Stroke width (px)</label>
                 <div class="signal-control-inputs">
-                    <input id="signal-strokeWidth" type="range" min="0.1" max="4" step="0.1" value="0.7">
-                    <input id="signal-strokeWidth-number" type="number" min="0.1" max="4" step="0.1" value="0.7" aria-label="Stroke width (px)">
+                    <input id="signal-strokeWidth" type="range" min="0.1" max="4" step="0.1" value="0.4">
+                    <input id="signal-strokeWidth-number" type="number" min="0.1" max="4" step="0.1" value="0.4" aria-label="Stroke width (px)">
                 </div>
             </div>
             <div class="signal-control">
                 <label for="signal-tailFade">Tail fade (%)</label>
                 <div class="signal-control-inputs">
-                    <input id="signal-tailFade" type="range" min="0" max="100" step="1" value="0" aria-describedby="signal-tail-fade-help">
-                    <input id="signal-tailFade-number" type="number" min="0" max="100" step="1" value="0" aria-label="Tail fade (%)" aria-describedby="signal-tail-fade-help">
+                    <input id="signal-tailFade" type="range" min="0" max="100" step="1" value="80" aria-describedby="signal-tail-fade-help">
+                    <input id="signal-tailFade-number" type="number" min="0" max="100" step="1" value="80" aria-label="Tail fade (%)" aria-describedby="signal-tail-fade-help">
                 </div>
                 <small id="signal-tail-fade-help">0: no fade · 100: full-length fade</small>
+            </div>
+            <div class="signal-control">
+                <label for="signal-turns">Extra turns</label>
+                <div class="signal-control-inputs">
+                    <input id="signal-turns" type="range" min="0" max="24" step="4" value="8" aria-describedby="signal-turns-help">
+                    <input id="signal-turns-number" type="number" min="0" max="24" step="4" value="8" aria-label="Extra turns" aria-describedby="signal-turns-help">
+                </div>
+                <small id="signal-turns-help">Up to 24 extra bends; fewer on short routes</small>
             </div>
             <div class="signal-controls-share">
                 <textarea id="signal-settings" readonly aria-label="Signal parameters to copy" spellcheck="false"></textarea>
