@@ -27,7 +27,7 @@ export function initHeroCircuitBackground(container, initialSettings) {
     context.lineCap = "round"
     context.lineJoin = "round"
     context.strokeStyle = "#929292"
-    // Routes stop permanently at their first crossing; no fade gradients to repaint.
+    // Crossing routes remain intact; signals exit by moving beyond their endpoints.
     routes = createCircuitBuses(width, height)
     draw()
   }
@@ -39,7 +39,7 @@ export function initHeroCircuitBackground(container, initialSettings) {
     for (const route of routes) {
       const signal = getSignalState(route, distanceTraveled, settings)
       if (!signal) continue
-      context.globalAlpha = 0.3 * signal.opacity
+      context.globalAlpha = 0.3
       context.beginPath()
       let started = false
       for (const segment of route.segments) {
