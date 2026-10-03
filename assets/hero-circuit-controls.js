@@ -1,7 +1,13 @@
 import { initHeroCircuitBackground } from "./hero-circuit-background.js"
 
 const STORAGE_KEY = "tscircuit-signal-settings-v1"
-const DEFAULTS = { speed: 600, length: 240, density: 10, strokeWidth: 0.7 }
+const DEFAULTS = {
+  speed: 600,
+  length: 240,
+  density: 10,
+  strokeWidth: 0.7,
+  tailFade: 0,
+}
 
 export function initHeroCircuitControls(background, controls) {
   const fields = Object.keys(DEFAULTS)

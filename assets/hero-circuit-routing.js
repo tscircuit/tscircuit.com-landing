@@ -39,27 +39,40 @@ function random(seed) {
   return ((value ^ (value >>> 15)) >>> 0) / 4294967296
 }
 
-// Reserve enough time for the whole tail to exit before scheduling another emission.
-export function getSignalState(route, distanceTraveled, settings) {
+// Higher densities overlap emissions; retain each one until its tail exits.
+export function getSignalStates(route, distanceTraveled, settings) {
+  const signals = []
   const burstLength = route.bus.maxLength * 1.75 + settings.length
   const cycle = burstLength / (settings.density / 100)
-  if (!cycle) return null
+  if (!Number.isFinite(cycle) || cycle <= 0) return signals
   // Start with an empty canvas; initial emissions also enter from an edge.
   const time = distanceTraveled - route.bus.phase * 80
-  if (time < 0) return null
-  const emission = Math.floor(time / cycle)
-  const seed = route.bus.seed + emission * 1013
-  // Pick only 4–8 of the 16 lanes, spread across the bus, with a new selection each emission.
-  const count = 4 + Math.floor(random(seed) * 5)
-  const rotation = Math.floor(random(seed + 73) * LANE_COUNT)
-  if ((route.lane * 5 + rotation) % LANE_COUNT >= count) return null
-  const delay = random(seed + route.lane * 53 + 137) * route.bus.maxLength * 0.7
-  const head = (time % cycle) - delay
-  if (head <= 0 || head >= route.length + settings.length) return null
-  return {
-    start: Math.max(0, head - settings.length),
-    end: Math.min(route.length, head),
+  if (time < 0) return signals
+  // Only examine emissions whose tails could still be on the route. This bounds
+  // work by density rather than by how long the page has been open.
+  const firstEmission = Math.max(
+    0,
+    Math.floor((time - burstLength) / cycle) + 1,
+  )
+  const lastEmission = Math.floor(time / cycle)
+  for (let emission = firstEmission; emission <= lastEmission; emission++) {
+    const seed = route.bus.seed + emission * 1013
+    // Pick 4–8 lanes per emission, with independent delays and changing selections.
+    const count = 4 + Math.floor(random(seed) * 5)
+    const rotation = Math.floor(random(seed + 73) * LANE_COUNT)
+    if ((route.lane * 5 + rotation) % LANE_COUNT >= count) continue
+    const delay =
+      random(seed + route.lane * 53 + 137) * route.bus.maxLength * 0.7
+    const head = time - emission * cycle - delay
+    if (head <= 0 || head >= route.length + settings.length) continue
+    signals.push({
+      // Keep the unclipped tail so the fade moves naturally through entry/exit edges.
+      tail: head - settings.length,
+      start: Math.max(0, head - settings.length),
+      end: Math.min(route.length, head),
+    })
   }
+  return signals
 }
 
 export function createCircuitBuses(width, height) {

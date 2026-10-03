@@ -1,4 +1,4 @@
-import { createCircuitBuses, getSignalState } from "./hero-circuit-routing.js"
+import { createCircuitBuses, getSignalStates } from "./hero-circuit-routing.js"
 
 export function initHeroCircuitBackground(container, initialSettings) {
   let settings = { ...initialSettings }
@@ -37,26 +37,9 @@ export function initHeroCircuitBackground(container, initialSettings) {
     if (reducedMotion.matches) return
     context.lineWidth = settings.strokeWidth
     for (const route of routes) {
-      const signal = getSignalState(route, distanceTraveled, settings)
-      if (!signal) continue
-      context.globalAlpha = 0.3
-      context.beginPath()
-      let started = false
-      for (const segment of route.segments) {
-        const from = Math.max(signal.start, segment.start)
-        const to = Math.min(signal.end, segment.start + segment.distance)
-        if (from >= to) continue
-        const a = (from - segment.start) / segment.distance
-        const b = (to - segment.start) / segment.distance
-        const dx = segment.x - segment.fromX
-        const dy = segment.y - segment.fromY
-        if (!started) {
-          context.moveTo(segment.fromX + dx * a, segment.fromY + dy * a)
-          started = true
-        }
-        context.lineTo(segment.fromX + dx * b, segment.fromY + dy * b)
+      for (const signal of getSignalStates(route, distanceTraveled, settings)) {
+        drawCircuitSignal(context, route, signal, settings)
       }
-      context.stroke()
     }
     context.globalAlpha = 1
   }
@@ -92,4 +75,49 @@ export function initHeroCircuitBackground(container, initialSettings) {
       draw()
     },
   }
+}
+
+// Follow distance along the route, so fading stays continuous around bends.
+export function drawCircuitSignal(context, route, signal, settings) {
+  const fadeLength = settings.length * ((settings.tailFade || 0) / 100)
+  context.globalAlpha = 0.3
+  context.strokeStyle = "#929292"
+  context.beginPath()
+  let started = false
+  for (const segment of route.segments) {
+    const from = Math.max(signal.start, segment.start)
+    const to = Math.min(signal.end, segment.start + segment.distance)
+    if (from >= to) continue
+    const a = (from - segment.start) / segment.distance
+    const b = (to - segment.start) / segment.distance
+    const dx = segment.x - segment.fromX
+    const dy = segment.y - segment.fromY
+    const fromX = segment.fromX + dx * a
+    const fromY = segment.fromY + dy * a
+    const toX = segment.fromX + dx * b
+    const toY = segment.fromY + dy * b
+    if (fadeLength > 0) {
+      const alphaAt = (position) =>
+        Math.min(1, Math.max(0, (position - signal.tail) / fadeLength))
+      const gradient = context.createLinearGradient(fromX, fromY, toX, toY)
+      gradient.addColorStop(0, `rgba(146, 146, 146, ${alphaAt(from)})`)
+      const fadeEnd = signal.tail + fadeLength
+      if (fadeEnd > from && fadeEnd < to) {
+        gradient.addColorStop((fadeEnd - from) / (to - from), "#929292")
+      }
+      gradient.addColorStop(1, `rgba(146, 146, 146, ${alphaAt(to)})`)
+      context.strokeStyle = gradient
+      context.beginPath()
+      context.moveTo(fromX, fromY)
+      context.lineTo(toX, toY)
+      context.stroke()
+    } else {
+      if (!started) {
+        context.moveTo(fromX, fromY)
+        started = true
+      }
+      context.lineTo(toX, toY)
+    }
+  }
+  if (!fadeLength) context.stroke()
 }
