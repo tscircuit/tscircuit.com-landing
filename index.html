@@ -2108,7 +2108,7 @@
         }
 
         .landing-hero-main {
-            height: 625px;
+            height: 685px;
             position: relative;
             overflow: visible;
             isolation: isolate;
@@ -2124,13 +2124,20 @@
 
         .landing-hero-copy h1 {
             margin: 0;
-            max-width: 540px;
+            max-width: 660px;
             color: var(--ink);
             font-size: clamp(44px, 4.25vw, 54px);
             line-height: 1.08;
             letter-spacing: -.045em;
             font-weight: 680;
-            text-wrap: pretty;
+        }
+
+        .landing-hero-title-line {
+            display: block;
+        }
+
+        .landing-hero-title-word {
+            white-space: nowrap;
         }
 
         .landing-hero-copy p {
@@ -2195,7 +2202,7 @@
             width: 650px;
             height: 420px;
             right: -22px;
-            top: 104px;
+            top: 164px;
             border-radius: 50%;
             background: radial-gradient(ellipse at center, rgba(149, 160, 177, .17) 0%, rgba(191, 199, 211, .09) 42%, transparent 72%);
             filter: blur(12px);
@@ -2207,7 +2214,7 @@
             max-width: none;
             height: auto;
             right: -14px;
-            top: 10px;
+            top: 70px;
             display: block;
             opacity: .99;
             filter: contrast(1.045) saturate(1.035) drop-shadow(0 16px 10px rgba(41, 49, 62, .07)) drop-shadow(0 38px 29px rgba(41, 49, 62, .15));
@@ -2303,7 +2310,7 @@
             .landing-hero-board {
                 width: 800px;
                 right: -12px;
-                top: 24px;
+                top: 84px;
             }
 
             .landing-board-halo {
@@ -2386,7 +2393,7 @@
             }
 
             .landing-hero-copy h1 {
-                max-width: 600px;
+                max-width: 660px;
                 font-size: clamp(40px, 6.5vw, 54px);
             }
 
@@ -2516,7 +2523,7 @@
             }
 
             .landing-hero-copy h1 {
-                font-size: clamp(32px, 9vw, 46px);
+                font-size: clamp(28px, 9vw, 46px);
             }
 
             .landing-hero-copy p {
@@ -2797,7 +2804,9 @@
         <section class="landing-hero-shell" aria-labelledby="hero-title">
             <div class="landing-hero-main">
                 <div class="landing-hero-copy">
-                    <h1 id="hero-title">The framework for AI-generated electronics.</h1>
+                    <h1 id="hero-title"><span class="landing-hero-title-line">The Framework for</span>
+                        <span class="landing-hero-title-line"><span class="landing-hero-title-word">AI-generated</span> electronics</span>
+                    </h1>
                     <p>Build real circuit boards with any AI.<br class="landing-desktop-break">
                         Just tell your agent to &quot;use tscircuit&quot;</p>
                     <div class="landing-hero-actions">
