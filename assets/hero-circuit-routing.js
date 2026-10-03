@@ -1,4 +1,3 @@
-const CELL_WIDTH = 520
 const BUS_ROW_SPACING = 112
 const LANE_COUNT = 16
 const LANE_SPACING = 4
@@ -76,82 +75,78 @@ export function getSignalStates(route, distanceTraveled, settings) {
 }
 
 export function createCircuitBuses(width, height) {
-  const buses = []
-  const columns = Math.ceil(width / CELL_WIDTH)
+  const routes = []
   const rows = Math.max(2, Math.ceil((height - 152) / BUS_ROW_SPACING) + 1)
-  const addBus = (points, seed, id, reverse) => {
-    const xs = points.map(([x]) => x)
-    const ys = points.map(([, y]) => y)
-    if (
-      Math.min(...xs) > width + 32 ||
-      Math.max(...xs) < -32 ||
-      Math.min(...ys) > height + 32 ||
-      Math.max(...ys) < -32
-    )
-      return
-    if (reverse) points.reverse()
-    buses.push({
-      id,
-      seed,
-      points,
-      phase: (seed * 0.61803398875) % 1,
-      ...segmentsOf(points),
+  const addBus = (lanePaths, seed, id, mirror = false) => {
+    const bus = { id, seed, phase: (seed * 0.61803398875) % 1 }
+    const lanes = lanePaths.map((points, lane) => {
+      let offset = offsetPoints(
+        points,
+        (lane - (LANE_COUNT - 1) / 2) * LANE_SPACING,
+      )
+      if (mirror) offset = offset.map(([x, y]) => [width - x, y])
+      return { bus, lane, ...segmentsOf(offset) }
     })
+    bus.maxLength = Math.max(...lanes.map((route) => route.length))
+    routes.push(...lanes)
   }
-  // Distribute full-width buses over the complete section, including its last row.
-  // Stagger bends independently so neighboring buses do not leave repeating gaps.
+  // Each 16-wire trunk sheds its outer four wires on either side. The middle
+  // eight continue onward: these are continuous wires, not duplicated branches.
   for (let row = 0; row < rows; row++) {
     const y = 76 + ((height - 152) * row) / (rows - 1)
-    const direction = row === rows - 1 ? -1 : row % 2 === 0 ? 1 : -1
-    const middle = y + direction * 28
-    const points = [[-64, y]]
-    for (let column = 0; column < columns; column++) {
-      const left = column * CELL_WIDTH
-      const turn = left + 48 + random(row * 97 + column * 31) * 120
-      points.push(
-        [turn, y],
-        [turn + 28, middle],
-        [turn + 228, middle],
-        [turn + 256, y],
-      )
+    const upperY = Math.max(44, y - 64 - random(row * 13 + 5) * 56)
+    const lowerY = Math.min(height - 44, y + 64 + random(row * 23 + 7) * 56)
+    const trunkY = y + (row % 2 === 0 ? 1 : -1) * 24
+    const fork = (targetY, splitX) => {
+      const diagonal = Math.abs(targetY - y)
+      return [
+        [-64, y],
+        [splitX, y],
+        [splitX + diagonal, targetY],
+        [width + 64, targetY],
+      ]
     }
-    points.push([columns * CELL_WIDTH + 64, y])
-    addBus(points, row * 17 + 1, `horizontal:${row}`, row % 2 === 1)
+    const upperSplit = width * (0.18 + random(row * 31 + 2) * 0.3)
+    const lowerSplit = width * (0.42 + random(row * 19 + 4) * 0.24)
+    const upper = fork(upperY, upperSplit)
+    const lower = fork(lowerY, lowerSplit)
+    // Let both outer groups depart before bending the remaining inner wires.
+    const trunk = fork(trunkY, Math.max(width * 0.75, lowerSplit + 32))
+    addBus(
+      Array.from({ length: LANE_COUNT }, (_, lane) =>
+        lane < 4 ? upper : lane >= 12 ? lower : trunk,
+      ),
+      row * 17 + 1,
+      `horizontal:${row}`,
+      row % 2 === 1,
+    )
   }
-  // Spread top entries across the viewport and send them toward alternating sides.
-  // Varied exit depths avoid collecting all of the vertical buses at the bottom.
-  const topEntries = Math.max(1, Math.ceil(width / 320))
+  // Vertical trunks fan out in four-wire groups at separate depths. Outer
+  // groups peel away first, leaving the inner wires to continue down the trunk.
+  const topEntries = Math.max(1, Math.ceil(width / 400))
   for (let index = 0; index < topEntries; index++) {
     const entryX = ((index + 0.5) * width) / topEntries
-    const direction = index % 2 === 0 ? 1 : -1
-    const exitY = height * (0.5 + random(index * 31 + 9) * 0.4)
-    const diagonal = Math.min(96, width * 0.15)
-    const firstTurnY = 72 + random(index * 17 + 3) * 64
-    const points = [
-      [entryX, -64],
-      [entryX, firstTurnY],
-      [entryX + direction * 48, firstTurnY + 48],
-      [entryX + direction * 48, exitY - diagonal],
-      [entryX + direction * (48 + diagonal), exitY],
-      [direction === 1 ? width + 64 : -64, exitY],
-    ]
-    addBus(points, index * 31 + 27, `top-to-side:${index}`, false)
-  }
-  const routes = buses.flatMap((bus) =>
-    Array.from({ length: LANE_COUNT }, (_, lane) => ({
-      bus,
-      lane,
-      ...segmentsOf(
-        offsetPoints(bus.points, (lane - (LANE_COUNT - 1) / 2) * LANE_SPACING),
+    const branches = Array.from({ length: 4 }, (_, group) => {
+      const direction = group < 2 ? 1 : -1
+      const inner = group === 1 || group === 2
+      const exitY =
+        height *
+        ((inner ? 0.52 : 0.24) + random(index * 37 + group * 11) * 0.16)
+      const diagonal = Math.min(72, width * 0.15)
+      return [
+        [entryX, -64],
+        [entryX, exitY - diagonal],
+        [entryX + direction * diagonal, exitY],
+        [direction === 1 ? width + 64 : -64, exitY],
+      ]
+    })
+    addBus(
+      Array.from(
+        { length: LANE_COUNT },
+        (_, lane) => branches[Math.floor(lane / 4)],
       ),
-    })),
-  )
-  for (const bus of buses) {
-    bus.maxLength = Math.max(
-      0,
-      ...routes
-        .filter((route) => route.bus === bus)
-        .map((route) => route.length),
+      index * 31 + 27,
+      `top-to-side:${index}`,
     )
   }
   return routes
