@@ -1,6 +1,5 @@
-// Fixed-size routing cells preserve 45-degree bends and dense spacing on every screen.
-const CELL_WIDTH = 480
-const CELL_HEIGHT = 320
+import { createCircuitBuses } from "./hero-circuit-routing.js"
+
 const FRAME_INTERVAL = 1000 / 30
 
 export function initHeroCircuitBackground(container, initialSettings) {
@@ -18,23 +17,6 @@ export function initHeroCircuitBackground(container, initialSettings) {
   let lastTime = 0
   let distanceTraveled = 0
 
-  const makeRoute = (points, seed) => {
-    let length = 0
-    const segments = points.slice(1).map(([x, y], index) => {
-      const [fromX, fromY] = points[index]
-      const distance = Math.hypot(x - fromX, y - fromY)
-      const segment = { fromX, fromY, x, y, distance, start: length }
-      length += distance
-      return segment
-    })
-    return {
-      segments,
-      length,
-      phase: (seed * 0.61803398875) % 1,
-      opacity: 0.22 + (seed % 5) * 0.035,
-    }
-  }
-
   const resize = () => {
     const bounds = container.getBoundingClientRect()
     width = bounds.width
@@ -47,43 +29,21 @@ export function initHeroCircuitBackground(container, initialSettings) {
     context.lineCap = "round"
     context.lineJoin = "round"
     context.strokeStyle = "#929292"
-    routes = []
-    for (let row = 0; row < Math.ceil(height / CELL_HEIGHT); row++) {
-      for (let column = 0; column < Math.ceil(width / CELL_WIDTH); column++) {
-        const left = column * CELL_WIDTH
-        const top = row * CELL_HEIGHT
-        const cell = row * 17 + column * 31
-        for (let lane = 0; lane < 28; lane++) {
-          const y = top + 12 + lane * 10
-          const bend = 24 + ((lane + cell) % 4) * 8
-          const turn = left + 92 + ((lane + cell) % 3) * 28
-          const direction = lane % 2 ? 1 : -1
-          const points = [
-            [left - 24, y],
-            [turn, y],
-            [turn + bend, y + direction * bend],
-            [turn + 172, y + direction * bend],
-            [turn + 172 + bend, y],
-            [left + CELL_WIDTH + 24, y],
-          ]
-          if (lane % 3 === 0) points.reverse()
-          routes.push(makeRoute(points, cell * 37 + lane * 13 + 1))
-        }
-        for (let lane = 0; lane < 12; lane++) {
-          const x = left + 24 + lane * 38
-          const y = top + 76 + (lane % 3) * 16
-          const bend = lane % 2 ? 32 : -32
-          const points = [
-            [x, top - 16],
-            [x, y],
-            [x + bend, y + 32],
-            [x + bend, top + CELL_HEIGHT + 16],
-          ]
-          if (lane % 2) points.reverse()
-          routes.push(makeRoute(points, cell * 43 + lane * 19 + 509))
-        }
-      }
-    }
+    // Geometry, crossing gaps, and fade gradients are computed only on resize.
+    routes = createCircuitBuses(width, height).map((route) => ({
+      ...route,
+      pieces: route.pieces.map((piece) => {
+        const gradient = context.createLinearGradient(
+          piece.fromX,
+          piece.fromY,
+          piece.x,
+          piece.y,
+        )
+        gradient.addColorStop(0, `rgba(146, 146, 146, ${piece.fromOpacity})`)
+        gradient.addColorStop(1, `rgba(146, 146, 146, ${piece.toOpacity})`)
+        return { ...piece, gradient }
+      }),
+    }))
     draw()
   }
 
@@ -92,13 +52,16 @@ export function initHeroCircuitBackground(container, initialSettings) {
     if (reducedMotion.matches) return
     context.lineWidth = settings.strokeWidth
     for (const route of routes) {
-      const cycle = (route.length + settings.length) / (settings.density / 100)
-      const head = (distanceTraveled + route.phase * cycle) % cycle
+      // Shared timing makes the eight lanes read as a traveling bus.
+      const cycle =
+        (route.bus.length + settings.length) / (settings.density / 100)
+      const head =
+        (distanceTraveled + route.bus.phase * cycle + route.lane * 2) % cycle
       if (head >= route.length + settings.length) continue
       const start = Math.max(0, head - settings.length)
       const end = Math.min(route.length, head)
-      context.beginPath()
-      for (const segment of route.segments) {
+      context.globalAlpha = 0.3
+      for (const segment of route.pieces) {
         const from = Math.max(start, segment.start)
         const to = Math.min(end, segment.start + segment.distance)
         if (from >= to) continue
@@ -106,11 +69,12 @@ export function initHeroCircuitBackground(container, initialSettings) {
         const b = (to - segment.start) / segment.distance
         const dx = segment.x - segment.fromX
         const dy = segment.y - segment.fromY
+        context.beginPath()
+        context.strokeStyle = segment.gradient
         context.moveTo(segment.fromX + dx * a, segment.fromY + dy * a)
         context.lineTo(segment.fromX + dx * b, segment.fromY + dy * b)
+        context.stroke()
       }
-      context.globalAlpha = route.opacity
-      context.stroke()
     }
     context.globalAlpha = 1
   }
