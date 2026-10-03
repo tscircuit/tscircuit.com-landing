@@ -911,6 +911,17 @@
             isolation: isolate;
         }
 
+        .feature-video-stage::before {
+            content: "";
+            position: absolute;
+            top: -1px;
+            right: calc(100% + 1px);
+            width: 100vw;
+            height: 1px;
+            background: rgba(137, 153, 181, .22);
+            pointer-events: none;
+        }
+
         .feature-video-stage::after {
             content: "";
             position: absolute;
