@@ -38,6 +38,7 @@
         rel="stylesheet">
     <style>
         :root {
+            --landing-header-height: 72px;
             --paper: #ffffff;
             --ink: #08090a;
             --ink-2: #4a5262;
@@ -1762,9 +1763,9 @@
 
         /* Seam-inspired tscircuit header and hero */
         .landing-header {
-            height: 72px;
+            height: var(--landing-header-height);
             border-bottom: 1px solid var(--line);
-            background: rgba(255, 255, 255, .97);
+            background: rgba(255, 255, 255, .5);
             position: relative;
             z-index: 20;
         }
@@ -2095,6 +2096,12 @@
             border: 1px solid var(--line);
         }
 
+        .landing-hero-stage {
+            --hero-height: 685px;
+            position: relative;
+            isolation: isolate;
+        }
+
         .landing-hero-shell {
             width: min(1218px, calc(100% - 48px));
             margin: 0 auto;
@@ -2108,11 +2115,11 @@
         }
 
         .landing-hero-main {
-            height: 685px;
+            height: var(--hero-height);
             position: relative;
             overflow: visible;
             isolation: isolate;
-            background: #ffffff;
+            background: rgba(255, 255, 255, .5);
         }
 
         .landing-hero-copy {
@@ -2120,6 +2127,115 @@
             z-index: 8;
             padding-top: 106px;
             margin-left: 65px;
+        }
+
+        /* The canvas draws only short moving segments, in CSS-pixel coordinates. */
+        .hero-circuit-background {
+            position: absolute;
+            inset: calc(-1 * var(--landing-header-height)) 0 0;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+            contain: paint;
+        }
+
+        .hero-circuit-background canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        body { padding-bottom: var(--signal-controls-height, 0px); }
+
+        .signal-controls {
+            position: fixed;
+            inset: auto 0 0;
+            z-index: 1000;
+            padding: 0 max(18px, env(safe-area-inset-right)) env(safe-area-inset-bottom) max(18px, env(safe-area-inset-left));
+            border-top: 1px solid #dfe3e8;
+            background: #fff;
+            box-shadow: 0 -4px 24px rgba(0, 0, 0, .06);
+            font: 12px 'Geist', system-ui, sans-serif;
+        }
+
+        .signal-controls > summary {
+            max-width: 1280px;
+            margin: auto;
+            padding: 10px 0;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .signal-controls > summary span {
+            margin-left: 12px;
+            color: #667085;
+            font-weight: 400;
+        }
+
+        .signal-controls-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px 24px;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding-bottom: 12px;
+        }
+
+        .signal-control label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .signal-control-inputs { display: flex; align-items: center; gap: 10px; }
+        .signal-control input[type="range"] { width: 100%; min-width: 0; accent-color: #555; }
+        .signal-control input[type="number"] {
+            width: 70px;
+            flex: 0 0 70px;
+            padding: 5px 6px;
+            border: 1px solid #dfe3e8;
+            border-radius: 5px;
+            font: inherit;
+        }
+
+        .signal-controls-share {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .signal-controls-share textarea {
+            flex: 1 1 340px;
+            min-width: 0;
+            height: 36px;
+            resize: none;
+            padding: 8px;
+            border: 1px solid #dfe3e8;
+            border-radius: 5px;
+            background: #f8f9fa;
+            font: 11px monospace;
+        }
+
+        .signal-controls button {
+            padding: 8px 12px;
+            border: 1px solid #dfe3e8;
+            border-radius: 5px;
+            background: #fff;
+            color: #25272d;
+            cursor: pointer;
+            font: inherit;
+        }
+
+        .signal-controls button:hover { background: #f3f4f6; }
+        .signal-controls :focus-visible { outline: 2px solid #3b82f6; outline-offset: 2px; }
+        #signal-copy-status { color: #667085; }
+        #signal-motion-note { grid-column: 1 / -1; margin: 0; color: #667085; }
+
+        @media (max-width: 1000px) {
+            .signal-controls-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 16px; }
+            .signal-controls-share textarea { flex-basis: 100%; height: 44px; }
         }
 
         .landing-hero-copy h1 {
@@ -2225,7 +2341,7 @@
             position: relative;
             z-index: 5;
             border-top: 1px solid var(--line);
-            background: radial-gradient(circle, rgba(182, 189, 200, .34) .8px, transparent .95px) 53% 0 / 8px 8px, linear-gradient(90deg, #ffffff 0%, #ffffff 51%, rgba(255, 255, 255, .78) 64%, rgba(255, 255, 255, .5) 100%);
+            background: radial-gradient(circle, rgba(182, 189, 200, .34) .8px, transparent .95px) 53% 0 / 8px 8px, linear-gradient(90deg, rgba(255, 255, 255, .5) 0%, rgba(255, 255, 255, .5) 51%, rgba(255, 255, 255, .4) 64%, rgba(255, 255, 255, .5) 100%);
             overflow: hidden;
         }
 
@@ -2233,7 +2349,7 @@
             content: "";
             position: absolute;
             inset: 0;
-            background: linear-gradient(to bottom, rgba(255, 255, 255, 0) calc(100% - 40px), #ffffff), linear-gradient(90deg, #ffffff 0%, rgba(255, 255, 255, .97) 42%, rgba(255, 255, 255, .2) 65%, rgba(255, 255, 255, .55) 100%);
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0) calc(100% - 40px), #ffffff), linear-gradient(90deg, rgba(255, 255, 255, .2) 0%, rgba(255, 255, 255, .2) 42%, rgba(255, 255, 255, .2) 65%, rgba(255, 255, 255, .55) 100%);
             pointer-events: none;
         }
 
@@ -2353,8 +2469,8 @@
                 padding-top: 72px;
             }
 
-            .landing-header {
-                height: 70px;
+            :root {
+                --landing-header-height: 70px;
             }
 
             .landing-nav,
@@ -2383,8 +2499,8 @@
                 font-size: 14px;
             }
 
-            .landing-hero-main {
-                height: 760px;
+            .landing-hero-stage {
+                --hero-height: 760px;
             }
 
             .landing-hero-copy {
@@ -2514,8 +2630,8 @@
                 display: none;
             }
 
-            .landing-hero-main {
-                height: 720px;
+            .landing-hero-stage {
+                --hero-height: 720px;
             }
 
             .landing-hero-copy {
@@ -2801,43 +2917,48 @@
         </nav>
     </header>
     <main id="main-content">
-        <section class="landing-hero-shell" aria-labelledby="hero-title">
-            <div class="landing-hero-main">
-                <div class="landing-hero-copy">
-                    <h1 id="hero-title"><span class="landing-hero-title-line">The framework for</span>
-                        <span class="landing-hero-title-line"><span class="landing-hero-title-word">AI-generated</span> electronics</span>
-                    </h1>
-                    <p>Build real circuit boards with any AI.<br class="landing-desktop-break">
-                        Just tell your agent to &quot;use tscircuit&quot;</p>
-                    <div class="landing-hero-actions">
-                        <a class="landing-button landing-button-dark"
-                            href="https://docs.tscircuit.com/guides/circuit-generation/generating-circuit-boards-with-ai">
-                            Get Started <span class="landing-arrow" aria-hidden="true">→</span>
-                        </a>
-                        <a class="landing-button landing-button-plain" href="https://github.com/tscircuit/tscircuit">
-                            <svg class="landing-button-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-                                <path
-                                    d="M8 0C3.58 0 0 3.64 0 8.13c0 3.59 2.29 6.64 5.47 7.71.4.08.55-.18.55-.39 0-.19-.01-.83-.01-1.5-2.01.38-2.53-.5-2.69-.96-.09-.23-.48-.96-.82-1.15-.28-.15-.68-.53-.01-.54.63-.01 1.08.59 1.23.83.72 1.23 1.87.88 2.33.67.07-.53.28-.88.51-1.08-1.78-.21-3.64-.91-3.64-4.02 0-.89.31-1.62.82-2.19-.08-.2-.36-1.04.08-2.16 0 0 .67-.22 2.2.84A7.49 7.49 0 0 1 8 3.93c.68 0 1.36.09 2 .27 1.53-1.06 2.2-.84 2.2-.84.44 1.12.16 1.96.08 2.16.51.57.82 1.3.82 2.19 0 3.12-1.87 3.81-3.65 4.02.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.47.55.39A8.01 8.01 0 0 0 16 8.13C16 3.64 12.42 0 8 0Z">
-                                </path>
-                            </svg>
-                            Star on GitHub
-                        </a>
+        <section class="landing-hero-stage" aria-labelledby="hero-title">
+            <div class="hero-circuit-background" aria-hidden="true">
+                <canvas></canvas>
+            </div>
+            <div class="landing-hero-shell">
+                <div class="landing-hero-main">
+                    <div class="landing-hero-copy">
+                        <h1 id="hero-title"><span class="landing-hero-title-line">The framework for</span>
+                            <span class="landing-hero-title-line"><span class="landing-hero-title-word">AI-generated</span> electronics</span>
+                        </h1>
+                        <p>Build real circuit boards with any AI.<br class="landing-desktop-break">
+                            Just tell your agent to &quot;use tscircuit&quot;</p>
+                        <div class="landing-hero-actions">
+                            <a class="landing-button landing-button-dark"
+                                href="https://docs.tscircuit.com/guides/circuit-generation/generating-circuit-boards-with-ai">
+                                Get Started <span class="landing-arrow" aria-hidden="true">→</span>
+                            </a>
+                            <a class="landing-button landing-button-plain" href="https://github.com/tscircuit/tscircuit">
+                                <svg class="landing-button-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                    <path
+                                        d="M8 0C3.58 0 0 3.64 0 8.13c0 3.59 2.29 6.64 5.47 7.71.4.08.55-.18.55-.39 0-.19-.01-.83-.01-1.5-2.01.38-2.53-.5-2.69-.96-.09-.23-.48-.96-.82-1.15-.28-.15-.68-.53-.01-.54.63-.01 1.08.59 1.23.83.72 1.23 1.87.88 2.33.67.07-.53.28-.88.51-1.08-1.78-.21-3.64-.91-3.64-4.02 0-.89.31-1.62.82-2.19-.08-.2-.36-1.04.08-2.16 0 0 .67-.22 2.2.84A7.49 7.49 0 0 1 8 3.93c.68 0 1.36.09 2 .27 1.53-1.06 2.2-.84 2.2-.84.44 1.12.16 1.96.08 2.16.51.57.82 1.3.82 2.19 0 3.12-1.87 3.81-3.65 4.02.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.47.55.39A8.01 8.01 0 0 0 16 8.13C16 3.64 12.42 0 8 0Z">
+                                    </path>
+                                </svg>
+                                Star on GitHub
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="landing-hero-art" aria-label="Four real circuit boards generated from tscircuit projects">
+                        <span class="landing-board-halo" aria-hidden="true"></span>
+                        <img class="landing-hero-board" src="assets/hero-board-four-real-3d.png"
+                            alt="3D renders of the tscircuit RP2040, Game Boy, nRF52810, and Attiny85 Arcade Keychain circuit boards"
+                            width="1600" height="1500" fetchpriority="high">
                     </div>
                 </div>
 
-                <div class="landing-hero-art" aria-label="Four real circuit boards generated from tscircuit projects">
-                    <span class="landing-board-halo" aria-hidden="true"></span>
-                    <img class="landing-hero-board" src="assets/hero-board-four-real-3d.png"
-                        alt="3D renders of the tscircuit RP2040, Game Boy, nRF52810, and Attiny85 Arcade Keychain circuit boards"
-                        width="1600" height="1500" fetchpriority="high">
+                <div class="landing-proof-panel">
+                    <p>tscircuit is a <strong>TSX framework</strong> to enable AI to build electronics.<br>
+                        Using tscircuit, AI achieves <strong>state-of-the-art</strong> physically-validated<br>
+                        <strong>electronics generation capabilities</strong>.
+                    </p>
                 </div>
-            </div>
-
-            <div class="landing-proof-panel">
-                <p>tscircuit is a <strong>TSX framework</strong> to enable AI to build electronics.<br>
-                    Using tscircuit, AI achieves <strong>state-of-the-art</strong> physically-validated<br>
-                    <strong>electronics generation capabilities</strong>.
-                </p>
             </div>
         </section>
 
@@ -3396,11 +3517,89 @@
             © 2026 tscircuit Inc.
         </div>
     </footer>
+    <details class="signal-controls" open>
+        <summary>Signal controls <span>Live preview</span></summary>
+        <div class="signal-controls-grid">
+            <div class="signal-control">
+                <label for="signal-speed">Speed (px/s)</label>
+                <div class="signal-control-inputs">
+                    <input id="signal-speed" type="range" min="50" max="4000" step="10" value="120">
+                    <input id="signal-speed-number" type="number" min="50" max="4000" step="10" value="120" aria-label="Speed (px/s)">
+                </div>
+            </div>
+            <div class="signal-control">
+                <label for="signal-length">Length (px)</label>
+                <div class="signal-control-inputs">
+                    <input id="signal-length" type="range" min="20" max="600" step="10" value="600">
+                    <input id="signal-length-number" type="number" min="20" max="600" step="10" value="600" aria-label="Length (px)">
+                </div>
+            </div>
+            <div class="signal-control">
+                <label for="signal-density">Density (%)</label>
+                <div class="signal-control-inputs">
+                    <input id="signal-density" type="range" min="1" max="2000" step="1" value="80">
+                    <input id="signal-density-number" type="number" min="1" max="2000" step="1" value="80" aria-label="Density (%)">
+                </div>
+            </div>
+            <div class="signal-control">
+                <label for="signal-strokeWidth">Stroke width (px)</label>
+                <div class="signal-control-inputs">
+                    <input id="signal-strokeWidth" type="range" min="0.1" max="4" step="0.1" value="0.4">
+                    <input id="signal-strokeWidth-number" type="number" min="0.1" max="4" step="0.1" value="0.4" aria-label="Stroke width (px)">
+                </div>
+            </div>
+            <div class="signal-control">
+                <label for="signal-tailFade">Tail fade (%)</label>
+                <div class="signal-control-inputs">
+                    <input id="signal-tailFade" type="range" min="0" max="100" step="1" value="80" aria-describedby="signal-tail-fade-help">
+                    <input id="signal-tailFade-number" type="number" min="0" max="100" step="1" value="80" aria-label="Tail fade (%)" aria-describedby="signal-tail-fade-help">
+                </div>
+                <small id="signal-tail-fade-help">0: no fade · 100: full-length fade</small>
+            </div>
+            <div class="signal-control">
+                <label for="signal-turns">Extra turns</label>
+                <div class="signal-control-inputs">
+                    <input id="signal-turns" type="range" min="0" max="24" step="4" value="8" aria-describedby="signal-turns-help">
+                    <input id="signal-turns-number" type="number" min="0" max="24" step="4" value="8" aria-label="Extra turns" aria-describedby="signal-turns-help">
+                </div>
+                <small id="signal-turns-help">Up to 24 extra bends; fewer on short routes</small>
+            </div>
+            <div class="signal-control">
+                <label for="signal-busCount">Number of buses</label>
+                <div class="signal-control-inputs">
+                    <input id="signal-busCount" type="range" min="0" max="40" step="1" value="16" aria-describedby="signal-bus-count-help">
+                    <input id="signal-busCount-number" type="number" min="0" max="40" step="1" value="16" aria-label="Number of buses" aria-describedby="signal-bus-count-help">
+                </div>
+                <small id="signal-bus-count-help">0 hides all buses</small>
+            </div>
+            <div class="signal-control">
+                <label for="signal-tracesPerBus">Traces per bus</label>
+                <div class="signal-control-inputs">
+                    <input id="signal-tracesPerBus" type="range" min="1" max="32" step="1" value="16">
+                    <input id="signal-tracesPerBus-number" type="number" min="1" max="32" step="1" value="16" aria-label="Traces per bus">
+                </div>
+            </div>
+            <div class="signal-controls-share">
+                <textarea id="signal-settings" readonly aria-label="Signal parameters to copy" spellcheck="false"></textarea>
+                <button id="signal-copy" type="button">Copy settings</button>
+                <button id="signal-reset" type="button">Reset</button>
+                <span id="signal-copy-status" role="status"></span>
+            </div>
+            <p id="signal-motion-note" hidden>Animation is off because reduced motion is enabled.</p>
+        </div>
+    </details>
     <script type="module">
         import heroModuleFsMap from "./assets/hero-stm32f746g-disco-fs-map.json"
         import heroPcbStaticUrl from "./assets/hero-stm32f746g-disco-pcb.png"
         import heroSchematicStaticUrl from "./assets/hero-stm32f746g-disco-schematic.png"
         import hero3dStaticUrl from "./assets/hero-stm32f746g-disco-3d.png"
+
+        import { initHeroCircuitControls } from "./assets/hero-circuit-controls.js"
+
+        initHeroCircuitControls(
+            document.querySelector(".hero-circuit-background"),
+            document.querySelector(".signal-controls"),
+        )
 
         const defaultHeroCode = `import { CodecSection } from "./components/CodecSection/CodecSection";
 import { DebugHeader } from "./components/DebugHeader/DebugHeader";
