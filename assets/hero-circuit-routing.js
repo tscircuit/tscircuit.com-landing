@@ -1,9 +1,8 @@
-const CELL_WIDTH = 480
-const CELL_HEIGHT = 320
-const LANE_COUNT = 8
+const CELL_WIDTH = 800
+const CELL_HEIGHT = 480
+const LANE_COUNT = 16
 const LANE_SPACING = 4
 const CLEARANCE = ((LANE_COUNT - 1) * LANE_SPACING) / 2 + 5
-const FADE_DISTANCE = 24
 
 const cross = (a, b) => a[0] * b[1] - a[1] * b[0]
 
@@ -62,59 +61,51 @@ function crossingWindows(route, buses) {
   return windows
 }
 
-function fadedPieces(route, windows) {
-  const opacityAt = (position) => {
-    let opacity = 1
-    for (const window of windows) {
-      const distance = Math.max(
-        window.start - position,
-        position - window.end,
-        0,
-      )
-      opacity = Math.min(opacity, distance / FADE_DISTANCE)
-    }
-    return Math.min(1, opacity)
-  }
-  const pieces = []
-  for (const segment of route.segments) {
-    const start = segment.start
-    const end = start + segment.distance
-    const boundaries = [start, end]
-    for (const window of windows) {
-      for (const point of [
-        window.start - FADE_DISTANCE,
-        window.start,
-        window.end,
-        window.end + FADE_DISTANCE,
-      ]) {
-        if (point > start && point < end) boundaries.push(point)
+function terminateAtCrossing(route, buses) {
+  const windows = crossingWindows(route, buses)
+  const length = Math.max(
+    0,
+    Math.min(route.length, ...windows.map((window) => window.start)),
+  )
+  const segments = route.segments
+    .filter((segment) => segment.start < length)
+    .map((segment) => {
+      const distance = Math.min(segment.distance, length - segment.start)
+      const fraction = distance / segment.distance
+      return {
+        ...segment,
+        x: segment.fromX + (segment.x - segment.fromX) * fraction,
+        y: segment.fromY + (segment.y - segment.fromY) * fraction,
+        distance,
       }
-    }
-    boundaries.sort((a, b) => a - b)
-    for (let i = 1; i < boundaries.length; i++) {
-      const from = boundaries[i - 1]
-      const to = boundaries[i]
-      if (to - from < 0.001) continue
-      const fromOpacity = opacityAt(from)
-      const toOpacity = opacityAt(to)
-      if (fromOpacity === 0 && toOpacity === 0) continue
-      const a = (from - start) / segment.distance
-      const b = (to - start) / segment.distance
-      const dx = segment.x - segment.fromX
-      const dy = segment.y - segment.fromY
-      pieces.push({
-        fromX: segment.fromX + dx * a,
-        fromY: segment.fromY + dy * a,
-        x: segment.fromX + dx * b,
-        y: segment.fromY + dy * b,
-        start: from,
-        distance: to - from,
-        fromOpacity,
-        toOpacity,
-      })
-    }
-  }
-  return pieces
+    })
+  return { ...route, segments, length }
+}
+
+function random(seed) {
+  let value = Math.imul(seed ^ 0x9e3779b9, 0x21f0aaad)
+  value = Math.imul(value ^ (value >>> 16), 0x735a2d97)
+  return ((value ^ (value >>> 15)) >>> 0) / 4294967296
+}
+
+// A new emission starts at the route entrance, never on the far side of a crossing.
+export function getSignalState(route, distanceTraveled, settings) {
+  const burstLength = route.bus.maxLength * 1.75
+  const cycle = burstLength / (settings.density / 100)
+  if (!cycle) return null
+  const time = distanceTraveled + route.bus.phase * cycle
+  const emission = Math.floor(time / cycle)
+  const seed = route.bus.seed + emission * 1013
+  // Pick only 4–8 of the 16 lanes, spread across the bus, with a new selection each emission.
+  const count = 4 + Math.floor(random(seed) * 5)
+  const rotation = Math.floor(random(seed + 73) * LANE_COUNT)
+  if ((route.lane * 5 + rotation) % LANE_COUNT >= count) return null
+  const delay = random(seed + route.lane * 53 + 137) * route.bus.maxLength * 0.7
+  const head = (time % cycle) - delay
+  if (head <= 0 || head >= route.length) return null
+  const fadeDistance = Math.min(48, route.length * 0.35)
+  const opacity = Math.min(1, head / 20, (route.length - head) / fadeDistance)
+  return { start: Math.max(0, head - settings.length), end: head, opacity }
 }
 
 export function createCircuitBuses(width, height) {
@@ -125,36 +116,28 @@ export function createCircuitBuses(width, height) {
       const top = row * CELL_HEIGHT
       const layouts = [
         [
-          [0, 64],
-          [88, 64],
-          [136, 112],
-          [296, 112],
-          [344, 64],
-          [480, 64],
+          [0, 100],
+          [180, 100],
+          [260, 180],
+          [540, 180],
+          [620, 100],
+          [800, 100],
         ],
         [
-          [0, 236],
-          [88, 236],
-          [136, 188],
-          [296, 188],
-          [344, 236],
-          [480, 236],
+          [0, 360],
+          [180, 360],
+          [260, 280],
+          [540, 280],
+          [620, 360],
+          [800, 360],
         ],
         [
-          [192, 0],
-          [192, 40],
-          [224, 72],
-          [224, 248],
-          [192, 280],
-          [192, 320],
-        ],
-        [
-          [392, 0],
-          [392, 72],
-          [360, 104],
-          [360, 216],
-          [392, 248],
-          [392, 320],
+          [400, 0],
+          [400, 72],
+          [448, 120],
+          [448, 360],
+          [400, 408],
+          [400, 480],
         ],
       ]
       for (const [index, layout] of layouts.entries()) {
@@ -164,6 +147,7 @@ export function createCircuitBuses(width, height) {
         const seed = row * 17 + column * 31 + index * 13 + 1
         buses.push({
           id,
+          seed,
           points,
           phase: (seed * 0.61803398875) % 1,
           ...segmentsOf(points),
@@ -180,8 +164,14 @@ export function createCircuitBuses(width, height) {
       ),
     })),
   )
-  return routes.map((route) => ({
-    ...route,
-    pieces: fadedPieces(route, crossingWindows(route, buses)),
-  }))
+  const terminated = routes.map((route) => terminateAtCrossing(route, buses))
+  for (const bus of buses) {
+    bus.maxLength = Math.max(
+      0,
+      ...terminated
+        .filter((route) => route.bus === bus)
+        .map((route) => route.length),
+    )
+  }
+  return terminated.filter((route) => route.length > 0)
 }

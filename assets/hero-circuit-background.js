@@ -1,6 +1,4 @@
-import { createCircuitBuses } from "./hero-circuit-routing.js"
-
-const FRAME_INTERVAL = 1000 / 30
+import { createCircuitBuses, getSignalState } from "./hero-circuit-routing.js"
 
 export function initHeroCircuitBackground(container, initialSettings) {
   let settings = { ...initialSettings }
@@ -29,21 +27,8 @@ export function initHeroCircuitBackground(container, initialSettings) {
     context.lineCap = "round"
     context.lineJoin = "round"
     context.strokeStyle = "#929292"
-    // Geometry, crossing gaps, and fade gradients are computed only on resize.
-    routes = createCircuitBuses(width, height).map((route) => ({
-      ...route,
-      pieces: route.pieces.map((piece) => {
-        const gradient = context.createLinearGradient(
-          piece.fromX,
-          piece.fromY,
-          piece.x,
-          piece.y,
-        )
-        gradient.addColorStop(0, `rgba(146, 146, 146, ${piece.fromOpacity})`)
-        gradient.addColorStop(1, `rgba(146, 146, 146, ${piece.toOpacity})`)
-        return { ...piece, gradient }
-      }),
-    }))
+    // Routes stop permanently at their first crossing; no fade gradients to repaint.
+    routes = createCircuitBuses(width, height)
     draw()
   }
 
@@ -52,40 +37,36 @@ export function initHeroCircuitBackground(container, initialSettings) {
     if (reducedMotion.matches) return
     context.lineWidth = settings.strokeWidth
     for (const route of routes) {
-      // Shared timing makes the eight lanes read as a traveling bus.
-      const cycle =
-        (route.bus.length + settings.length) / (settings.density / 100)
-      const head =
-        (distanceTraveled + route.bus.phase * cycle + route.lane * 2) % cycle
-      if (head >= route.length + settings.length) continue
-      const start = Math.max(0, head - settings.length)
-      const end = Math.min(route.length, head)
-      context.globalAlpha = 0.3
-      for (const segment of route.pieces) {
-        const from = Math.max(start, segment.start)
-        const to = Math.min(end, segment.start + segment.distance)
+      const signal = getSignalState(route, distanceTraveled, settings)
+      if (!signal) continue
+      context.globalAlpha = 0.3 * signal.opacity
+      context.beginPath()
+      let started = false
+      for (const segment of route.segments) {
+        const from = Math.max(signal.start, segment.start)
+        const to = Math.min(signal.end, segment.start + segment.distance)
         if (from >= to) continue
         const a = (from - segment.start) / segment.distance
         const b = (to - segment.start) / segment.distance
         const dx = segment.x - segment.fromX
         const dy = segment.y - segment.fromY
-        context.beginPath()
-        context.strokeStyle = segment.gradient
-        context.moveTo(segment.fromX + dx * a, segment.fromY + dy * a)
+        if (!started) {
+          context.moveTo(segment.fromX + dx * a, segment.fromY + dy * a)
+          started = true
+        }
         context.lineTo(segment.fromX + dx * b, segment.fromY + dy * b)
-        context.stroke()
       }
+      context.stroke()
     }
     context.globalAlpha = 1
   }
 
   const tick = (time) => {
-    if (!lastTime) lastTime = time
-    if (time - lastTime >= FRAME_INTERVAL) {
+    if (lastTime) {
       distanceTraveled += ((time - lastTime) / 1000) * settings.speed
-      lastTime = time
-      draw()
     }
+    lastTime = time
+    draw()
     frame = requestAnimationFrame(tick)
   }
 
