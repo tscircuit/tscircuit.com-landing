@@ -2,7 +2,8 @@
 const CELL_WIDTH = 480
 const CELL_HEIGHT = 320
 const FRAME_INTERVAL = 1000 / 30
-const SIGNAL_SPEED_MULTIPLIER = 10
+const SIGNAL_SPEED_MULTIPLIER = 100
+const SIGNAL_LENGTH_MULTIPLIER = 4
 const SIGNAL_DUTY_CYCLE = 0.1
 
 export function initHeroCircuitBackground(container) {
@@ -28,7 +29,7 @@ export function initHeroCircuitBackground(container) {
       length += distance
       return segment
     })
-    const tail = 38 + (seed % 47)
+    const tail = (38 + (seed % 47)) * SIGNAL_LENGTH_MULTIPLIER
     // Each route is visible for one tenth of its cycle, with staggered starts.
     const cycle = (length + tail) / SIGNAL_DUTY_CYCLE
     return {
