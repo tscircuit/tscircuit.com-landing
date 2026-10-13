@@ -1839,8 +1839,8 @@
         .landing-signin:hover,
         .landing-icon-action:hover,
         .landing-github:hover,
-        .landing-community > summary:hover,
-        .landing-community[open] > summary,
+        .landing-dropdown > summary:hover,
+        .landing-dropdown[open] > summary,
         .landing-nav-menu[open] > summary {
             color: var(--ink);
             background: #f4f5f7;
@@ -1850,11 +1850,11 @@
             opacity: .58;
         }
 
-        .landing-community {
+        .landing-dropdown {
             position: relative;
         }
 
-        .landing-community > summary {
+        .landing-dropdown > summary {
             min-height: 40px;
             padding: 0 10px;
             border-radius: 8px;
@@ -1867,11 +1867,11 @@
             transition: background 160ms ease, color 160ms ease;
         }
 
-        .landing-community > summary::-webkit-details-marker {
+        .landing-dropdown > summary::-webkit-details-marker {
             display: none;
         }
 
-        .landing-community > summary::after {
+        .landing-dropdown > summary::after {
             content: "";
             width: 6px;
             height: 6px;
@@ -1881,11 +1881,11 @@
             transform: translateY(-2px) rotate(45deg);
         }
 
-        .landing-community[open] > summary::after {
+        .landing-dropdown[open] > summary::after {
             transform: translateY(1px) rotate(225deg);
         }
 
-        .landing-community-panel {
+        .landing-dropdown-panel {
             position: absolute;
             top: calc(100% + 10px);
             left: 0;
@@ -1899,7 +1899,7 @@
             box-shadow: 0 4px 12px rgba(20, 24, 32, .04), 0 16px 40px rgba(20, 24, 32, .08);
         }
 
-        .landing-nav-links .landing-community-panel::before {
+        .landing-nav-links .landing-dropdown-panel::before {
             content: "";
             position: absolute;
             top: -11px;
@@ -1908,7 +1908,7 @@
             height: 11px;
         }
 
-        .landing-community-panel a {
+        .landing-dropdown-panel a {
             min-height: 40px;
             padding: 0 12px;
             border-radius: 8px;
@@ -1917,17 +1917,31 @@
             text-decoration: none;
         }
 
-        .landing-community-panel a:hover {
+        .landing-dropdown-panel a:hover {
             background: #f4f5f7;
         }
 
-        .landing-nav-menu-panel .landing-community > summary {
+        .landing-product-panel {
+            min-width: 224px;
+        }
+
+        .landing-product-panel a {
+            gap: 9px;
+        }
+
+        .landing-product-panel svg {
+            width: 16px;
+            height: 16px;
+            flex: 0 0 auto;
+        }
+
+        .landing-nav-menu-panel .landing-dropdown > summary {
             padding: 0 12px;
             justify-content: space-between;
             font-size: 14px;
         }
 
-        .landing-nav-menu-panel .landing-community-panel {
+        .landing-nav-menu-panel .landing-dropdown-panel {
             position: static;
             min-width: 0;
             margin: 4px 0 4px 18px;
@@ -2745,12 +2759,41 @@
                 <span>tscircuit</span>
             </a>
             <div class="landing-nav-links">
-                <a href="/playground">Playground</a>
+                <details class="landing-dropdown">
+                    <summary>Product</summary>
+                    <div class="landing-dropdown-panel landing-product-panel">
+                        <a href="/playground">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.4 2.6a2 2 0 0 1 3 3L12 15l-4 1 1-4Z"></path>
+                            </svg>
+                            Online Playground
+                        </a>
+                        <a href="https://www.npmjs.com/package/tscircuit">
+                            <svg viewBox="0 0 18 7" fill="currentColor" aria-hidden="true">
+                                <path d="M0 0v6h5v1h4V6h9V0H0zm5 5H4V2H3v3H1V1h4v4zm4 0H7v1H6V1h4v4H9zm8 0h-1V2h-1v3h-1V2h-1v3h-2V1h6v4zM7 2h2v2H7V2z"></path>
+                            </svg>
+                            NPM Package
+                        </a>
+                        <a href="https://github.com/tscircuit/skill">
+                            <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                <path d="M8 0C3.58 0 0 3.64 0 8.13c0 3.59 2.29 6.64 5.47 7.71.4.08.55-.18.55-.39 0-.19-.01-.83-.01-1.5-2.01.38-2.53-.5-2.69-.96-.09-.23-.48-.96-.82-1.15-.28-.15-.68-.53-.01-.54.63-.01 1.08.59 1.23.83.72 1.23 1.87.88 2.33.67.07-.53.28-.88.51-1.08-1.78-.21-3.64-.91-3.64-4.02 0-.89.31-1.62.82-2.19-.08-.2-.36-1.04.08-2.16 0 0 .67-.22 2.2.84A7.49 7.49 0 0 1 8 3.93c.68 0 1.36.09 2 .27 1.53-1.06 2.2-.84 2.2-.84.44 1.12.16 1.96.08 2.16.51.57.82 1.3.82 2.19 0 3.12-1.87 3.81-3.65 4.02.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.47.55.39A8.01 8.01 0 0 0 16 8.13C16 3.64 12.42 0 8 0Z"></path>
+                            </svg>
+                            tscircuit Skill
+                        </a>
+                        <a href="/enterprise">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-2M10 6h4m-4 4h4m-4 4h4m-4 4h4"></path>
+                            </svg>
+                            tscircuit Enterprise
+                        </a>
+                    </div>
+                </details>
                 <a href="https://docs.tscircuit.com/">Docs</a>
                 <a href="/datasheets">Datasheets</a>
-                <details class="landing-community">
+                <details class="landing-dropdown">
                     <summary>Community</summary>
-                    <div class="landing-community-panel">
+                    <div class="landing-dropdown-panel">
                         <a href="https://blog.tscircuit.com">Blog</a>
                         <a href="/join">Discord</a>
                         <a href="https://community.tscircuit.com">Knowledge Base</a>
@@ -2781,13 +2824,42 @@
                 <details class="landing-nav-menu">
                     <summary class="landing-button">Menu</summary>
                     <div class="landing-nav-menu-panel">
-                        <a href="/playground">Playground</a>
+                        <details class="landing-dropdown">
+                            <summary>Product</summary>
+                            <div class="landing-dropdown-panel landing-product-panel">
+                                <a href="/playground">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                        <path d="M18.4 2.6a2 2 0 0 1 3 3L12 15l-4 1 1-4Z"></path>
+                                    </svg>
+                                    Online Playground
+                                </a>
+                                <a href="https://www.npmjs.com/package/tscircuit">
+                                    <svg viewBox="0 0 18 7" fill="currentColor" aria-hidden="true">
+                                        <path d="M0 0v6h5v1h4V6h9V0H0zm5 5H4V2H3v3H1V1h4v4zm4 0H7v1H6V1h4v4H9zm8 0h-1V2h-1v3h-1V2h-1v3h-2V1h6v4zM7 2h2v2H7V2z"></path>
+                                    </svg>
+                                    NPM Package
+                                </a>
+                                <a href="https://github.com/tscircuit/skill">
+                                    <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                        <path d="M8 0C3.58 0 0 3.64 0 8.13c0 3.59 2.29 6.64 5.47 7.71.4.08.55-.18.55-.39 0-.19-.01-.83-.01-1.5-2.01.38-2.53-.5-2.69-.96-.09-.23-.48-.96-.82-1.15-.28-.15-.68-.53-.01-.54.63-.01 1.08.59 1.23.83.72 1.23 1.87.88 2.33.67.07-.53.28-.88.51-1.08-1.78-.21-3.64-.91-3.64-4.02 0-.89.31-1.62.82-2.19-.08-.2-.36-1.04.08-2.16 0 0 .67-.22 2.2.84A7.49 7.49 0 0 1 8 3.93c.68 0 1.36.09 2 .27 1.53-1.06 2.2-.84 2.2-.84.44 1.12.16 1.96.08 2.16.51.57.82 1.3.82 2.19 0 3.12-1.87 3.81-3.65 4.02.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.47.55.39A8.01 8.01 0 0 0 16 8.13C16 3.64 12.42 0 8 0Z"></path>
+                                    </svg>
+                                    tscircuit Skill
+                                </a>
+                                <a href="/enterprise">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-2M10 6h4m-4 4h4m-4 4h4m-4 4h4"></path>
+                                    </svg>
+                                    tscircuit Enterprise
+                                </a>
+                            </div>
+                        </details>
                         <a href="https://tscircuit.com/search">Search</a>
                         <a href="https://docs.tscircuit.com/">Docs</a>
                         <a href="/datasheets">Datasheets</a>
-                        <details class="landing-community">
+                        <details class="landing-dropdown">
                             <summary>Community</summary>
-                            <div class="landing-community-panel">
+                            <div class="landing-dropdown-panel">
                                 <a href="https://blog.tscircuit.com">Blog</a>
                                 <a href="https://discord.com/invite/V7FGE5ZCbA">Discord</a>
                                 <a href="https://community.tscircuit.com">Knowledge Base</a>
@@ -3445,27 +3517,28 @@ export default function UsbAudioVuMeter() {
 \t);
 }`
 
-        const communityMenu = document.querySelector(".landing-nav-links .landing-community")
         const supportsHover = window.matchMedia("(hover: hover) and (pointer: fine)")
-        communityMenu.addEventListener("pointerenter", () => {
-            if (supportsHover.matches) communityMenu.open = true
-        })
-        communityMenu.addEventListener("pointerleave", () => {
-            if (supportsHover.matches && !communityMenu.matches(":focus-within")) {
-                communityMenu.open = false
-            }
-        })
-        communityMenu.addEventListener("focusout", (event) => {
-            if (!communityMenu.contains(event.relatedTarget) && !communityMenu.matches(":hover")) {
-                communityMenu.open = false
-            }
-        })
-        communityMenu.addEventListener("keydown", (event) => {
-            if (event.key === "Escape") {
-                communityMenu.open = false
-                communityMenu.querySelector("summary").focus()
-            }
-        })
+        for (const menu of document.querySelectorAll(".landing-nav-links .landing-dropdown")) {
+            menu.addEventListener("pointerenter", () => {
+                if (supportsHover.matches) menu.open = true
+            })
+            menu.addEventListener("pointerleave", () => {
+                if (supportsHover.matches && !menu.matches(":focus-within")) {
+                    menu.open = false
+                }
+            })
+            menu.addEventListener("focusout", (event) => {
+                if (!menu.contains(event.relatedTarget) && !menu.matches(":hover")) {
+                    menu.open = false
+                }
+            })
+            menu.addEventListener("keydown", (event) => {
+                if (event.key === "Escape") {
+                    menu.open = false
+                    menu.querySelector("summary").focus()
+                }
+            })
+        }
 
         const editorInput = document.getElementById("hero-code-input")
         const editorShell = document.querySelector(".editor-shell")
