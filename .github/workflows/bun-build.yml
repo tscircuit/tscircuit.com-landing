@@ -24,3 +24,6 @@ jobs:
 
       - name: Run build
         run: bun run build
+
+      - name: Test circuit signal scheduling
+        run: bun run test
