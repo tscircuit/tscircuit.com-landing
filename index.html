@@ -1993,6 +1993,14 @@
             white-space: nowrap;
         }
 
+        /* Keep the animated star count from jostling: tabular digits stop the
+           width changing every frame, and the min-width reserves room for the
+           widest tick label ("2,345 on GitHub") so the button never resizes. */
+        #github-stars-nav {
+            min-width: 7.6em;
+            font-variant-numeric: tabular-nums;
+        }
+
         .landing-nav-menu {
             display: none;
             position: relative;
