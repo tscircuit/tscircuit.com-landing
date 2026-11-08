@@ -26,7 +26,7 @@
     <meta property="og:image:height" content="2000" />
     <meta name="twitter:image" content="https://tscircuit.com/assets/editor_example_1_more_square-2000w.webp" />
     <link rel="canonical" href="https://tscircuit.com" />
-    <link rel="preload" as="image" href="assets/hero-board-four-real-3d.png" fetchpriority="high" />
+    <link rel="preload" as="image" href="assets/hero-complex-boards.webp" type="image/webp" fetchpriority="high" />
     <!-- SEO_END -->
 
     <!-- SSR_START -->
@@ -2239,7 +2239,7 @@
             top: 70px;
             display: block;
             opacity: .99;
-            filter: contrast(1.045) saturate(1.035) drop-shadow(0 16px 10px rgba(41, 49, 62, .07)) drop-shadow(0 38px 29px rgba(41, 49, 62, .15));
+            /* shadows are rendered into the image (Cycles shadow catcher) */
         }
 
         .landing-proof-panel {
@@ -2927,11 +2927,11 @@
                     </div>
                 </div>
 
-                <div class="landing-hero-art" aria-label="Four real circuit boards generated from tscircuit projects">
+                <div class="landing-hero-art" aria-label="Complex circuit boards designed with tscircuit">
                     <span class="landing-board-halo" aria-hidden="true"></span>
-                    <img class="landing-hero-board" src="assets/hero-board-four-real-3d.png"
-                        alt="3D renders of the tscircuit RP2040, Game Boy, nRF52810, and Attiny85 Arcade Keychain circuit boards"
-                        width="1600" height="1500" fetchpriority="high">
+                    <img class="landing-hero-board" src="assets/hero-complex-boards.webp"
+                        alt="3D renders of nine complex tscircuit boards, including an AM3352 Linux dev board, an Allwinner V3s single-board computer, a T113 Linux board, a drone flight board and stepper motor drivers"
+                        width="2000" height="1875" fetchpriority="high">
                 </div>
             </div>
 
