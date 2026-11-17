@@ -1,0 +1,101 @@
+{
+  "glb_dir": "models",
+  "unit_scale": 0.1,
+  "resolution": [2000, 1875],
+  "boards": [
+    {
+      "file": "krishnax12__t113-minimal-linux.glb",
+      "screen": [0.73, 0.3],
+      "z": 0.0,
+      "rotation": 12
+    },
+    {
+      "file": "mohan-bee__flight-controller-v2.glb",
+      "screen": [0.92, 0.5],
+      "z": 0.5,
+      "rotation": -22
+    },
+    {
+      "file": "astra__nema17-stepper-motor-controller-spring-clamp-rp2040.glb",
+      "screen": [0.6, 0.1],
+      "z": 0.0,
+      "rotation": 38
+    },
+    {
+      "file": "seveibar__am3352-dev-board-4layer-dogbone.glb",
+      "screen": [0.52, 0.42],
+      "z": 3.2,
+      "rotation": -8
+    },
+    {
+      "file": "abse__boostxl-audio.glb",
+      "screen": [0.82, 0.62],
+      "z": 1.4,
+      "rotation": 30
+    },
+    {
+      "file": "rushabhcodes__sbc_allwinner_v3s.glb",
+      "screen": [0.6, 0.68],
+      "z": 1.0,
+      "rotation": 8
+    },
+    {
+      "file": "mohan-bee__drone.glb",
+      "screen": [0.22, 0.55],
+      "z": 0.6,
+      "rotation": 26
+    },
+    {
+      "file": "seveibar__nema17-stepper-motor-driver-tmc2209-usb-pd.glb",
+      "screen": [0.37, 0.75],
+      "z": 2.2,
+      "rotation": -24,
+      "tilt_x": 6,
+      "tilt_y": -8
+    },
+    {
+      "file": "mohan-bee__gimbal-one-budget-pcb.glb",
+      "screen": [0.3, 0.92],
+      "z": 0.0,
+      "rotation": -14
+    }
+  ],
+  "camera": {
+    "location": [4.0, -40.0, 42.0],
+    "target": [4.0, 0.0, 0.0],
+    "lens": 60,
+    "dof_target": [4.75, 0.72, 3.6],
+    "fstop": 5.6
+  },
+  "lights": [
+    {
+      "kind": "AREA",
+      "name": "Key",
+      "location": [-30, -22, 52],
+      "target": [3, 0, 0],
+      "color": [1.0, 0.96, 0.9],
+      "energy": 30000,
+      "size": 40
+    },
+    {
+      "kind": "AREA",
+      "name": "Cool fill",
+      "location": [38, -34, 36],
+      "target": [3, 0, 0],
+      "color": [0.8, 0.87, 1.0],
+      "energy": 14000,
+      "size": 40
+    },
+    {
+      "kind": "AREA",
+      "name": "Rim",
+      "location": [18, 44, 34],
+      "target": [3, 0, 0],
+      "color": [0.88, 1.0, 0.94],
+      "energy": 9000,
+      "size": 30
+    }
+  ],
+  "world_strength": 0.85,
+  "look": "AgX - Medium High Contrast"
+}
